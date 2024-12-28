@@ -4,3 +4,4 @@
 
 export * from './lib/ng-sidebar.service';
 export * from './lib/ng-sidebar.component';
+export * from './lib/sidebar.model';
