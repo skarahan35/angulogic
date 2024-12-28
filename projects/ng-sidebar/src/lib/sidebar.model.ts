@@ -4,15 +4,15 @@ export class SidebarModel {
   searchOptions?: Search;
   sidebarData!: SidebarData[];
   favorites?: MenuData[];
-  options?: SidebarOptions;
+  options: SidebarOptions;
 
-  constructor(options: Partial<SidebarModel> & { sidebarData: SidebarData[] }) {
-    this.bannerOptions = options.bannerOptions;
-    this.userOptions = options.userOptions;
-    this.searchOptions = options.searchOptions;
-    this.sidebarData = options.sidebarData;
-    this.favorites = options.favorites;
-    this.options = options.options;
+  constructor(data: Partial<SidebarModel> & { sidebarData: SidebarData[] }) {
+    this.bannerOptions = data.bannerOptions;
+    this.userOptions = data.userOptions;
+    this.searchOptions = data.searchOptions;
+    this.sidebarData = data.sidebarData;
+    this.favorites = data.favorites;
+    this.options = data.options ?? new SidebarOptions({});
   }
 }
 
@@ -21,7 +21,7 @@ export class Banner {
   title?: string;
   onClick?: (element: 'logo' | 'title') => void;
 
-  constructor(options:Partial<Banner>) {
+  constructor(options: Partial<Banner>) {
     this.logo = options.logo;
     this.title = options.title;
     this.onClick = options.onClick;
@@ -31,28 +31,28 @@ export class Banner {
 export class User {
   avatar?: string;
   name?: string;
-  position?: "top" | "bottom" = "bottom";
+  position?: "top" | "bottom";
   onClick?: (element: 'avatar' | 'name') => void;
 
-  constructor(options:Partial<User>) {
+  constructor(options: Partial<User>) {
     this.avatar = options.avatar;
     this.name = options.name;
-    this.position = options.position;
+    this.position = options.position ?? "bottom";
     this.onClick = options.onClick;
   }
 }
 
 export class Search {
   placeholder?: string;
-  caseSensitive?: boolean = false;
-  strategy?: "contains" | "startsWith" | "endsWith" = "contains";
+  caseSensitive?: boolean;
+  strategy?: "contains" | "startsWith" | "endsWith";
   cssClass?: string;
-  onSearch?: (searchText: string & {cancel: boolean}) => void;
+  onSearch?: (searchText: string & { cancel: boolean }) => void;
 
-  constructor(options:Partial<Search>) {
+  constructor(options: Partial<Search>) {
     this.placeholder = options.placeholder;
-    this.caseSensitive = options.caseSensitive;
-    this.strategy = options.strategy;
+    this.caseSensitive = options.caseSensitive ?? false;
+    this.strategy = options.strategy ?? "contains";
     this.cssClass = options.cssClass;
     this.onSearch = options.onSearch;
   }
@@ -61,13 +61,13 @@ export class Search {
 export class SidebarData {
   title: string;
   cssClass?: string;
-  visible?: boolean = true;
+  visible?: boolean;
   data: MenuData[];
 
-  constructor(options:Partial<SidebarData> & { title: string, data: MenuData[] }) {
+  constructor(options: Partial<SidebarData> & { title: string, data: MenuData[] }) {
     this.title = options.title;
     this.cssClass = options.cssClass;
-    this.visible = options.visible;
+    this.visible = options.visible ?? true;
     this.data = options.data;
   }
 }
@@ -76,21 +76,21 @@ export class MenuData {
   name: string;
   icon?: string;
   route?: string;
-  visible?: boolean = true;
-  disabled?: boolean = false;
-  isExpanded?: boolean = false;
+  visible?: boolean;
+  disabled?: boolean;
+  isExpanded?: boolean;
   badge?: number | string;
   cssClass?: string;
   children?: MenuData[];
   onClick?: (element: MenuData & { cancel: boolean }) => void;
 
-  constructor(options:Partial<MenuData> & { name: string }) {
+  constructor(options: Partial<MenuData> & { name: string }) {
     this.name = options.name;
     this.icon = options.icon;
     this.route = options.route;
-    this.visible = options.visible;
-    this.disabled = options.disabled;
-    this.isExpanded = options.isExpanded;
+    this.visible = options.visible ?? true;
+    this.disabled = options.disabled ?? false;
+    this.isExpanded = options.isExpanded ?? false;
     this.badge = options.badge;
     this.cssClass = options.cssClass;
     this.children = options.children;
@@ -98,12 +98,12 @@ export class MenuData {
   }
 }
 
-export class Favorites{
-  favoritesText:string = 'Favorites';
+export class Favorites {
+  favoritesText: string = 'Favorites';
   favoritesData?: FavoritesData[];
 }
 
-export class FavoritesData{
+export class FavoritesData {
   name: string;
   icon?: string;
   route?: string;
@@ -112,7 +112,7 @@ export class FavoritesData{
   onClick?: (element: MenuData & { cancel: boolean }) => void;
   onFavorite?: (element: MenuData & { cancel: boolean }) => void;
 
-  constructor(options:Partial<FavoritesData> & { name: string }) {
+  constructor(options: Partial<FavoritesData> & { name: string }) {
     this.name = options.name;
     this.icon = options.icon;
     this.route = options.route;
@@ -124,40 +124,41 @@ export class FavoritesData{
 }
 
 export class SidebarOptions {
-  resize?: boolean = true;
-  expand?: boolean = true;
-  favorites?: boolean = true;
-  search?: boolean = true;
+  resize?: boolean;
+  expand?: boolean;
+  favorites?: boolean;
+  search?: boolean;
   cssClass?: string;
-  viewMode?: "fix" | "hover"| "toggle" = "toggle";
-  theme?: "light" | "dark" = "light";
-  themePicker?: boolean = true;
-  minWidth?: number = 300;
-  maxWidth?: number = 500;
-  width?: number = 300;
-  themeText?: { light: string, dark: string } = { light: 'Light', dark: 'Dark' };
+  viewMode?: "fix" | "hover" | "toggle";
+  theme?: "light" | "dark";
+  themePicker?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  width?: number;
+  themeText?: { light: string, dark: string };
   onThemeChange?: (theme: "light" | "dark") => void;
   onResize?: (event: MouseEvent) => void;
   onExpand?: (event: MouseEvent) => void;
   onCollapse?: (event: MouseEvent) => void;
 
-  constructor(options:Partial<SidebarOptions>) {
-    this.resize = options.resize;
-    this.expand = options.expand;
-    this.favorites = options.favorites;
-    this.search = options.search;
-    this.cssClass = options.cssClass;
-    this.viewMode = options.viewMode;
-    this.theme = options.theme;
-    this.themePicker = options.themePicker;
-    this.minWidth = options.minWidth;
-    this.maxWidth = options.maxWidth;
-    this.width = options.width;
-    this.themeText = options.themeText;
+  constructor(options: Partial<SidebarOptions>) {
+    this.resize = options.resize ?? true;
+    this.expand = options.expand ?? true;
+    this.favorites = options.favorites ?? true;
+    this.search = options.search ?? true;
+    this.cssClass = options.cssClass ?? '';
+    this.viewMode = options.viewMode ?? "toggle";
+    this.theme = options.theme ?? "light";
+    this.themePicker = options.themePicker ?? true;
+    this.minWidth = options.minWidth ?? 300;
+    this.maxWidth = options.maxWidth ?? 500;
+    this.width = options.width ?? 300;
+    this.themeText = options.themeText ?? { light: 'Light', dark: 'Dark' };
     this.onThemeChange = options.onThemeChange;
     this.onResize = options.onResize;
     this.onExpand = options.onExpand;
     this.onCollapse = options.onCollapse;
   }
+
 
 }

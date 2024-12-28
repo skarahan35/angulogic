@@ -30,6 +30,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/ng-sidebar/assets",
+                "output": "/assets/"
               }
             ],
             "styles": [
