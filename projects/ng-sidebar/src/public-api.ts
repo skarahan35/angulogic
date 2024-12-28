@@ -3,5 +3,5 @@
  */
 
 export * from './lib/ng-sidebar.service';
-export * from './lib/ng-sidebar.component';
+export * from './lib/component/ng-sidebar.component';
 export * from './lib/sidebar.model';

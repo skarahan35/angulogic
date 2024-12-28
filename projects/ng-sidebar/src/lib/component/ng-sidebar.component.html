@@ -1,0 +1,13 @@
+<div class="ng-sidebar"
+  [ngStyle]="{'width': sidebarModel.options?.width, 'maxWidth': sidebarModel.options?.maxWidth, 'minWidth': sidebarModel.options?.minWidth}">
+  <div class="ng-sidebar__header">
+    <ng-content select="[ng-sidebar-header]"></ng-content>
+  </div>
+  <div class="ng-sidebar__content">
+
+    <ng-content select="[ng-sidebar-content]"></ng-content>
+  </div>
+  <div class="ng-sidebar__footer">
+    <ng-content select="[ng-sidebar-footer]"></ng-content>
+  </div>
+</div>

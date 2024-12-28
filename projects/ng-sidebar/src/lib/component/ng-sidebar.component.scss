@@ -1,0 +1,33 @@
+.ng-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  height: 100vh;
+  background: #333;
+  color: #fff;
+  z-index: 1000;
+  transition: transform 0.3s;
+}
+
+.ng-sidebar.ng-sidebar--collapsed {
+  transform: translateX(-250px);
+}
+
+.ng-sidebar__header {
+  padding: 10px;
+  background: #444;
+}
+
+.ng-sidebar__content {
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.ng-sidebar__footer {
+  padding: 10px;
+  background: #444;
+}
+
+
