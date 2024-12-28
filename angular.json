@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "aot": true,
             "outputPath": "dist/angulogic",
             "index": "src/index.html",
             "browser": "src/main.ts",
