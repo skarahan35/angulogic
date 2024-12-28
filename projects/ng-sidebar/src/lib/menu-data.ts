@@ -60,7 +60,7 @@ export const sidebarModel = new SidebarModel({
     favorites: true,
     search: true,
     cssClass: 'sidebar-class',
-    viewMode: 'toggle',
+    viewMode: 'hover',
     theme: 'dark',
     themePicker: true,
     minWidth: 300,

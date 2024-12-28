@@ -3,5 +3,6 @@
   "dest": "../../dist/ng-sidebar",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": ["./assets"]
 }

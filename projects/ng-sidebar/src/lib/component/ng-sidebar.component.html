@@ -1,5 +1,17 @@
 <div class="ng-sidebar"
-  [ngStyle]="{'width': sidebarModel.options?.width, 'maxWidth': sidebarModel.options?.maxWidth, 'minWidth': sidebarModel.options?.minWidth}">
+  #sidebar
+  id="ng-sidebar"
+  [style.width]="sidebarModel.options.expand ? sidebarModel.options.width +'px' : 'var(--collapse-width)'"
+  [style.maxWidth]="sidebarModel.options.expand ?sidebarModel.options.maxWidth +'px' : 'unset'"
+  [style.minWidth]="sidebarModel.options.expand ?sidebarModel.options.minWidth +'px' : 'unset'"
+  [ngClass]="{'collapsed': !sidebarModel.options.expand}"
+  (mouseenter)="onEnter()"
+  (mouseleave)="onLeave()">
+
+  <img *ngIf="sidebarModel.options.viewMode !=='fix'" (click)="onToggle()"
+    class="toggle-icon"
+    [src]="sidebarModel.options.expand ? 'assets/icons/collapse.png': 'assets/icons/expand.png'">
+
   <div class="ng-sidebar__header">
     <ng-content select="[ng-sidebar-header]"></ng-content>
   </div>
