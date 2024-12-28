@@ -54,7 +54,7 @@ export class SidebarData {
   visible?: boolean = true;
   data: MenuData[];
 
-  constructor(options:SidebarData) {
+  constructor(options:Partial<SidebarData> & { title: string, data: MenuData[] }) {
     this.title = options.title;
     this.cssClass = options.cssClass;
     this.visible = options.visible;
