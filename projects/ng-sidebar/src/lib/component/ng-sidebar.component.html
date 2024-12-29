@@ -1,16 +1,32 @@
-<div class="ng-sidebar"
+<div [class]="'ng-sidebar ' + sidebarData.options.cssClass"
   #sidebar
   id="ng-sidebar"
-  [style.width]="sidebarModel.options.expand ? sidebarModel.options.width +'px' : 'var(--collapse-width)'"
-  [style.maxWidth]="sidebarModel.options.expand ?sidebarModel.options.maxWidth +'px' : 'unset'"
-  [style.minWidth]="sidebarModel.options.expand ?sidebarModel.options.minWidth +'px' : 'unset'"
-  [ngClass]="{'collapsed': !sidebarModel.options.expand}"
+  [style.width]="sidebarData.options.expand ? sidebarData.options.width +'px' : 'var(--collapse-width)'"
+  [style.maxWidth]="sidebarData.options.expand ?sidebarData.options.maxWidth +'px' : 'unset'"
+  [style.minWidth]="sidebarData.options.expand ?sidebarData.options.minWidth +'px' : 'unset'"
+  [ngClass]="{'collapsed': !sidebarData.options.expand}"
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">
 
-  <img *ngIf="sidebarModel.options.viewMode !=='fix'" (click)="onToggle()"
+  <div *ngIf="sidebarData.options.resize" class="resizer"
+    (mousedown)="ngSidebarService.resize(sidebarData)"
+    [ngClass]="{'active':ngSidebarService.isResizing}"></div>
+
+  <div class="banner">
+    <div *ngIf="sidebarData.bannerOptions" class="banner-container">
+      <img *ngIf="sidebarData.bannerOptions.logo"
+        [src]="sidebarData.bannerOptions.logo" class="logo">
+      <div *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand" class="title">{{
+        sidebarData.bannerOptions.title
+        }}</div>
+    </div>
+
+    <img *ngIf="sidebarData.options.viewMode !=='fix'" (click)="onToggle()"
     class="toggle-icon"
-    [src]="sidebarModel.options.expand ? 'assets/icons/collapse.png': 'assets/icons/expand.png'">
+    [src]="sidebarData.options.expand ? sidebarData.options.toggleCollapseIcon: sidebarData.options.toggleExpandIcon">
+    <ng-content *ngIf="!sidebarData.bannerOptions"
+      select="[ng-sidebar-banner]"></ng-content>
+  </div>
 
   <div class="ng-sidebar__header">
     <ng-content select="[ng-sidebar-header]"></ng-content>

@@ -68,7 +68,7 @@ export const sidebarModel = new SidebarModel({
     width: 350,
     themeText: { light: 'Light Mode', dark: 'Dark Mode' },
     onThemeChange: (theme) => console.log(`Theme changed to ${theme}`),
-    onResize: (event) => console.log('Sidebar resized'),
+    onResizing: (event) => console.log('Sidebar resized'),
     onExpand: (event) => console.log('Sidebar expanded'),
     onCollapse: (event) => console.log('Sidebar collapsed')
   })

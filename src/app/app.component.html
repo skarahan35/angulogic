@@ -1,4 +1,12 @@
-<ng-sidebar></ng-sidebar>
+<ng-sidebar [options]="sidebarModel">
+    <div ng-sidebar-banner>
+        test
+    </div>
+
+</ng-sidebar>
+
+<button (click)="change()">change</button>
+
 <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed blanditiis,
     impedit provident nostrum non porro repellat, vel mollitia soluta placeat
     alias fuga quaerat corporis ipsam facilis itaque. Voluptates obcaecati

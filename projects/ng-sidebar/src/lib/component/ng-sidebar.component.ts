@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ContentChild, DoCheck, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { sidebarModel } from '../menu-data';
 import { MenuData, SidebarModel } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
@@ -9,44 +9,28 @@ import { NgSidebarService } from '../ng-sidebar.service';
   styleUrls: ['./ng-sidebar.component.scss'],
 
 })
-export class NgSidebarComponent implements AfterViewInit, OnDestroy {
-  sidebarModel: SidebarModel;
-  @ViewChild('sidebar') sidebar: any;
-  pinned: boolean = (sidebarModel.options.expand && sidebarModel.options.viewMode === 'hover') ?? false;
-  private observer!: MutationObserver;
+export class NgSidebarComponent implements AfterViewInit, DoCheck{
+  sidebarData!: SidebarModel;
+  pinned: boolean = false;
+  hasUserContent: boolean = false;
 
-
-  constructor() {
-    this.sidebarModel = sidebarModel;
-    console.log(this.sidebarModel);
+  @Input({ required: true }) set options(val: SidebarModel) {
+    console.log(val);
+    this.sidebarData = val;
   }
+  constructor(public ngSidebarService: NgSidebarService
+  ) { }
+
   ngAfterViewInit(): void {
-    this.sidebar
-    // Array.from(this.sidebar.nativeElement.parentElement.parentElement.children).forEach((i:any) => {
-    //   if (this.sidebar.nativeElement.parentElement !== i) {
-    //     i.classList.add('main-content');
-    //   }
-    // });
-
-    const divElement = this.sidebar.nativeElement;
-
-    if (!divElement) {
-      console.error('Resizable div not found!');
-      return;
-    }
-    document.documentElement.style.setProperty('--sidebar-width', divElement.style.width)
-    this.observer = new MutationObserver(() => {
-      const width = divElement.offsetWidth;
-      document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
-    });
-
-    this.observer.observe(divElement, {
-      attributeFilter: ['style'],
-    });
+    this.pinned = (sidebarModel.options.expand && sidebarModel.options.viewMode === 'hover') ?? false;
   }
 
-  ngOnDestroy() {
-    this.observer.disconnect();
+  ngDoCheck(): void {
+    if (this.sidebarData.options.autoPosition !== this.ngSidebarService.auotoPositionActive) {
+      this.sidebarData.options.autoPosition
+        ? this.ngSidebarService.setAutoPosition()
+        : this.ngSidebarService.destroAutoPosition();
+    }
   }
 
   onBannerClick(element: 'logo' | 'title') {
@@ -70,21 +54,21 @@ export class NgSidebarComponent implements AfterViewInit, OnDestroy {
   }
 
   onToggle() {
-    if (this.sidebarModel.options.viewMode === 'toggle') {
-      this.sidebarModel.options.expand = !this.sidebarModel.options?.expand;
-    } else if (this.sidebarModel.options.viewMode === 'hover') {
+    if (this.sidebarData.options.viewMode === 'toggle') {
+      this.sidebarData.options.expand = !this.sidebarData.options?.expand;
+    } else if (this.sidebarData.options.viewMode === 'hover') {
       this.pinned = !this.pinned;
     }
   }
 
   onEnter() {
-    if (this.sidebarModel.options.viewMode === 'hover' && !this.pinned) {
-      this.sidebarModel.options.expand = true;
+    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
+      this.sidebarData.options.expand = true;
     }
   }
   onLeave() {
-    if (this.sidebarModel.options.viewMode === 'hover' && !this.pinned) {
-      this.sidebarModel.options.expand = false
+    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
+      this.sidebarData.options.expand = false
     }
 
   }

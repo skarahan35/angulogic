@@ -22,8 +22,8 @@ export class Banner {
   onClick?: (element: 'logo' | 'title') => void;
 
   constructor(options: Partial<Banner>) {
-    this.logo = options.logo;
-    this.title = options.title;
+    this.logo = options.logo ?? 'assets/icons/angular-logo.png';
+    this.title = options.title ?? 'Angulogic';
     this.onClick = options.onClick;
   }
 }
@@ -136,8 +136,13 @@ export class SidebarOptions {
   maxWidth?: number;
   width?: number;
   themeText?: { light: string, dark: string };
+  autoPosition?: boolean;
+  toggleCollapseIcon?: string;
+  toggleExpandIcon?: string;
   onThemeChange?: (theme: "light" | "dark") => void;
-  onResize?: (event: MouseEvent) => void;
+  onResizeStart?: (event: ResizeEvent) => void;
+  onResizing?: (event: ResizeEvent) => void;
+  onResizeEnd?: (event: ResizeEvent) => void;
   onExpand?: (event: MouseEvent) => void;
   onCollapse?: (event: MouseEvent) => void;
 
@@ -154,11 +159,28 @@ export class SidebarOptions {
     this.maxWidth = options.maxWidth ?? 500;
     this.width = options.width ?? 300;
     this.themeText = options.themeText ?? { light: 'Light', dark: 'Dark' };
+    this.autoPosition = options.autoPosition ?? true;
+    this.toggleCollapseIcon = options.toggleCollapseIcon ?? 'assets/icons/collapse.png';
+    this.toggleExpandIcon = options.toggleExpandIcon ?? 'assets/icons/expand.png';
     this.onThemeChange = options.onThemeChange;
-    this.onResize = options.onResize;
+    this.onResizeStart = options.onResizeStart;
+    this.onResizing = options.onResizing;
+    this.onResizeEnd = options.onResizeEnd;
     this.onExpand = options.onExpand;
     this.onCollapse = options.onCollapse;
   }
 
 
+}
+
+export class ResizeEvent {
+  cancel?: boolean;
+  sidebarOptions: SidebarModel;
+  mouseEvent?: MouseEvent;
+
+  constructor(options: ResizeEvent) {
+    this.cancel = options.cancel;
+    this.sidebarOptions = options.sidebarOptions;
+    this.mouseEvent = options.mouseEvent;
+  }
 }
