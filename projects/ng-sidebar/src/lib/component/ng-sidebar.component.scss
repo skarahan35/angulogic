@@ -3,9 +3,16 @@
   --sidebar-width: 250px;
 }
 
-::ng-deep{
+::ng-deep {
   body {
-    margin-left: var(--sidebar-width);
+    &.auto-position {
+      margin-left: var(--sidebar-width);
+    }
+    &.no-select {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
   }
 }
 
@@ -21,6 +28,57 @@
   z-index: 1000;
   transition: transform all 0.3s;
 
+  .resizer {
+    width: 5px;
+    cursor: col-resize;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+
+    &.active {
+      background: blue;
+    }
+  }
+
+  .banner {
+    height: 10%;
+    position: relative;
+    .banner-container {
+      height: -webkit-fill-available;
+      display: flex;
+      justify-content: start;
+      gap: 1rem;
+      padding: 1rem;
+      padding-right: 3rem;
+
+      .logo {
+        max-height: 80%;
+        align-self: center;
+      }
+
+      .title {
+        height: max-content;
+        max-width: 50%;
+        align-self: center;
+        font-weight: bold;
+        font-size: xx-large;
+      }
+    }
+
+    .toggle-icon {
+      width: 2rem;
+      height: 2rem;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      cursor: pointer;
+      transform: translate(35%, -50%);
+      background-color: gray;
+      border-radius: 6px;
+    }
+  }
 }
 
 .ng-sidebar.ng-sidebar--collapsed {
@@ -41,15 +99,3 @@
   padding: 10px;
   background: #444;
 }
-
-
-.toggle-icon {
-  width: 2rem;
-  height: 2rem;
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  cursor: pointer;
-}
-
-
