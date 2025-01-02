@@ -1,95 +1,123 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgSidebarModule } from '../../projects/ng-sidebar/src/lib/ng-sidebar.module';
-import { SidebarModel, SidebarOptions, User, Banner, MenuData, Search, SidebarData } from '../../projects/ng-sidebar/src/lib/sidebar.model';
+import {
+  SidebarModel,
+  SidebarOptions,
+  User,
+  Banner,
+  MenuData,
+  Search,
+  SidebarData,
+} from '../../projects/ng-sidebar/src/lib/sidebar.model';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [NgSidebarModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'angulogic';
 
-  sidebarModel = new SidebarModel({
-    bannerOptions: new Banner({
-      logo: 'assets/icons/angular-logo.png',
-      title: 'Angulogic',
-      onClick: (element) => console.log(`Banner ${element} clicked`)
-    }),
-    userOptions: new User({
-      avatar: 'avatar.png',
+  sidebarModel: SidebarModel = {
+    bannerOptions: {
+      title: 'AnguLogic',
+    },
+    userOptions: {
+      avatar: 'assets/images/avatar.png',
       name: 'John Doe',
       position: 'top',
-      onClick: (element) => console.log(`User ${element} clicked`)
-    }),
-    searchOptions: new Search({
+    },
+    searchOptions: {
       placeholder: 'Search...',
-      caseSensitive: true,
-      strategy: 'startsWith',
-      cssClass: 'search-class',
-      onSearch: (searchText) => console.log(`Search for ${searchText}`)
-    }),
+      caseSensitive: false,
+      strategy: 'contains',
+      cssClass: 'search-bar',
+    },
     sidebarData: [
-      new SidebarData({
+      {
         title: 'Main Menu',
-        cssClass: 'main-menu-class',
+        cssClass: 'main-menu',
         visible: true,
         data: [
-          new MenuData({
+          {
             name: 'Dashboard',
-            icon: 'dashboard-icon',
+            icon: 'assets/icons/dashboard.png',
             route: '/dashboard',
             visible: true,
             disabled: false,
-            isExpanded: true,
+            isExpanded: false,
             badge: 5,
-            cssClass: 'dashboard-class',
+            cssClass: 'menu-item',
             children: [],
-            onClick: (element) => console.log(`Menu ${element.name} clicked`)
-          })
-        ]
-      })
+          },
+          {
+            name: 'Settings',
+            icon: 'assets/icons/settings.png',
+            route: '/settings',
+            visible: true,
+            disabled: false,
+            isExpanded: true,
+
+            cssClass: 'menu-item',
+            children: [
+              {
+                name: 'Profile',
+                icon: 'assets/icons/profile.png',
+                route: '/settings/profile',
+                visible: true,
+                disabled: false,
+                isExpanded: false,
+
+                cssClass: 'submenu-item',
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
     ],
     favorites: [
-      new MenuData({
-        name: 'Favorites',
-        icon: 'favorites-icon',
-        route: '/favorites',
+      {
+        name: 'Quick Access',
+        icon: 'assets/icons/quick-access.png',
+        route: '/quick-access',
         visible: true,
         disabled: false,
         isExpanded: false,
-        badge: 'New',
-        cssClass: 'favorites-class',
+
+        cssClass: 'favorites-item',
         children: [],
-        onClick: (element) => console.log(`Favorite ${element.name} clicked`)
-      })
+      },
     ],
-    options: new SidebarOptions({
+    options: {
       resize: true,
       expand: true,
       favorites: true,
       search: true,
-      cssClass: 'sidebar-class',
-      viewMode: 'hover',
-      theme: 'dark',
+      cssClass: 'custom-sidebar',
+      viewMode: 'toggle',
+      theme: 'light',
       themePicker: true,
       minWidth: 300,
-      maxWidth: 500,
+      maxWidth: 600,
       width: 350,
-      themeText: { light: 'Light Mode', dark: 'Dark Mode' },
-      onThemeChange: (theme) => console.log(`Theme changed to ${theme}`),
-      onResizeStart: (event) => console.log('Sidebar resize started'),
-      onResizing: (event) => console.log('Sidebar resizing'),
-      onResizeEnd: (event) => console.log('Sidebar resize ended'),
-      onExpand: (event) => console.log('Sidebar expanded'),
-      onCollapse: (event) => console.log('Sidebar collapsed')
-    })
-  });
-
+      themeText: {
+        light: 'Light Mode',
+        dark: 'Dark Mode',
+      },
+      autoPosition: true,
+      toggleCollapseIcon: 'assets/icons/collapse.png',
+      toggleExpandIcon: 'assets/icons/expand.png',
+      onResizeStart: event => console.log('Sidebar resize started'),
+      onResizing: event => console.log('Sidebar resizing'),
+      onResizeEnd: event => console.log('Sidebar resize ended'),
+    },
+  };
   change() {
-    this.sidebarModel.options.autoPosition = false
+    this.sidebarModel.options.autoPosition = false;
+    this.sidebarModel.bannerOptions!.title = 'test';
   }
 }
