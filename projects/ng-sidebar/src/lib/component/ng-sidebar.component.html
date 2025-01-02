@@ -1,30 +1,64 @@
-<div [class]="'ng-sidebar ' + sidebarData.options.cssClass"
+<div
+  [class]="'ng-sidebar ' + sidebarData.options.cssClass"
   #sidebar
   id="ng-sidebar"
-  [style.width]="sidebarData.options.expand ? sidebarData.options.width +'px' : 'var(--collapse-width)'"
-  [style.maxWidth]="sidebarData.options.expand ?sidebarData.options.maxWidth +'px' : 'unset'"
-  [style.minWidth]="sidebarData.options.expand ?sidebarData.options.minWidth +'px' : 'unset'"
-  [ngClass]="{'collapsed': !sidebarData.options.expand}"
+  [style.width]="
+    sidebarData.options.expand
+      ? sidebarData.options.width + 'px'
+      : 'var(--collapse-width)'
+  "
+  [style.maxWidth]="
+    sidebarData.options.expand ? sidebarData.options.maxWidth + 'px' : 'unset'
+  "
+  [style.minWidth]="
+    sidebarData.options.expand ? sidebarData.options.minWidth + 'px' : 'unset'
+  "
+  [ngClass]="{
+    collapsed: !sidebarData.options.expand,
+    transition: !ngSidebarService.isResizing,
+  }"
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">
-
-  <div *ngIf="sidebarData.options.resize" class="resizer"
+  <div
+    *ngIf="sidebarData.options.resize"
+    class="resizer"
     (mousedown)="ngSidebarService.resize(sidebarData)"
-    [ngClass]="{'active':ngSidebarService.isResizing}"></div>
+    [ngClass]="{ active: ngSidebarService.isResizing }"></div>
 
   <div class="banner">
     <div *ngIf="sidebarData.bannerOptions" class="banner-container">
-      <img *ngIf="sidebarData.bannerOptions.logo"
-        [src]="sidebarData.bannerOptions.logo" class="logo">
-      <div *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand" class="title">{{
-        sidebarData.bannerOptions.title
-        }}</div>
+      <img
+        *ngIf="sidebarData.bannerOptions.logo"
+        [src]="sidebarData.bannerOptions.logo"
+        class="logo" />
+      <div
+        *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
+        class="title text-owerflow">
+        {{ sidebarData.bannerOptions.title }}
+      </div>
     </div>
 
-    <img *ngIf="sidebarData.options.viewMode !=='fix'" (click)="onToggle()"
-    class="toggle-icon"
-    [src]="sidebarData.options.expand ? sidebarData.options.toggleCollapseIcon: sidebarData.options.toggleExpandIcon">
-    <ng-content *ngIf="!sidebarData.bannerOptions"
+    <img
+      *ngIf="sidebarData.options.viewMode === 'toggle'"
+      (click)="onToggle()"
+      class="toggle-icon"
+      [src]="
+        sidebarData.options.expand
+          ? sidebarData.options.toggleCollapseIcon
+          : sidebarData.options.toggleExpandIcon
+      " />
+
+    <img
+      *ngIf="sidebarData.options.viewMode === 'hover'"
+      (click)="onPin()"
+      class="toggle-icon"
+      [src]="
+        sidebarData.options.pinned
+          ? sidebarData.options.unpinIcon
+          : sidebarData.options.pinIcon
+      " />
+    <ng-content
+      *ngIf="!sidebarData.bannerOptions"
       select="[ng-sidebar-banner]"></ng-content>
   </div>
 
@@ -32,7 +66,6 @@
     <ng-content select="[ng-sidebar-header]"></ng-content>
   </div>
   <div class="ng-sidebar__content">
-
     <ng-content select="[ng-sidebar-content]"></ng-content>
   </div>
   <div class="ng-sidebar__footer">

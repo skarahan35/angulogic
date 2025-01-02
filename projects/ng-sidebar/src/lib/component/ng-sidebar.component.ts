@@ -1,5 +1,4 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ContentChild, DoCheck, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { sidebarModel } from '../menu-data';
+import { AfterViewInit, Component, DoCheck, Input } from '@angular/core';
 import { MenuData, SidebarModel } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
 
@@ -7,29 +6,25 @@ import { NgSidebarService } from '../ng-sidebar.service';
   selector: 'ng-sidebar',
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
-
 })
-export class NgSidebarComponent implements AfterViewInit, DoCheck{
+export class NgSidebarComponent implements AfterViewInit, DoCheck {
   sidebarData!: SidebarModel;
-  pinned: boolean = false;
-  hasUserContent: boolean = false;
 
   @Input({ required: true }) set options(val: SidebarModel) {
-    console.log(val);
-    this.sidebarData = val;
+    this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
   }
-  constructor(public ngSidebarService: NgSidebarService
-  ) { }
+  constructor(public ngSidebarService: NgSidebarService) {}
 
-  ngAfterViewInit(): void {
-    this.pinned = (sidebarModel.options.expand && sidebarModel.options.viewMode === 'hover') ?? false;
-  }
+  ngAfterViewInit(): void {}
 
   ngDoCheck(): void {
-    if (this.sidebarData.options.autoPosition !== this.ngSidebarService.auotoPositionActive) {
+    if (
+      this.sidebarData.options.autoPosition !==
+      this.ngSidebarService.auotoPositionActive
+    ) {
       this.sidebarData.options.autoPosition
         ? this.ngSidebarService.setAutoPosition()
-        : this.ngSidebarService.destroAutoPosition();
+        : this.ngSidebarService.destroyAutoPosition();
     }
   }
 
@@ -54,22 +49,27 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck{
   }
 
   onToggle() {
-    if (this.sidebarData.options.viewMode === 'toggle') {
-      this.sidebarData.options.expand = !this.sidebarData.options?.expand;
-    } else if (this.sidebarData.options.viewMode === 'hover') {
-      this.pinned = !this.pinned;
-    }
+    this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 
   onEnter() {
-    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
+    if (
+      this.sidebarData.options.viewMode === 'hover' &&
+      !this.sidebarData.options.pinned
+    ) {
       this.sidebarData.options.expand = true;
     }
   }
   onLeave() {
-    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
-      this.sidebarData.options.expand = false
+    if (
+      this.sidebarData.options.viewMode === 'hover' &&
+      !this.sidebarData.options.pinned
+    ) {
+      this.sidebarData.options.expand = false;
     }
+  }
 
+  onPin() {
+    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
 }

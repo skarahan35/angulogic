@@ -7,6 +7,7 @@
   body {
     &.auto-position {
       margin-left: var(--sidebar-width);
+      transition: margin 10ms ease;
     }
     &.no-select {
       -webkit-user-select: none;
@@ -26,7 +27,6 @@
   background: #b3b3b3;
   color: #fff;
   z-index: 1000;
-  transition: transform all 0.3s;
 
   .resizer {
     width: 5px;
@@ -68,8 +68,9 @@
     }
 
     .toggle-icon {
-      width: 2rem;
-      height: 2rem;
+      width: fit-content;
+      height: fit-content;
+      padding: 0.5rem;
       position: absolute;
       right: 0;
       top: 50%;
@@ -81,21 +82,12 @@
   }
 }
 
-.ng-sidebar.ng-sidebar--collapsed {
-  transform: translateX(-250px);
+.transition{
+  transition: all 0.3s ease;
 }
 
-.ng-sidebar__header {
-  padding: 10px;
-  background: #444;
-}
-
-.ng-sidebar__content {
-  padding: 10px;
-  overflow-y: auto;
-}
-
-.ng-sidebar__footer {
-  padding: 10px;
-  background: #444;
+.text-owerflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
