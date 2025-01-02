@@ -13,7 +13,10 @@
   [style.minWidth]="
     sidebarData.options.expand ? sidebarData.options.minWidth + 'px' : 'unset'
   "
-  [ngClass]="{ collapsed: !sidebarData.options.expand }"
+  [ngClass]="{
+    collapsed: !sidebarData.options.expand,
+    transition: !ngSidebarService.isResizing,
+  }"
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">
   <div
@@ -30,19 +33,29 @@
         class="logo" />
       <div
         *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
-        class="title">
+        class="title text-owerflow">
         {{ sidebarData.bannerOptions.title }}
       </div>
     </div>
 
     <img
-      *ngIf="sidebarData.options.viewMode !== 'fix'"
+      *ngIf="sidebarData.options.viewMode === 'toggle'"
       (click)="onToggle()"
       class="toggle-icon"
       [src]="
         sidebarData.options.expand
           ? sidebarData.options.toggleCollapseIcon
           : sidebarData.options.toggleExpandIcon
+      " />
+
+    <img
+      *ngIf="sidebarData.options.viewMode === 'hover'"
+      (click)="onPin()"
+      class="toggle-icon"
+      [src]="
+        sidebarData.options.pinned
+          ? sidebarData.options.unpinIcon
+          : sidebarData.options.pinIcon
       " />
     <ng-content
       *ngIf="!sidebarData.bannerOptions"

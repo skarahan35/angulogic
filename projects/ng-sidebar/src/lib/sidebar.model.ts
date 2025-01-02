@@ -79,6 +79,9 @@ export interface SidebarOptions {
   autoPosition?: boolean;
   toggleCollapseIcon?: string;
   toggleExpandIcon?: string;
+  pinIcon?: string;
+  unpinIcon?: string;
+  pinned?: boolean;
   onThemeChange?: (theme: 'light' | 'dark') => void;
   onResizeStart?: (event: ResizeEvent) => void;
   onResizing?: (event: ResizeEvent) => void;

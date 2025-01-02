@@ -92,9 +92,15 @@ export class NgSidebarService {
           themeText: data.options.themeText ?? { light: 'Light', dark: 'Dark' },
           autoPosition: data.options.autoPosition ?? true,
           toggleCollapseIcon:
-            data.options.toggleCollapseIcon ?? 'assets/icons/collapse.png',
+            data.options.toggleCollapseIcon ?? 'assets/icons/collapse.svg',
           toggleExpandIcon:
-            data.options.toggleExpandIcon ?? 'assets/icons/expand.png',
+            data.options.toggleExpandIcon ?? 'assets/icons/expand.svg',
+          pinIcon: data.options.toggleCollapseIcon ?? 'assets/icons/pin.svg',
+          unpinIcon: data.options.toggleExpandIcon ?? 'assets/icons/unpin.svg',
+          pinned:
+            data.options.pinned ??
+            (data.options.expand && data.options.viewMode === 'hover') ??
+            false,
           onThemeChange: data.options.onThemeChange,
           onResizeStart: data.options.onResizeStart,
           onResizing: data.options.onResizing,
@@ -120,16 +126,15 @@ export class NgSidebarService {
       console.error('Resizable div not found!');
       return;
     }
+
     if (!document.body.classList.contains('auto-position')) {
       document.body.classList.add('auto-position');
     }
 
-    document.documentElement.style.setProperty(
-      '--sidebar-width',
-      divElement.style.width
-    );
+    const duration = 300;
     this.observer = new MutationObserver(() => {
       const width = divElement.offsetWidth;
+      this.updateWidth(divElement, performance.now(), duration);
       document.documentElement.style.setProperty(
         '--sidebar-width',
         `${width}px`
@@ -144,6 +149,21 @@ export class NgSidebarService {
     console.log('Auto position enabled');
   }
 
+  updateWidth(divElement: HTMLElement, startTime: number, duration: number) {
+    const animateWidth = (timestamp: number) => {
+      let progress = (timestamp - startTime) / duration;
+      const currentWidth = divElement.offsetWidth;
+      document.documentElement.style.setProperty(
+        '--sidebar-width',
+        `${currentWidth}px`
+      );
+      if (progress < 1) {
+        requestAnimationFrame(animateWidth);
+      }
+    };
+    requestAnimationFrame(animateWidth);
+  }
+
   destroyAutoPosition() {
     this.observer.disconnect();
     if (document.body.classList.contains('auto-position')) {
@@ -155,6 +175,8 @@ export class NgSidebarService {
 
   resize(sidebarData: SidebarModel) {
     this.isResizing = true;
+    const initalPin = sidebarData.options.pinned;
+    sidebarData.options.pinned = true;
     const startEvent: ResizeEvent = {
       cancel: false,
       sidebarOptions: sidebarData,
@@ -207,6 +229,8 @@ export class NgSidebarService {
       document.removeEventListener('mouseup', mouseUpListener);
 
       this.isResizing = false;
+      sidebarData.options.pinned = initalPin;
+
       const endEvent: ResizeEvent = {
         sidebarOptions: sidebarData,
         mouseEvent: e,

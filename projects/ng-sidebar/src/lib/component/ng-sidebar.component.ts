@@ -9,19 +9,13 @@ import { NgSidebarService } from '../ng-sidebar.service';
 })
 export class NgSidebarComponent implements AfterViewInit, DoCheck {
   sidebarData!: SidebarModel;
-  pinned: boolean = false;
 
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
   }
   constructor(public ngSidebarService: NgSidebarService) {}
 
-  ngAfterViewInit(): void {
-    this.pinned =
-      (this.sidebarData.options.expand &&
-        this.sidebarData.options.viewMode === 'hover') ??
-      false;
-  }
+  ngAfterViewInit(): void {}
 
   ngDoCheck(): void {
     if (
@@ -55,21 +49,27 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
   }
 
   onToggle() {
-    if (this.sidebarData.options.viewMode === 'toggle') {
-      this.sidebarData.options.expand = !this.sidebarData.options?.expand;
-    } else if (this.sidebarData.options.viewMode === 'hover') {
-      this.pinned = !this.pinned;
-    }
+    this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 
   onEnter() {
-    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
+    if (
+      this.sidebarData.options.viewMode === 'hover' &&
+      !this.sidebarData.options.pinned
+    ) {
       this.sidebarData.options.expand = true;
     }
   }
   onLeave() {
-    if (this.sidebarData.options.viewMode === 'hover' && !this.pinned) {
+    if (
+      this.sidebarData.options.viewMode === 'hover' &&
+      !this.sidebarData.options.pinned
+    ) {
       this.sidebarData.options.expand = false;
     }
+  }
+
+  onPin() {
+    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
 }
