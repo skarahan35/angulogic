@@ -25,7 +25,8 @@ export interface Search {
   caseSensitive?: boolean;
   strategy?: 'contains' | 'startsWith' | 'endsWith';
   cssClass?: string;
-  onSearch?: (searchText: string & { cancel: boolean }) => void;
+  onSearchStart?: (data: SearchStartEvent) => void;
+  onSearchEnd?: (data: SearchEndEvent) => void;
 }
 
 export interface SidebarData {
@@ -94,4 +95,14 @@ export interface ResizeEvent {
   cancel?: boolean;
   sidebarOptions: SidebarModel;
   mouseEvent?: MouseEvent;
+}
+
+export interface SearchStartEvent {
+  cancel?: boolean;
+  searchValue: string;
+  nativeElement: HTMLInputElement;
+}
+
+export interface SearchEndEvent {
+  menuData: MenuData[] | SidebarData[] | [];
 }

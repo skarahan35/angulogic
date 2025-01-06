@@ -44,7 +44,8 @@ export class NgSidebarService {
           caseSensitive: data.searchOptions.caseSensitive ?? false,
           strategy: data.searchOptions.strategy ?? 'contains',
           cssClass: data.searchOptions.cssClass,
-          onSearch: data.searchOptions.onSearch,
+          onSearchStart: data.searchOptions.onSearchStart,
+          onSearchEnd: data.searchOptions.onSearchEnd,
         }
       : undefined;
     //#endregion
