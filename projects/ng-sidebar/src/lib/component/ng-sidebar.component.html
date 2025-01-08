@@ -62,6 +62,33 @@
       select="[ng-sidebar-banner]"></ng-content>
   </div>
 
+  <div class="search" [ngClass]="sidebarData.searchOptions?.cssClass">
+    <img class="search-icon" src="assets/icons/search.svg" />
+    <input
+      (keyup)="onSearch($event)"
+      [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
+      type="text" />
+    <img class="cancel-icon" src="assets/icons/cancel.svg" alt />
+  </div>
+
+  <div class="menu-container">
+    <div
+      class="wrapper"
+      [ngClass]="data.cssClass"
+      *ngFor="let data of sidebarData.sidebarData">
+      <ng-container *ngIf="data.visible">
+        <div class="title">
+          {{ data.title }}
+        </div>
+        <ng-container
+          *ngTemplateOutlet="
+            dataTemplate;
+            context: { $implicit: data.data }
+          "></ng-container>
+      </ng-container>
+    </div>
+  </div>
+
   <div class="ng-sidebar__header">
     <ng-content select="[ng-sidebar-header]"></ng-content>
   </div>
@@ -72,3 +99,31 @@
     <ng-content select="[ng-sidebar-footer]"></ng-content>
   </div>
 </div>
+
+<ng-template #dataTemplate let-nodes>
+  <div class="node" *ngFor="let node of nodes">
+    <div class="node-info">
+      <div class="node-title">
+        <div class="icon-container">
+          <img *ngIf="node.icon" [src]="node.icon" />
+        </div>
+        {{ node.name }}
+      </div>
+      <div (click)="nodeTogglerClick(node, $event)" *ngIf="node.children">
+        <img
+          class="node-toggler transition"
+          [ngClass]="{ expand: node.isExpanded }"
+          src="assets/icons/node-toggle.svg"
+          alt />
+      </div>
+    </div>
+    <ng-container
+      *ngIf="node.children && node.children.length > 0 && node.isExpanded">
+      <ng-container
+        *ngTemplateOutlet="
+          dataTemplate;
+          context: { $implicit: node.children }
+        "></ng-container>
+    </ng-container>
+  </div>
+</ng-template>

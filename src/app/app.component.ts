@@ -31,50 +31,187 @@ export class AppComponent {
       position: 'top',
     },
     searchOptions: {
-      placeholder: 'Search...',
       caseSensitive: false,
       strategy: 'contains',
       cssClass: 'search-bar',
+      onSearchStart: data => {
+        console.log('Search cancel value: ', data.cancel);
+        return new Promise<void>(resolve => {
+          setTimeout(() => {
+            data.cancel = true;
+            console.log('Search cancel value: ', data.cancel);
+            resolve();
+          }, 5000);
+        });
+      },
     },
     sidebarData: [
       {
         title: 'Main Menu',
-        cssClass: 'main-menu',
+        cssClass: 'main-sidebar',
         visible: true,
         data: [
           {
             name: 'Dashboard',
-            icon: 'assets/icons/dashboard.png',
+            icon: 'assets/icons/dashboard-icon.svg',
             route: '/dashboard',
             visible: true,
-            disabled: false,
-            isExpanded: false,
-            badge: 5,
-            cssClass: 'menu-item',
-            children: [],
+            badge: 3,
+            isExpanded: true,
+            children: [
+              {
+                name: 'Overview',
+                icon: 'assets/icons/overview.svg',
+                visible: true,
+                badge: 'New',
+              },
+              {
+                name: 'Stats',
+                route: 'www.google.com',
+                visible: true,
+                children: [
+                  {
+                    name: 'User Stats',
+                    route: 'test',
+                    visible: true,
+                  },
+                  {
+                    name: 'Sales Stats',
+                    route: 'assets/icons/sales.svg',
+                    visible: true,
+                    disabled: true,
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'Settings',
-            icon: 'assets/icons/settings.png',
+            icon: 'assets/icons/preferences.svg',
             route: '/settings',
             visible: true,
-            disabled: false,
-            isExpanded: true,
-
-            cssClass: 'menu-item',
+            isExpanded: false,
             children: [
               {
                 name: 'Profile',
-                icon: 'assets/icons/profile.png',
-                route: '/settings/profile',
+                icon: 'assets/icons/profile.svg',
                 visible: true,
-                disabled: false,
-                isExpanded: false,
-
-                cssClass: 'submenu-item',
-                children: [],
+              },
+              {
+                name: 'Preferences',
+                visible: true,
+                children: [
+                  {
+                    name: 'Language',
+                    visible: true,
+                  },
+                  {
+                    name: 'Notifications',
+                    visible: true,
+                  },
+                ],
               },
             ],
+          },
+        ],
+      },
+      {
+        title: 'Reports',
+        cssClass: 'reports-sidebar',
+        visible: true,
+        data: [
+          {
+            name: 'Monthly Reports',
+            route: '/reports/monthly',
+            visible: true,
+            badge: 7,
+            onClick: element => {
+              console.log('Monthly Reports clicked', element);
+              element.cancel = false;
+            },
+          },
+          {
+            name: 'Annual Reports',
+            route: '/reports/annual',
+            visible: true,
+            disabled: false,
+          },
+        ],
+      },
+      {
+        title: 'User Management',
+        cssClass: 'user-management-sidebar',
+        visible: true,
+        data: [
+          {
+            name: 'Users',
+            icon: 'assets/icons/users-icon.svg',
+            route: '/users',
+            visible: true,
+            children: [
+              {
+                name: 'Active Users',
+                route: '/users/active',
+                visible: true,
+              },
+              {
+                name: 'Inactive Users',
+                route: '/users/inactive',
+                visible: true,
+              },
+            ],
+          },
+          {
+            name: 'Roles',
+            icon: 'assets/icons/role.svg',
+            route: '/roles',
+            visible: true,
+            children: [
+              {
+                name: 'Admin',
+                route: '/roles/admin',
+                visible: true,
+              },
+              {
+                name: 'Editor',
+                route: '/roles/editor',
+                visible: true,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Help',
+        cssClass: 'help-sidebar',
+        visible: true,
+        data: [
+          {
+            name: 'FAQ',
+            route: '/help/faq',
+            visible: true,
+          },
+          {
+            name: 'Contact Support',
+            route: '/help/contact',
+            visible: true,
+          },
+        ],
+      },
+      {
+        title: 'Help',
+        cssClass: 'help-sidebar',
+        visible: true,
+        data: [
+          {
+            name: 'FAQ',
+            route: '/help/faq',
+            visible: true,
+          },
+          {
+            name: 'Contact Support',
+            route: '/help/contact',
+            visible: true,
           },
         ],
       },
@@ -82,7 +219,7 @@ export class AppComponent {
     favorites: [
       {
         name: 'Quick Access',
-        icon: 'assets/icons/quick-access.png',
+        icon: 'assets/icons/access.png',
         route: '/quick-access',
         visible: true,
         disabled: false,
@@ -103,7 +240,7 @@ export class AppComponent {
       themePicker: true,
       minWidth: 100,
       maxWidth: 600,
-      width: 150,
+      width: 350,
       themeText: {
         light: 'Light Mode',
         dark: 'Dark Mode',
