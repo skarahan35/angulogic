@@ -46,7 +46,8 @@ export interface MenuData {
   badge?: number | string;
   cssClass?: string;
   children?: MenuData[];
-  onClick?: (element: MenuData & { cancel: boolean }) => void;
+  onClick?: (event: MenuClickEvent) => void;
+  onToggle?: (event: MenuClickEvent) => void;
 }
 
 export interface Favorites {
@@ -60,8 +61,8 @@ export interface FavoritesData {
   route?: string;
   badge?: number | string;
   cssClass?: string;
-  onClick?: (element: MenuData & { cancel: boolean }) => void;
-  onFavorite?: (element: MenuData & { cancel: boolean }) => void;
+  onClick?: (data: MenuClickEvent) => void;
+  onFavorite?: (data: MenuClickEvent) => void;
 }
 
 export interface SidebarOptions {
@@ -87,8 +88,8 @@ export interface SidebarOptions {
   onResizeStart?: (event: ResizeEvent) => void;
   onResizing?: (event: ResizeEvent) => void;
   onResizeEnd?: (event: ResizeEvent) => void;
-  onExpand?: (event: MouseEvent) => void;
-  onCollapse?: (event: MouseEvent) => void;
+  onExpand?: (event: ExpandClickEvent) => void;
+  onCollapse?: (event: ExpandClickEvent) => void;
 }
 
 export interface ResizeEvent {
@@ -105,4 +106,14 @@ export interface SearchStartEvent {
 
 export interface SearchEndEvent {
   menuData: MenuData[] | SidebarData[] | [];
+}
+
+export interface MenuClickEvent {
+  cancel?: boolean;
+  menuData: MenuData;
+}
+
+export interface ExpandClickEvent {
+  cancel?: boolean;
+  click?: boolean;
 }
