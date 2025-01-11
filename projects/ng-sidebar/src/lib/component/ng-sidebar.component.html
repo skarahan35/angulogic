@@ -30,17 +30,18 @@
       <img
         *ngIf="sidebarData.bannerOptions.logo"
         [src]="sidebarData.bannerOptions.logo"
+        (click)="onBannerClick('logo')"
         class="logo" />
       <div
         *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
-        class="title text-owerflow">
+        class="title text-owerflow" (click)="onBannerClick('title')">
         {{ sidebarData.bannerOptions.title }}
       </div>
     </div>
 
     <img
       *ngIf="sidebarData.options.viewMode === 'toggle'"
-      (click)="onToggle()"
+      (click)="onToggle(sidebarData.options.expand)"
       class="toggle-icon"
       [src]="
         sidebarData.options.expand
@@ -103,7 +104,7 @@
 <ng-template #dataTemplate let-nodes>
   <div class="node" *ngFor="let node of nodes">
     <div class="node-info">
-      <div class="node-title">
+      <div class="node-title" (click)="onMenuClick(node)">
         <div class="icon-container">
           <img *ngIf="node.icon" [src]="node.icon" />
         </div>

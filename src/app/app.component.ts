@@ -24,11 +24,17 @@ export class AppComponent {
   sidebarModel: SidebarModel = {
     bannerOptions: {
       title: 'AnguLogic',
+      onClick: element => {
+        console.log('Banner clicked', element);
+      }
     },
     userOptions: {
       avatar: 'assets/images/avatar.png',
       name: 'John Doe',
       position: 'top',
+      onClick: element => {
+        console.log('User clicked', element);
+      }
     },
     searchOptions: {
       caseSensitive: false,
@@ -84,6 +90,13 @@ export class AppComponent {
                 ],
               },
             ],
+            onClick: element => {
+              element.cancel = true;
+              console.log('Dashboard clicked', element);
+            },
+            onToggle: element => {
+              console.log('Dashboard toggled', element);
+            }
           },
           {
             name: 'Settings',
@@ -235,7 +248,7 @@ export class AppComponent {
       favorites: true,
       search: true,
       cssClass: 'custom-sidebar',
-      viewMode: 'hover',
+      viewMode: 'toggle',
       theme: 'light',
       themePicker: true,
       minWidth: 100,
@@ -246,9 +259,11 @@ export class AppComponent {
         dark: 'Dark Mode',
       },
       autoPosition: true,
-      onResizeStart: event => console.log('Sidebar resize started'),
-      onResizing: event => console.log('Sidebar resizing'),
-      onResizeEnd: event => console.log('Sidebar resize ended'),
+      onResizeStart: event => console.log('Sidebar resize started', event),
+      onResizing: event => console.log('Sidebar resizing', event),
+      onResizeEnd: event => console.log('Sidebar resize ended', event),
+      onCollapse: event => console.log('Sidebar collapsed', event),
+      onExpand: event => console.log('Sidebar expanded', event),
     },
   };
   change() {

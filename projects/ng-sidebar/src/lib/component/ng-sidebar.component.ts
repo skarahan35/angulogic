@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, DoCheck, Input } from '@angular/core';
 import {
+  ExpandClickEvent,
+  MenuClickEvent,
   MenuData,
   SearchEndEvent,
   SearchStartEvent,
@@ -34,11 +36,11 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
   }
 
   onBannerClick(element: 'logo' | 'title') {
-    console.log(`${element} clicked`);
+    this.sidebarData.bannerOptions?.onClick?.(element);
   }
 
   onUserClick(element: 'avatar' | 'name') {
-    console.log(`${element} clicked`);
+    this.sidebarData.userOptions?.onClick?.(element);
   }
 
   async onSearch(event: KeyboardEvent) {
@@ -65,14 +67,36 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
   }
 
   onMenuClick(menuItem: MenuData & { cancel: boolean }) {
-    console.log(`Menu item clicked: ${menuItem.name}`);
+    let event: MenuClickEvent = {
+      menuData: menuItem,
+      cancel: false,
+    }
+
+    menuItem.onClick?.(event);
+    if(event.cancel) return;
   }
 
   onFavoriteClick(favorite: MenuData & { cancel: boolean }) {
-    console.log(`Favorite clicked: ${favorite.name}`);
+    let event: MenuClickEvent = {
+      menuData: favorite,
+      cancel: false,
+    }
+
+    favorite.onClick?.(event);
+    if(event.cancel) return;
   }
 
-  onToggle() {
+  onToggle(isExpand:boolean | undefined) {
+    let event: ExpandClickEvent = {
+      cancel: false,
+      click: true,
+    };
+    if(isExpand) {
+      this.sidebarData.options.onCollapse?.(event);
+    } else {
+    this.sidebarData.options.onExpand?.(event);
+    }
+    if(event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 
@@ -111,5 +135,11 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     } else {
       node.isExpanded = !node.isExpanded;
     }
+    let nodeTogglerClickEvent: MenuClickEvent = {
+      menuData: node,
+      cancel: false,
+    }
+    node.onToggle?.(nodeTogglerClickEvent);
+    if(nodeTogglerClickEvent.cancel) return;
   }
 }
