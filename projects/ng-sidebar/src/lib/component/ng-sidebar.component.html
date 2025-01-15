@@ -66,10 +66,15 @@
   <div class="search" [ngClass]="sidebarData.searchOptions?.cssClass">
     <img class="search-icon" src="assets/icons/search.svg" />
     <input
+      #searchInput
       (keyup)="onSearch($event)"
       [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
       type="text" />
-    <img class="cancel-icon" src="assets/icons/cancel.svg" alt />
+    <img
+      (click)="onCancelSearch(searchInput)"
+      class="cancel-icon"
+      src="assets/icons/cancel.svg"
+      alt />
   </div>
 
   <div class="menu-container">

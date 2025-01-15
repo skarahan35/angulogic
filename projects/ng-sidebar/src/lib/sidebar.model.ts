@@ -23,8 +23,9 @@ export interface User {
 export interface Search {
   placeholder?: string;
   caseSensitive?: boolean;
-  strategy?: 'contains' | 'startsWith' | 'endsWith';
+  strategy?: 'contains' | 'startsWith' | 'endsWith' | 'equal';
   cssClass?: string;
+  localCompare?:string;
   onSearchStart?: (data: SearchStartEvent) => void;
   onSearchEnd?: (data: SearchEndEvent) => void;
 }

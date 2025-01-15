@@ -41,15 +41,12 @@ export class AppComponent {
       strategy: 'contains',
       cssClass: 'search-bar',
       onSearchStart: data => {
-        console.log('Search cancel value: ', data.cancel);
-        return new Promise<void>(resolve => {
-          setTimeout(() => {
-            data.cancel = true;
-            console.log('Search cancel value: ', data.cancel);
-            resolve();
-          }, 5000);
-        });
+        console.log('Search cancel value: ', data.searchValue);
       },
+      onSearchEnd(data) {
+        console.log(data);
+      },
+      localCompare:'tr'
     },
     sidebarData: [
       {

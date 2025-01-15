@@ -16,13 +16,15 @@ import { NgSidebarService } from '../ng-sidebar.service';
 })
 export class NgSidebarComponent implements AfterViewInit, DoCheck {
   sidebarData!: SidebarModel;
+  SIDEBAR_DATA!: SidebarModel;
 
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
+    this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
-  constructor(public ngSidebarService: NgSidebarService) {}
+  constructor(public ngSidebarService: NgSidebarService) { }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   ngDoCheck(): void {
     if (
@@ -45,21 +47,81 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
 
   async onSearch(event: KeyboardEvent) {
     const element = event.currentTarget as HTMLInputElement;
+    const searchValue = element.value.trim();
+
     let searchStartEvent: SearchStartEvent = {
       nativeElement: element,
-      searchValue: element.value,
+      searchValue: searchValue,
       cancel: false,
     };
+
     if (this.sidebarData.searchOptions?.onSearchStart) {
       await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
     }
+
     if (!searchStartEvent.cancel) {
-      /*
-        SEARCH PROCCESS WİLL COME
-      */
+      let filteredResults: MenuData[] = [];
+      if (element.value.length > 0) {
+        filteredResults = this.ngSidebarService.searchByName(
+          JSON.parse(JSON.stringify(this.SIDEBAR_DATA)),
+          searchValue
+        );
+        if (filteredResults.length > 0) {
+          this.sidebarData.sidebarData = this.SIDEBAR_DATA.sidebarData.map(
+            sidebarItem => {
+              const matchingItems = filteredResults.filter(item =>
+                sidebarItem.data.some(dataItem => dataItem.name === item.name)
+              );
+              const updateExpandedState = (item: MenuData) => {
+                item.isExpanded = true;
+                if (item.children) {
+                  item.children.forEach(updateExpandedState);
+                }
+              };
+              matchingItems.forEach(updateExpandedState);
+              return {
+                ...sidebarItem,
+                data: [...new Set(matchingItems)],
+              };
+            }
+          );
+          this.sidebarData.sidebarData = this.sidebarData.sidebarData.filter(
+            d => d.data.length > 0
+          );
+        } else {
+          this.sidebarData.sidebarData = [];
+        }
+      } else {
+        this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+      }
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
-          menuData: [],
+          menuData: filteredResults,
+        };
+        this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
+      }
+    }
+  }
+
+  async onCancelSearch(searchInput: HTMLInputElement) {
+    if (searchInput.value === '') return
+    searchInput.value = '';
+
+    let searchStartEvent: SearchStartEvent = {
+      nativeElement: searchInput,
+      searchValue: searchInput.value,
+      cancel: false,
+    };
+
+    if (this.sidebarData.searchOptions?.onSearchStart) {
+      await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
+    }
+
+    if (!searchStartEvent.cancel) {
+      this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+      if (this.sidebarData.searchOptions?.onSearchEnd) {
+        let searchEndEvent: SearchEndEvent = {
+          menuData: this.SIDEBAR_DATA.sidebarData,
         };
         this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
       }

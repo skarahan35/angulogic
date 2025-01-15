@@ -44,6 +44,7 @@ export class NgSidebarService {
           caseSensitive: data.searchOptions.caseSensitive ?? false,
           strategy: data.searchOptions.strategy ?? 'contains',
           cssClass: data.searchOptions.cssClass,
+          localCompare: data.searchOptions.localCompare ?? 'en',
           onSearchStart: data.searchOptions.onSearchStart,
           onSearchEnd: data.searchOptions.onSearchEnd,
         }
@@ -260,5 +261,50 @@ export class NgSidebarService {
         : undefined,
       onClick: item.onClick,
     }));
+  }
+
+  searchByName(data: SidebarModel, searchValue: string): MenuData[] {
+    const { searchOptions, sidebarData } = data;
+
+    const compareStrings = (source: string, target: string): boolean => {
+      if (!searchOptions?.caseSensitive) {
+        source = source.toLocaleLowerCase(searchOptions?.localCompare);
+        target = target.toLocaleLowerCase(searchOptions?.localCompare);
+      }
+      switch (searchOptions?.strategy) {
+        case 'contains':
+          return source.includes(target);
+        case 'startsWith':
+          return source.startsWith(target);
+        case 'endsWith':
+          return source.endsWith(target);
+        case 'equal':
+          return source === target;
+        default:
+          return false;
+      }
+    };
+
+    const searchInMenuData = (data: MenuData[]): MenuData[] => {
+      const resultSet = new Set<MenuData>();
+      data.forEach(item => {
+        if (compareStrings(item.name, searchValue)) {
+          resultSet.add(item);
+        }
+        if (item.children && item.children.length > 0) {
+          const childResults = searchInMenuData(item.children);
+          if (childResults.length > 0) {
+            item.children = childResults;
+            resultSet.add(item);
+          }
+        }
+      });
+
+      return Array.from(resultSet);
+    };
+
+    return sidebarData.flatMap(sidebarItem =>
+      searchInMenuData(sidebarItem.data)
+    );
   }
 }
