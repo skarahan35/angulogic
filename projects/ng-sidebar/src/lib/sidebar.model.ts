@@ -17,6 +17,7 @@ export interface User {
   avatar?: string;
   name?: string;
   position?: 'top' | 'bottom';
+  cssClass?: string;
   onClick?: (element: 'avatar' | 'name') => void;
 }
 
@@ -25,7 +26,7 @@ export interface Search {
   caseSensitive?: boolean;
   strategy?: 'contains' | 'startsWith' | 'endsWith' | 'equal';
   cssClass?: string;
-  localCompare?:string;
+  localCompare?: string;
   onSearchStart?: (data: SearchStartEvent) => void;
   onSearchEnd?: (data: SearchEndEvent) => void;
 }
@@ -35,6 +36,7 @@ export interface SidebarData {
   cssClass?: string;
   visible?: boolean;
   data: MenuData[];
+  icon?: string;
 }
 
 export interface MenuData {
@@ -47,6 +49,7 @@ export interface MenuData {
   badge?: number | string;
   cssClass?: string;
   children?: MenuData[];
+  active?: boolean;
   onClick?: (event: MenuClickEvent) => void;
   onToggle?: (event: MenuClickEvent) => void;
 }
@@ -67,28 +70,28 @@ export interface FavoritesData {
 }
 
 export interface SidebarOptions {
-  resize?: boolean;
-  expand?: boolean;
+  resize?: boolean; //+
+  expand?: boolean; //+
   favorites?: boolean;
-  search?: boolean;
-  cssClass?: string;
-  viewMode?: 'fix' | 'hover' | 'toggle';
+  search?: boolean; //+
+  cssClass?: string; //+
+  viewMode?: 'fix' | 'hover' | 'toggle'; //+
   theme?: 'light' | 'dark';
   themePicker?: boolean;
-  minWidth?: number;
-  maxWidth?: number;
-  width?: number;
+  minWidth?: number; //+
+  maxWidth?: number; //+
+  width?: number; //+
   themeText?: { light: string; dark: string };
-  autoPosition?: boolean;
-  toggleCollapseIcon?: string;
-  toggleExpandIcon?: string;
-  pinIcon?: string;
-  unpinIcon?: string;
-  pinned?: boolean;
+  autoPosition?: boolean; //+
+  toggleCollapseIcon?: string; //+
+  toggleExpandIcon?: string; //+
+  pinIcon?: string; //+
+  unpinIcon?: string; //+
+  pinned?: boolean; //+
   onThemeChange?: (theme: 'light' | 'dark') => void;
-  onResizeStart?: (event: ResizeEvent) => void;
-  onResizing?: (event: ResizeEvent) => void;
-  onResizeEnd?: (event: ResizeEvent) => void;
+  onResizeStart?: (event: ResizeEvent) => void; //+
+  onResizing?: (event: ResizeEvent) => void; //+
+  onResizeEnd?: (event: ResizeEvent) => void; //+
   onExpand?: (event: ExpandClickEvent) => void;
   onCollapse?: (event: ExpandClickEvent) => void;
 }

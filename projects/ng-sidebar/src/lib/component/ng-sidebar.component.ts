@@ -22,9 +22,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
     this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
-  constructor(public ngSidebarService: NgSidebarService) { }
+  constructor(public ngSidebarService: NgSidebarService) {}
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 
   ngDoCheck(): void {
     if (
@@ -104,7 +104,7 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
   }
 
   async onCancelSearch(searchInput: HTMLInputElement) {
-    if (searchInput.value === '') return
+    if (searchInput.value === '') return;
     searchInput.value = '';
 
     let searchStartEvent: SearchStartEvent = {
@@ -128,37 +128,42 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     }
   }
 
-  onMenuClick(menuItem: MenuData & { cancel: boolean }) {
+  onMenuClick(node: MenuData, mouseEvent: MouseEvent) {
     let event: MenuClickEvent = {
-      menuData: menuItem,
+      menuData: node,
       cancel: false,
-    }
+    };
+    node.onClick?.(event);
+    if (event.cancel) return;
 
-    menuItem.onClick?.(event);
-    if(event.cancel) return;
+    if (node.children && node.children.length > 0) {
+      this.nodeToggle(node, mouseEvent);
+    } else {
+      this.ngSidebarService.router.navigate([node.route]);
+    }
   }
 
   onFavoriteClick(favorite: MenuData & { cancel: boolean }) {
     let event: MenuClickEvent = {
       menuData: favorite,
       cancel: false,
-    }
+    };
 
     favorite.onClick?.(event);
-    if(event.cancel) return;
+    if (event.cancel) return;
   }
 
-  onToggle(isExpand:boolean | undefined) {
+  onToggle(isExpand: boolean | undefined) {
     let event: ExpandClickEvent = {
       cancel: false,
       click: true,
     };
-    if(isExpand) {
+    if (isExpand) {
       this.sidebarData.options.onCollapse?.(event);
     } else {
-    this.sidebarData.options.onExpand?.(event);
+      this.sidebarData.options.onExpand?.(event);
     }
-    if(event.cancel) return;
+    if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 
@@ -183,11 +188,20 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
 
-  nodeTogglerClick(node: MenuData, event: MouseEvent) {
-    const nodeElement = event.currentTarget as HTMLElement;
-    const parentNode = nodeElement.parentElement;
+  nodeToggle(node: MenuData, event: MouseEvent) {
+    let nodeTogglerClickEvent: MenuClickEvent = {
+      menuData: node,
+      cancel: false,
+    };
+    node.onToggle?.(nodeTogglerClickEvent);
+    if (nodeTogglerClickEvent.cancel) return;
+
+    const nodeElement = (event.currentTarget as HTMLElement).querySelector(
+      '.node-toggler'
+    );
+    const parentNode = event.currentTarget as HTMLElement;
     if (node.isExpanded) {
-      (nodeElement.firstChild as HTMLElement).classList.remove('expand');
+      nodeElement!.classList.remove('expand');
       Array.from(parentNode!.parentElement!.children)
         .filter(child => child.classList.contains('node'))
         .forEach(child => child.classList.add('out-top'));
@@ -197,11 +211,5 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     } else {
       node.isExpanded = !node.isExpanded;
     }
-    let nodeTogglerClickEvent: MenuClickEvent = {
-      menuData: node,
-      cancel: false,
-    }
-    node.onToggle?.(nodeTogglerClickEvent);
-    if(nodeTogglerClickEvent.cancel) return;
   }
 }

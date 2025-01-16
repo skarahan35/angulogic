@@ -5,6 +5,7 @@ import {
   SidebarData,
   SidebarModel,
 } from './sidebar.model';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,18 @@ import {
 export class NgSidebarService {
   auotoPositionActive: boolean = false;
   isResizing: boolean = false;
+  sidebarData!: SidebarModel;
   private observer!: MutationObserver;
+
+  constructor(public router: Router) {
+    router.events.subscribe(route => {
+      if (route instanceof NavigationEnd) {
+        this.sidebarData.sidebarData.forEach(data => {
+          this.updateActiveState(data.data, route.url);
+        });
+      }
+    });
+  }
 
   initilazeSidebarData(
     data: Partial<SidebarModel> & { sidebarData: SidebarData[] }
@@ -30,7 +42,7 @@ export class NgSidebarService {
     //#region User options
     data.userOptions = data.userOptions
       ? {
-          avatar: data.userOptions.avatar,
+          avatar: data.userOptions.avatar ?? 'assets/icons/avatar.svg',
           name: data.userOptions.name,
           position: data.userOptions.position ?? 'bottom',
           onClick: data.userOptions.onClick,
@@ -52,7 +64,7 @@ export class NgSidebarService {
     //#endregion
 
     //#region Sidebar data
-    const sidebarData: SidebarData[] = data.sidebarData.map(item => ({
+    data.sidebarData.map(item => ({
       title: item.title,
       cssClass: item.cssClass,
       visible: item.visible ?? true,
@@ -71,6 +83,7 @@ export class NgSidebarService {
           isExpanded: item.isExpanded ?? false,
           badge: item.badge,
           cssClass: item.cssClass,
+          active: item.active ?? false,
           children: item.children,
           onClick: item.onClick,
         }))
@@ -119,6 +132,8 @@ export class NgSidebarService {
           theme: 'light',
         };
     //#endregion
+
+    this.sidebarData = data as SidebarModel;
     return data as SidebarModel;
   }
 
@@ -256,6 +271,7 @@ export class NgSidebarService {
       isExpanded: item.isExpanded ?? false,
       badge: item.badge,
       cssClass: item.cssClass,
+      active: item.active ?? false,
       children: item.children
         ? this.initializeMenuData(item.children)
         : undefined,
@@ -306,5 +322,19 @@ export class NgSidebarService {
     return sidebarData.flatMap(sidebarItem =>
       searchInMenuData(sidebarItem.data)
     );
+  }
+
+  updateActiveState(menuData: MenuData[], currentRoute: string): void {
+    menuData.forEach(item => {
+      if (item.route?.startsWith('/')) {
+        item.active = item.route === currentRoute;
+      } else {
+        item.active = `/${item.route}` === currentRoute;
+      }
+
+      if (item.children) {
+        this.updateActiveState(item.children, currentRoute);
+      }
+    });
   }
 }

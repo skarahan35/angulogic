@@ -34,7 +34,8 @@
         class="logo" />
       <div
         *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
-        class="title text-owerflow" (click)="onBannerClick('title')">
+        class="title text-owerflow"
+        (click)="onBannerClick('title')">
         {{ sidebarData.bannerOptions.title }}
       </div>
     </div>
@@ -58,12 +59,21 @@
           ? sidebarData.options.unpinIcon
           : sidebarData.options.pinIcon
       " />
-    <ng-content
-      *ngIf="!sidebarData.bannerOptions"
-      select="[ng-sidebar-banner]"></ng-content>
+    <ng-content select="[al-sidebar-banner]"></ng-content>
   </div>
 
-  <div class="search" [ngClass]="sidebarData.searchOptions?.cssClass">
+  <div *ngIf="sidebarData.userOptions?.position == 'top'">
+    <ng-container
+      *ngTemplateOutlet="
+        userTemplate;
+        context: { $implicit: sidebarData.userOptions }
+      "></ng-container>
+  </div>
+
+  <div
+    class="search"
+    *ngIf="sidebarData.options.search && sidebarData.options.expand"
+    [ngClass]="sidebarData.searchOptions?.cssClass">
     <img class="search-icon" src="assets/icons/search.svg" />
     <input
       #searchInput
@@ -75,6 +85,8 @@
       class="cancel-icon"
       src="assets/icons/cancel.svg"
       alt />
+
+    <ng-content select="[al-sidebar-search]"></ng-content>
   </div>
 
   <div class="menu-container">
@@ -83,39 +95,46 @@
       [ngClass]="data.cssClass"
       *ngFor="let data of sidebarData.sidebarData">
       <ng-container *ngIf="data.visible">
-        <div class="title">
-          {{ data.title }}
+        <div class="title-wrapper">
+          <img *ngIf="data.icon" [src]="data.icon" />
+          <div *ngIf="sidebarData.options.expand" class="title">
+            {{ data.title }}
+          </div>
         </div>
-        <ng-container
-          *ngTemplateOutlet="
-            dataTemplate;
-            context: { $implicit: data.data }
-          "></ng-container>
+        <ng-container *ngIf="sidebarData.options.expand">
+          <ng-container
+            *ngTemplateOutlet="
+              dataTemplate;
+              context: { $implicit: data.data }
+            "></ng-container>
+        </ng-container>
       </ng-container>
     </div>
+    <ng-content select="[al-sidebar-menu]"></ng-content>
   </div>
 
-  <div class="ng-sidebar__header">
-    <ng-content select="[ng-sidebar-header]"></ng-content>
-  </div>
-  <div class="ng-sidebar__content">
-    <ng-content select="[ng-sidebar-content]"></ng-content>
-  </div>
-  <div class="ng-sidebar__footer">
-    <ng-content select="[ng-sidebar-footer]"></ng-content>
+  <div *ngIf="sidebarData.userOptions?.position == 'bottom'">
+    <ng-container
+      *ngTemplateOutlet="
+        userTemplate;
+        context: { $implicit: sidebarData.userOptions }
+      "></ng-container>
   </div>
 </div>
 
 <ng-template #dataTemplate let-nodes>
   <div class="node" *ngFor="let node of nodes">
-    <div class="node-info">
-      <div class="node-title" (click)="onMenuClick(node)">
+    <div
+      class="node-info"
+      (click)="onMenuClick(node, $event)"
+      [ngClass]="{ 'no-child': !node.children, active: node.active }">
+      <div class="node-title">
         <div class="icon-container">
           <img *ngIf="node.icon" [src]="node.icon" />
         </div>
         {{ node.name }}
       </div>
-      <div (click)="nodeTogglerClick(node, $event)" *ngIf="node.children">
+      <div *ngIf="node.children">
         <img
           class="node-toggler transition"
           [ngClass]="{ expand: node.isExpanded }"
@@ -131,5 +150,14 @@
           context: { $implicit: node.children }
         "></ng-container>
     </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #userTemplate let-user>
+  <div class="user" [ngClass]="user.cssClass">
+    <img [src]="user.avatar" />
+    <div *ngIf="sidebarData.options.expand" class="name">
+      {{ user.name }}
+    </div>
   </div>
 </ng-template>

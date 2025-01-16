@@ -30,6 +30,23 @@
   display: flex;
   flex-direction: column;
 
+  &.collapsed {
+    .menu-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user{
+      justify-content: center;
+    }
+
+    .banner-container{
+      margin: auto;
+      padding-right: 1rem !important;
+    }
+  }
+
   .resizer {
     width: 5px;
     cursor: col-resize;
@@ -127,24 +144,49 @@
       height: max-content;
       display: block;
       margin-bottom: 1rem;
-      .title {
-        font-size: 20px;
-        font-weight: bold;
+      .title-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        img{
+          width: 2rem;
+          height: 2rem;
+        }
+        .title {
+          font-size: 20px;
+          font-weight: bold;
+        }
       }
       .node {
         margin-left: 0.5rem;
         margin-top: 1rem;
         position: relative;
+        cursor: pointer;
         animation: in-top 0.3s ease 0s 1 normal forwards;
 
         &.out-top {
           animation: out-top 0.3s ease 0s 1 normal forwards;
         }
 
+
         .node-info {
           display: flex;
           justify-content: space-between;
           align-items: center;
+
+          &.active{
+            background-color: gray;
+            font-weight: bold;
+            color: blue
+          }
+
+          &:hover{
+            color: blue;
+            &.no-child{
+              background-color: gray;
+            }
+          }
+
           .node-title {
             display: flex;
             gap: 0.5rem;
@@ -167,6 +209,22 @@
     }
   }
 
+  .user {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+    img {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: large;
+    }
+  }
 
   *::-webkit-scrollbar {
     height: 0.5rem;

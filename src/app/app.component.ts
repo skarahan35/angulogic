@@ -26,15 +26,14 @@ export class AppComponent {
       title: 'AnguLogic',
       onClick: element => {
         console.log('Banner clicked', element);
-      }
+      },
     },
     userOptions: {
-      avatar: 'assets/images/avatar.png',
       name: 'John Doe',
-      position: 'top',
+      position: 'bottom',
       onClick: element => {
         console.log('User clicked', element);
-      }
+      },
     },
     searchOptions: {
       caseSensitive: false,
@@ -46,13 +45,14 @@ export class AppComponent {
       onSearchEnd(data) {
         console.log(data);
       },
-      localCompare:'tr'
+      localCompare: 'tr',
     },
     sidebarData: [
       {
         title: 'Main Menu',
         cssClass: 'main-sidebar',
         visible: true,
+        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Dashboard',
@@ -67,6 +67,7 @@ export class AppComponent {
                 icon: 'assets/icons/overview.svg',
                 visible: true,
                 badge: 'New',
+                route: 'sidebar',
               },
               {
                 name: 'Stats',
@@ -93,7 +94,7 @@ export class AppComponent {
             },
             onToggle: element => {
               console.log('Dashboard toggled', element);
-            }
+            },
           },
           {
             name: 'Settings',
@@ -129,6 +130,7 @@ export class AppComponent {
         title: 'Reports',
         cssClass: 'reports-sidebar',
         visible: true,
+        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Monthly Reports',
@@ -152,6 +154,7 @@ export class AppComponent {
         title: 'User Management',
         cssClass: 'user-management-sidebar',
         visible: true,
+        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Users',
@@ -195,6 +198,7 @@ export class AppComponent {
         title: 'Help',
         cssClass: 'help-sidebar',
         visible: true,
+        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'FAQ',
