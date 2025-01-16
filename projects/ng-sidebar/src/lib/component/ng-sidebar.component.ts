@@ -16,9 +16,11 @@ import { NgSidebarService } from '../ng-sidebar.service';
 })
 export class NgSidebarComponent implements AfterViewInit, DoCheck {
   sidebarData!: SidebarModel;
+  SIDEBAR_DATA!: SidebarModel;
 
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
+    this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
   constructor(public ngSidebarService: NgSidebarService) {}
 
@@ -45,58 +47,123 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
 
   async onSearch(event: KeyboardEvent) {
     const element = event.currentTarget as HTMLInputElement;
+    const searchValue = element.value.trim();
+
     let searchStartEvent: SearchStartEvent = {
       nativeElement: element,
-      searchValue: element.value,
+      searchValue: searchValue,
       cancel: false,
     };
+
     if (this.sidebarData.searchOptions?.onSearchStart) {
       await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
     }
+
     if (!searchStartEvent.cancel) {
-      /*
-        SEARCH PROCCESS WİLL COME
-      */
+      let filteredResults: MenuData[] = [];
+      if (element.value.length > 0) {
+        filteredResults = this.ngSidebarService.searchByName(
+          JSON.parse(JSON.stringify(this.SIDEBAR_DATA)),
+          searchValue
+        );
+        if (filteredResults.length > 0) {
+          this.sidebarData.sidebarData = this.SIDEBAR_DATA.sidebarData.map(
+            sidebarItem => {
+              const matchingItems = filteredResults.filter(item =>
+                sidebarItem.data.some(dataItem => dataItem.name === item.name)
+              );
+              const updateExpandedState = (item: MenuData) => {
+                item.isExpanded = true;
+                if (item.children) {
+                  item.children.forEach(updateExpandedState);
+                }
+              };
+              matchingItems.forEach(updateExpandedState);
+              return {
+                ...sidebarItem,
+                data: [...new Set(matchingItems)],
+              };
+            }
+          );
+          this.sidebarData.sidebarData = this.sidebarData.sidebarData.filter(
+            d => d.data.length > 0
+          );
+        } else {
+          this.sidebarData.sidebarData = [];
+        }
+      } else {
+        this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+      }
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
-          menuData: [],
+          menuData: filteredResults,
         };
         this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
       }
     }
   }
 
-  onMenuClick(menuItem: MenuData & { cancel: boolean }) {
-    let event: MenuClickEvent = {
-      menuData: menuItem,
+  async onCancelSearch(searchInput: HTMLInputElement) {
+    if (searchInput.value === '') return;
+    searchInput.value = '';
+
+    let searchStartEvent: SearchStartEvent = {
+      nativeElement: searchInput,
+      searchValue: searchInput.value,
       cancel: false,
+    };
+
+    if (this.sidebarData.searchOptions?.onSearchStart) {
+      await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
     }
 
-    menuItem.onClick?.(event);
-    if(event.cancel) return;
+    if (!searchStartEvent.cancel) {
+      this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+      if (this.sidebarData.searchOptions?.onSearchEnd) {
+        let searchEndEvent: SearchEndEvent = {
+          menuData: this.SIDEBAR_DATA.sidebarData,
+        };
+        this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
+      }
+    }
+  }
+
+  onMenuClick(node: MenuData, mouseEvent: MouseEvent) {
+    let event: MenuClickEvent = {
+      menuData: node,
+      cancel: false,
+    };
+    node.onClick?.(event);
+    if (event.cancel) return;
+
+    if (node.children && node.children.length > 0) {
+      this.nodeToggle(node, mouseEvent);
+    } else {
+      this.ngSidebarService.router.navigate([node.route]);
+    }
   }
 
   onFavoriteClick(favorite: MenuData & { cancel: boolean }) {
     let event: MenuClickEvent = {
       menuData: favorite,
       cancel: false,
-    }
+    };
 
     favorite.onClick?.(event);
-    if(event.cancel) return;
+    if (event.cancel) return;
   }
 
-  onToggle(isExpand:boolean | undefined) {
+  onToggle(isExpand: boolean | undefined) {
     let event: ExpandClickEvent = {
       cancel: false,
       click: true,
     };
-    if(isExpand) {
+    if (isExpand) {
       this.sidebarData.options.onCollapse?.(event);
     } else {
-    this.sidebarData.options.onExpand?.(event);
+      this.sidebarData.options.onExpand?.(event);
     }
-    if(event.cancel) return;
+    if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 
@@ -121,11 +188,20 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
 
-  nodeTogglerClick(node: MenuData, event: MouseEvent) {
-    const nodeElement = event.currentTarget as HTMLElement;
-    const parentNode = nodeElement.parentElement;
+  nodeToggle(node: MenuData, event: MouseEvent) {
+    let nodeTogglerClickEvent: MenuClickEvent = {
+      menuData: node,
+      cancel: false,
+    };
+    node.onToggle?.(nodeTogglerClickEvent);
+    if (nodeTogglerClickEvent.cancel) return;
+
+    const nodeElement = (event.currentTarget as HTMLElement).querySelector(
+      '.node-toggler'
+    );
+    const parentNode = event.currentTarget as HTMLElement;
     if (node.isExpanded) {
-      (nodeElement.firstChild as HTMLElement).classList.remove('expand');
+      nodeElement!.classList.remove('expand');
       Array.from(parentNode!.parentElement!.children)
         .filter(child => child.classList.contains('node'))
         .forEach(child => child.classList.add('out-top'));
@@ -135,11 +211,5 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     } else {
       node.isExpanded = !node.isExpanded;
     }
-    let nodeTogglerClickEvent: MenuClickEvent = {
-      menuData: node,
-      cancel: false,
-    }
-    node.onToggle?.(nodeTogglerClickEvent);
-    if(nodeTogglerClickEvent.cancel) return;
   }
 }
