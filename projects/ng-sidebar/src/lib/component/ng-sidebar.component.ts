@@ -21,7 +21,7 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
 
-    val.options && val.options.theme ? this.ngSidebarService.changeTheme(val.options.theme) : this.ngSidebarService.changeTheme('light');
+    this.ngSidebarService.changeTheme(val.options.theme);
     this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
   constructor(public ngSidebarService: NgSidebarService) {}

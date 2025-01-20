@@ -253,7 +253,7 @@ export class AppComponent {
       search: true,
       cssClass: 'custom-sidebar',
       viewMode: 'toggle',
-      theme: 'light',
+      theme: 'dark',
       themePicker: true,
       minWidth: 350,
       maxWidth: 600,
@@ -286,6 +286,6 @@ export class AppComponent {
     // };
 
     //Second
-    this.ngSidebarService.changeTheme(this.sidebarModel.options.theme === 'dark' ? 'light' : 'dark')
+    this.ngSidebarService.changeTheme()
   }
 }

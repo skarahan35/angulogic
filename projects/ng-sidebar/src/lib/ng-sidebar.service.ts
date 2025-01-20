@@ -338,7 +338,24 @@ export class NgSidebarService {
     });
   }
 
-  changeTheme(theme: string){
-    theme === 'dark' ? document.body.classList.add('al-dark-theme') : document.body.classList.remove('al-dark-theme')
+  changeTheme(theme?:string){
+    if(theme){
+      if(theme === 'dark'){
+        if(!document.body.classList.contains('al-dark-theme')){
+          document.body.classList.add('al-dark-theme')
+        }
+      }
+      else{
+        document.body.classList.remove('al-dark-theme')
+      }
+    }
+    else{
+      if(document.body.classList.contains('al-dark-theme')){
+        document.body.classList.remove('al-dark-theme')
+      }
+      else{
+        document.body.classList.add('al-dark-theme')
+      }
+    }
   }
 }

@@ -17,6 +17,6 @@ export class ThemeTogglerComponent {
   }
   toggleTheme(): void {
     this.currentTheme === 'dark' ? this.currentTheme = 'light' : this.currentTheme = 'dark'
-    this.sidebarService.changeTheme(this.currentTheme)
+    this.sidebarService.changeTheme()
   }
 }
