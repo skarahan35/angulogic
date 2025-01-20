@@ -154,10 +154,16 @@
 </ng-template>
 
 <ng-template #userTemplate let-user>
-  <div class="user" [ngClass]="user.cssClass">
-    <img [src]="user.avatar" />
-    <div *ngIf="sidebarData.options.expand" class="name">
-      {{ user.name }}
+  <div class="user-container">
+    <div class="user" [ngClass]="user.cssClass">
+      <img [src]="user.avatar" />
+      <div *ngIf="sidebarData.options.expand" class="name">
+        {{ user.name }}
+      </div>
     </div>
+    <div class="theme-toggler">
+      <al-theme-toggler></al-theme-toggler>
+    </div>
+
   </div>
 </ng-template>

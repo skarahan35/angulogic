@@ -89,7 +89,6 @@ export class AppComponent {
               },
             ],
             onClick: element => {
-              element.cancel = true;
               console.log('Dashboard clicked', element);
             },
             onToggle: element => {
