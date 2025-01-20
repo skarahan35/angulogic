@@ -12,6 +12,7 @@
     --bg-color: #{light.$bg-color};
     --text-color: #{light.$text-color};
     --search-bg-color: #{light.$search-bg-color};
+    --search-color: #{light.$search-color};
     --primary: #{light.$primary};
     --primary-2: #{light.$primary-2};
     --primary-3: #{light.$primary-3};
@@ -24,6 +25,7 @@
       --bg-color: #{dark.$bg-color};
       --text-color: #{dark.$text-color};
       --search-bg-color: #{dark.$search-bg-color};
+      --search-color: #{dark.$search-color};
       --primary: #{dark.$primary};
       --primary-2: #{dark.$primary-2};
       --primary-3: #{dark.$primary-3};
@@ -138,6 +140,7 @@
     position: relative;
     display: flex;
 
+
     .search-icon {
       position: absolute;
       left: 0.75rem;
@@ -149,6 +152,7 @@
       width: 100%;
       border: 1px solid var(--search-bg-color);
       background-color: var(--search-bg-color);
+      color: var(--search-color);
       height: 2rem;
       padding: 0px 1.5rem;
       border-radius: var(--radius);
@@ -273,12 +277,18 @@
   }
 
   .user-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .theme-toggler {
-      margin-right: 1rem;
+    &.open {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .theme-toggler {
+        margin-right: 1rem;
+      }
     }
+    &.close {
+      display: block;
+    }
+
     .user {
       display: flex;
       gap: 1rem;
@@ -288,6 +298,7 @@
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
+        background-color: white;
       }
 
       .name {

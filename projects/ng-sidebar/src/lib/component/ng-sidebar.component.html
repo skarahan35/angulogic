@@ -20,7 +20,7 @@
   (mouseenter)="onEnter()"
   (mouseleave)="onLeave()">
   <div
-    *ngIf="sidebarData.options.resize"
+    *ngIf="sidebarData.options.resize && this.sidebarData.options.expand"
     class="resizer"
     (mousedown)="ngSidebarService.resize(sidebarData)"
     [ngClass]="{ active: ngSidebarService.isResizing }"></div>
@@ -154,7 +154,11 @@
 </ng-template>
 
 <ng-template #userTemplate let-user>
-  <div class="user-container">
+  <div class="user-container" [ngClass]="{
+    open: sidebarData.options.expand,
+    close: !sidebarData.options.expand
+  }">
+
     <div class="user" [ngClass]="user.cssClass">
       <img [src]="user.avatar" />
       <div *ngIf="sidebarData.options.expand" class="name">

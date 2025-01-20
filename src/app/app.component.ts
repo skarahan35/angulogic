@@ -251,7 +251,7 @@ export class AppComponent {
       viewMode: 'toggle',
       theme: 'light',
       themePicker: true,
-      minWidth: 100,
+      minWidth: 350,
       maxWidth: 600,
       width: 350,
       themeText: {
