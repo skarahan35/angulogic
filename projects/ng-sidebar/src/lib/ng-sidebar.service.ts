@@ -337,4 +337,8 @@ export class NgSidebarService {
       }
     });
   }
+
+  changeTheme(theme: string){
+    theme === 'dark' ? document.body.classList.add('al-dark-theme') : document.body.classList.remove('al-dark-theme')
+  }
 }

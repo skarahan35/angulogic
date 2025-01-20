@@ -20,6 +20,8 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
 
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
+
+    val.options && val.options.theme ? this.ngSidebarService.changeTheme(val.options.theme) : this.ngSidebarService.changeTheme('light');
     this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
   constructor(public ngSidebarService: NgSidebarService) {}
@@ -211,5 +213,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     } else {
       node.isExpanded = !node.isExpanded;
     }
+  }
+
+  onChangeTheme(){
+
   }
 }

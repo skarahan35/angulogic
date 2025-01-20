@@ -10,16 +10,20 @@ import {
   Search,
   SidebarData,
 } from '../../projects/ng-sidebar/src/lib/sidebar.model';
+import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [NgSidebarModule],
+  providers: [NgSidebarService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'angulogic';
+
+  constructor(private ngSidebarService: NgSidebarService){}
 
   sidebarModel: SidebarModel = {
     bannerOptions: {
@@ -269,5 +273,19 @@ export class AppComponent {
   change() {
     this.sidebarModel.options.autoPosition = false;
     this.sidebarModel.bannerOptions!.title = 'test';
+  }
+
+  changeTheme() {
+    //First
+    // this.sidebarModel = {
+    //   ...this.sidebarModel,
+    //   options: {
+    //     ...this.sidebarModel.options,
+    //     theme: this.sidebarModel.options.theme === 'dark' ? 'light' : 'dark'
+    //   }
+    // };
+
+    //Second
+    this.ngSidebarService.changeTheme(this.sidebarModel.options.theme === 'dark' ? 'light' : 'dark')
   }
 }
