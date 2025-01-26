@@ -10,13 +10,11 @@ import { NgSidebarService } from '../../ng-sidebar.service';
   styleUrl: './theme-toggler.component.scss'
 })
 export class ThemeTogglerComponent {
-  currentTheme: 'light' | 'dark' = 'light'
 
   constructor(private sidebarService: NgSidebarService) {
 
   }
   toggleTheme(): void {
-    this.currentTheme === 'dark' ? this.currentTheme = 'light' : this.currentTheme = 'dark'
     this.sidebarService.changeTheme()
   }
 }
