@@ -154,6 +154,11 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     await Promise.resolve(
       node.onClick?.(event)
     );
+
+    await Promise.resolve(
+      this.sidebarData.options.onMenuNodeClick?.(event)
+    )
+
     if (event.cancel) return;
 
     if (node.children && node.children.length > 0) {

@@ -253,7 +253,7 @@ export class AppComponent {
       search: true,
       cssClass: 'custom-sidebar',
       viewMode: 'toggle',
-      theme: 'dark',
+      theme: 'light',
       themePicker: true,
       minWidth: 350,
       maxWidth: 600,
@@ -268,7 +268,8 @@ export class AppComponent {
       onResizeEnd: event => console.log('Sidebar resize ended', event),
       onCollapse: event => console.log('Sidebar collapsed', event),
       onExpand: event => console.log('Sidebar expanded', event),
-      onThemeChange: event => console.log('Sidebar theme change', event)
+      onThemeChange: event => console.log('Sidebar theme changed', event),
+      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event)
     },
   };
   change() {

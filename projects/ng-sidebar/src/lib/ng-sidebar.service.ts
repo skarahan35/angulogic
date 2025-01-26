@@ -125,6 +125,7 @@ export class NgSidebarService {
           onResizeEnd: data.options.onResizeEnd,
           onExpand: data.options.onExpand,
           onCollapse: data.options.onCollapse,
+          onMenuNodeClick: data.options.onMenuNodeClick,
         }
       : {
           resize: true,

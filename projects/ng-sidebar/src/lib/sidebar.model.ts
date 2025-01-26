@@ -94,6 +94,7 @@ export interface SidebarOptions {
   onResizeEnd?: (event: ResizeEvent) => void; //+
   onExpand?: (event: ExpandClickEvent) => void;
   onCollapse?: (event: ExpandClickEvent) => void;
+  onMenuNodeClick?: (event: MenuClickEvent) => void; //+
 }
 
 export interface ResizeEvent {
