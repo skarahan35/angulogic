@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DoCheck, Input } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, Input, OnInit } from '@angular/core';
 import {
   ExpandClickEvent,
   MenuClickEvent,
@@ -8,23 +8,35 @@ import {
   SidebarModel,
 } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ng-sidebar',
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
 })
-export class NgSidebarComponent implements AfterViewInit, DoCheck {
+export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
   sidebarData!: SidebarModel;
   SIDEBAR_DATA!: SidebarModel;
-
+  private themeSubscription!: Subscription;
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
-
+    if (!val.options.theme) {
+      val.options.theme = 'light';
+    }
     this.ngSidebarService.changeTheme(val.options.theme);
     this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
   }
   constructor(public ngSidebarService: NgSidebarService) {}
+
+  ngOnInit(): void {
+    this.themeSubscription = this.ngSidebarService.themeChange$.subscribe(
+      theme => {
+        this.sidebarData.options.theme = theme;
+        this.sidebarData.options?.onThemeChange?.(theme);
+      }
+    );
+  }
 
   ngAfterViewInit(): void {}
 
@@ -213,9 +225,5 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck {
     } else {
       node.isExpanded = !node.isExpanded;
     }
-  }
-
-  onChangeTheme(){
-
   }
 }

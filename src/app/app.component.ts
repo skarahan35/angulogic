@@ -268,6 +268,7 @@ export class AppComponent {
       onResizeEnd: event => console.log('Sidebar resize ended', event),
       onCollapse: event => console.log('Sidebar collapsed', event),
       onExpand: event => console.log('Sidebar expanded', event),
+      onThemeChange: event => console.log('Sidebar theme change', event)
     },
   };
   change() {
@@ -276,16 +277,6 @@ export class AppComponent {
   }
 
   changeTheme() {
-    //First
-    // this.sidebarModel = {
-    //   ...this.sidebarModel,
-    //   options: {
-    //     ...this.sidebarModel.options,
-    //     theme: this.sidebarModel.options.theme === 'dark' ? 'light' : 'dark'
-    //   }
-    // };
-
-    //Second
     this.ngSidebarService.changeTheme()
   }
 }
