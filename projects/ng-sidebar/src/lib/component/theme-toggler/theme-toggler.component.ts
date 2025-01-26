@@ -4,8 +4,6 @@ import { NgSidebarService } from '../../ng-sidebar.service';
 
 @Component({
   selector: 'al-theme-toggler',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './theme-toggler.component.html',
   styleUrl: './theme-toggler.component.scss'
 })
