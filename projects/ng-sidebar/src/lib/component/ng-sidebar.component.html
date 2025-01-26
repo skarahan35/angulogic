@@ -27,7 +27,7 @@
 
   <div class="banner">
     <div *ngIf="sidebarData.bannerOptions" class="banner-container">
-      <img
+      <al-icon
         *ngIf="sidebarData.bannerOptions.logo"
         [src]="sidebarData.bannerOptions.logo"
         (click)="onBannerClick('logo')"
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <img
+    <al-icon
       *ngIf="sidebarData.options.viewMode === 'toggle'"
       (click)="onToggle(sidebarData.options.expand)"
       class="toggle-icon"
@@ -50,7 +50,7 @@
           : sidebarData.options.toggleExpandIcon
       " />
 
-    <img
+    <al-icon
       *ngIf="sidebarData.options.viewMode === 'hover'"
       (click)="onPin()"
       class="toggle-icon"
@@ -74,13 +74,13 @@
     class="search"
     *ngIf="sidebarData.options.search && sidebarData.options.expand"
     [ngClass]="sidebarData.searchOptions?.cssClass">
-    <img class="search-icon" src="assets/icons/search.svg" />
+    <al-icon class="search-icon" src="assets/icons/search.svg" />
     <input
       #searchInput
       (keyup)="onSearch($event)"
       [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
       type="text" />
-    <img
+    <al-icon
       (click)="onCancelSearch(searchInput)"
       class="cancel-icon"
       src="assets/icons/cancel.svg"
@@ -95,11 +95,8 @@
       [ngClass]="data.cssClass"
       *ngFor="let data of sidebarData.sidebarData">
       <ng-container *ngIf="data.visible">
-        <div class="title-wrapper">
-          <img *ngIf="data.icon" [src]="data.icon" />
-          <div *ngIf="sidebarData.options.expand" class="title">
-            {{ data.title }}
-          </div>
+        <div *ngIf="sidebarData.options.expand" class="title">
+          {{ data.title }}
         </div>
         <ng-container *ngIf="sidebarData.options.expand">
           <ng-container
@@ -130,16 +127,15 @@
       [ngClass]="{ 'no-child': !node.children, active: node.active }">
       <div class="node-title">
         <div class="icon-container">
-          <img *ngIf="node.icon" [src]="node.icon" />
+          <al-icon [src]="node.icon ?? 'assets/icons/circle-dot.svg'" />
         </div>
         {{ node.name }}
       </div>
       <div *ngIf="node.children">
-        <img
+        <al-icon
           class="node-toggler transition"
           [ngClass]="{ expand: node.isExpanded }"
-          src="assets/icons/node-toggle.svg"
-          alt />
+          src="assets/icons/node-toggle.svg" />
       </div>
     </div>
     <ng-container
@@ -154,13 +150,14 @@
 </ng-template>
 
 <ng-template #userTemplate let-user>
-  <div class="user-container" [ngClass]="{
-    open: sidebarData.options.expand,
-    close: !sidebarData.options.expand
-  }">
-
+  <div
+    class="user-container"
+    [ngClass]="{
+      open: sidebarData.options.expand,
+      close: !sidebarData.options.expand,
+    }">
     <div class="user" [ngClass]="user.cssClass">
-      <img [src]="user.avatar" />
+      <al-icon [src]="user.avatar" />
       <div *ngIf="sidebarData.options.expand" class="name">
         {{ user.name }}
       </div>
@@ -168,6 +165,5 @@
     <div class="theme-toggler">
       <al-theme-toggler></al-theme-toggler>
     </div>
-
   </div>
 </ng-template>

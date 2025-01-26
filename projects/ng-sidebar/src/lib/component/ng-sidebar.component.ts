@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, DoCheck, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  Input,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ExpandClickEvent,
   MenuClickEvent,
@@ -15,7 +21,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
 })
-export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
+export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
   sidebarData!: SidebarModel;
   SIDEBAR_DATA!: SidebarModel;
   private themeSubscription!: Subscription;
@@ -38,7 +44,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     );
   }
 
-  ngAfterViewInit(): void {}
+  ngOnDestroy(): void {
+    this.themeSubscription.unsubscribe();
+  }
 
   ngDoCheck(): void {
     if (
@@ -151,13 +159,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
       menuData: node,
       cancel: false,
     };
-    await Promise.resolve(
-      node.onClick?.(event)
-    );
+    await Promise.resolve(node.onClick?.(event));
 
-    await Promise.resolve(
-      this.sidebarData.options.onMenuNodeClick?.(event)
-    )
+    await Promise.resolve(this.sidebarData.options.onMenuNodeClick?.(event));
 
     if (event.cancel) return;
 
@@ -174,9 +178,7 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
       cancel: false,
     };
 
-    await Promise.resolve(
-      favorite.onClick?.(event)
-    );
+    await Promise.resolve(favorite.onClick?.(event));
     if (event.cancel) return;
   }
 
@@ -186,13 +188,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
       click: true,
     };
     if (isExpand) {
-      await Promise.resolve(
-        this.sidebarData.options.onCollapse?.(event)
-      );
+      await Promise.resolve(this.sidebarData.options.onCollapse?.(event));
     } else {
-      await Promise.resolve(
-        this.sidebarData.options.onExpand?.(event)
-      );
+      await Promise.resolve(this.sidebarData.options.onExpand?.(event));
     }
     if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
@@ -224,9 +222,7 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
       menuData: node,
       cancel: false,
     };
-    await Promise.resolve(
-      node.onToggle?.(nodeTogglerClickEvent)
-    );
+    await Promise.resolve(node.onToggle?.(nodeTogglerClickEvent));
     if (nodeTogglerClickEvent.cancel) return;
 
     const nodeElement = (event.currentTarget as HTMLElement).querySelector(
