@@ -10,16 +10,20 @@ import {
   Search,
   SidebarData,
 } from '../../projects/ng-sidebar/src/lib/sidebar.model';
+import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [NgSidebarModule],
+  providers: [NgSidebarService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'angulogic';
+
+  constructor(private ngSidebarService: NgSidebarService){}
 
   sidebarModel: SidebarModel = {
     bannerOptions: {
@@ -264,10 +268,16 @@ export class AppComponent {
       onResizeEnd: event => console.log('Sidebar resize ended', event),
       onCollapse: event => console.log('Sidebar collapsed', event),
       onExpand: event => console.log('Sidebar expanded', event),
+      onThemeChange: event => console.log('Sidebar theme changed', event),
+      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event)
     },
   };
   change() {
     this.sidebarModel.options.autoPosition = false;
     this.sidebarModel.bannerOptions!.title = 'test';
+  }
+
+  changeTheme() {
+    this.ngSidebarService.changeTheme()
   }
 }

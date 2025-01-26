@@ -76,7 +76,7 @@ export interface SidebarOptions {
   search?: boolean; //+
   cssClass?: string; //+
   viewMode?: 'fix' | 'hover' | 'toggle'; //+
-  theme?: 'light' | 'dark';
+  theme?: 'light' | 'dark'; //+
   themePicker?: boolean;
   minWidth?: number; //+
   maxWidth?: number; //+
@@ -88,12 +88,13 @@ export interface SidebarOptions {
   pinIcon?: string; //+
   unpinIcon?: string; //+
   pinned?: boolean; //+
-  onThemeChange?: (theme: 'light' | 'dark') => void;
+  onThemeChange?: (theme: 'light' | 'dark') => void; //+
   onResizeStart?: (event: ResizeEvent) => void; //+
   onResizing?: (event: ResizeEvent) => void; //+
   onResizeEnd?: (event: ResizeEvent) => void; //+
   onExpand?: (event: ExpandClickEvent) => void;
   onCollapse?: (event: ExpandClickEvent) => void;
+  onMenuNodeClick?: (event: MenuClickEvent) => void; //+
 }
 
 export interface ResizeEvent {

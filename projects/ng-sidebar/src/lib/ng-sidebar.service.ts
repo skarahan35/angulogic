@@ -5,7 +5,8 @@ import {
   SidebarData,
   SidebarModel,
 } from './sidebar.model';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,8 @@ export class NgSidebarService {
   isResizing: boolean = false;
   sidebarData!: SidebarModel;
   private observer!: MutationObserver;
+  private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');
+  themeChange$ = this.themeSubject.asObservable();
 
   constructor(public router: Router) {
     router.events.subscribe(route => {
@@ -122,6 +125,7 @@ export class NgSidebarService {
           onResizeEnd: data.options.onResizeEnd,
           onExpand: data.options.onExpand,
           onCollapse: data.options.onCollapse,
+          onMenuNodeClick: data.options.onMenuNodeClick,
         }
       : {
           resize: true,
@@ -336,5 +340,30 @@ export class NgSidebarService {
         this.updateActiveState(item.children, currentRoute);
       }
     });
+  }
+
+  changeTheme(theme?: 'light' | 'dark'){
+    if(theme){
+      if(theme === 'dark'){
+        if(!document.body.classList.contains('al-dark-theme')){
+          document.body.classList.add('al-dark-theme')
+        }
+      }
+      else{
+        document.body.classList.remove('al-dark-theme')
+      }
+      this.themeSubject.next(theme);
+    }
+    else{
+      if(document.body.classList.contains('al-dark-theme')){
+        document.body.classList.remove('al-dark-theme')
+        this.themeSubject.next('light');
+      }
+      else{
+        document.body.classList.add('al-dark-theme')
+        this.themeSubject.next('dark');
+      }
+    }
+
   }
 }
