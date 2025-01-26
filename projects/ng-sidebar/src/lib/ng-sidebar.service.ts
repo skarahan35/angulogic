@@ -7,6 +7,7 @@ import {
 } from './sidebar.model';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,10 @@ export class NgSidebarService {
   private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');
   themeChange$ = this.themeSubject.asObservable();
 
-  constructor(public router: Router) {
+  constructor(
+    public router: Router,
+    private http: HttpClient
+  ) {
     router.events.subscribe(route => {
       if (route instanceof NavigationEnd) {
         this.sidebarData.sidebarData.forEach(data => {
@@ -342,28 +346,34 @@ export class NgSidebarService {
     });
   }
 
-  changeTheme(theme?: 'light' | 'dark'){
-    if(theme){
-      if(theme === 'dark'){
-        if(!document.body.classList.contains('al-dark-theme')){
-          document.body.classList.add('al-dark-theme')
+  changeTheme(theme?: 'light' | 'dark') {
+    if (theme) {
+      if (theme === 'dark') {
+        if (!document.body.classList.contains('al-dark-theme')) {
+          document.body.classList.add('al-dark-theme');
         }
-      }
-      else{
-        document.body.classList.remove('al-dark-theme')
+      } else {
+        document.body.classList.remove('al-dark-theme');
       }
       this.themeSubject.next(theme);
-    }
-    else{
-      if(document.body.classList.contains('al-dark-theme')){
-        document.body.classList.remove('al-dark-theme')
+    } else {
+      if (document.body.classList.contains('al-dark-theme')) {
+        document.body.classList.remove('al-dark-theme');
         this.themeSubject.next('light');
-      }
-      else{
-        document.body.classList.add('al-dark-theme')
+      } else {
+        document.body.classList.add('al-dark-theme');
         this.themeSubject.next('dark');
       }
     }
+  }
 
+  loadSvg(path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.http.get(path, { responseType: 'text' }).subscribe({
+        next: svgContent => resolve(svgContent),
+        error: err =>
+          reject(new Error(`SVG yüklenemedi: ${path}. Hata: ${err.message}`)),
+      });
+    });
   }
 }

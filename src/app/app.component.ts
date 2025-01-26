@@ -23,7 +23,7 @@ import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 export class AppComponent {
   title = 'angulogic';
 
-  constructor(private ngSidebarService: NgSidebarService){}
+  constructor(private ngSidebarService: NgSidebarService) {}
 
   sidebarModel: SidebarModel = {
     bannerOptions: {
@@ -56,11 +56,10 @@ export class AppComponent {
         title: 'Main Menu',
         cssClass: 'main-sidebar',
         visible: true,
-        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Dashboard',
-            icon: 'assets/icons/dashboard-icon.svg',
+            icon: 'assets/icons/ts.png',
             route: '/dashboard',
             visible: true,
             badge: 3,
@@ -77,6 +76,7 @@ export class AppComponent {
                 name: 'Stats',
                 route: 'www.google.com',
                 visible: true,
+                icon: '',
                 children: [
                   {
                     name: 'User Stats',
@@ -133,7 +133,6 @@ export class AppComponent {
         title: 'Reports',
         cssClass: 'reports-sidebar',
         visible: true,
-        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Monthly Reports',
@@ -157,7 +156,6 @@ export class AppComponent {
         title: 'User Management',
         cssClass: 'user-management-sidebar',
         visible: true,
-        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'Users',
@@ -179,7 +177,7 @@ export class AppComponent {
           },
           {
             name: 'Roles',
-            icon: 'assets/icons/role.svg',
+            icon: 'https://cdn-icons-png.flaticon.com/512/535/535239.png',
             route: '/roles',
             visible: true,
             children: [
@@ -201,7 +199,6 @@ export class AppComponent {
         title: 'Help',
         cssClass: 'help-sidebar',
         visible: true,
-        icon: 'assets/icons/dashboard-icon.svg',
         data: [
           {
             name: 'FAQ',
@@ -269,7 +266,7 @@ export class AppComponent {
       onCollapse: event => console.log('Sidebar collapsed', event),
       onExpand: event => console.log('Sidebar expanded', event),
       onThemeChange: event => console.log('Sidebar theme changed', event),
-      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event)
+      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event),
     },
   };
   change() {
@@ -278,6 +275,6 @@ export class AppComponent {
   }
 
   changeTheme() {
-    this.ngSidebarService.changeTheme()
+    this.ngSidebarService.changeTheme();
   }
 }

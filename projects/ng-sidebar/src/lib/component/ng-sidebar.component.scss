@@ -91,7 +91,7 @@
     background: transparent;
 
     &.active {
-      border-right:2px solid var(--primary);
+      border-right: 2px solid var(--primary);
     }
   }
 
@@ -109,6 +109,8 @@
 
       .logo {
         max-height: 80%;
+        width: auto;
+        height: 5rem;
         align-self: center;
       }
 
@@ -139,7 +141,6 @@
     width: 100%;
     position: relative;
     display: flex;
-
 
     .search-icon {
       position: absolute;
@@ -182,19 +183,12 @@
       height: max-content;
       display: block;
       margin-bottom: 1rem;
-      .title-wrapper {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-        img {
-          width: 2rem;
-          height: 2rem;
-        }
-        .title {
-          font-size: 20px;
-          font-weight: bold;
-        }
+      .title {
+        font-size: 20px;
+        font-weight: bold;
+        padding-bottom: 0.5rem;
       }
+
       .node {
         margin-left: 1rem;
         margin-top: 0.2rem;
@@ -294,11 +288,10 @@
       gap: 1rem;
       padding: 1rem;
       align-items: center;
-      img {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        background-color: white;
+      al-icon, ::ng-deep svg{
+          width: 2rem;
+          height: 2rem;
+          border-radius: 50%;
       }
 
       .name {

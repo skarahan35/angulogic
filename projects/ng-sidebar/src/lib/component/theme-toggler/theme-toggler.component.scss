@@ -7,8 +7,8 @@ input {
 	color: hsl(var(--hue),10%,10%);
 	display: flex;
 	transition:
-		background-color 0.6s,
-		color 0.6s;
+		background-color 0.3s,
+		color 0.3s;
 }
 .theme-toggler:has(.switch__input:checked) {
 	background-color: transparent;
@@ -35,8 +35,8 @@ input {
 	width: 0.75em;
 	height: 0.75em;
 	transition:
-		color 0.6s,
-		transform 0.6s cubic-bezier(0.65,0,0.35,1);
+		color 0.3s,
+		transform 0.3s cubic-bezier(0.65,0,0.35,1);
 }
 .switch__icon:nth-of-type(2) {
 	right: 0.375em;
@@ -55,7 +55,7 @@ input {
 }
 .switch__inner:before,
 .switch__inner-icons {
-	transition: transform 0.6s cubic-bezier(0.65,0,0.35,1);
+	transition: transform 0.3s cubic-bezier(0.65,0,0.35,1);
 	transform: translateX(-1.25em);
 }
 .switch__inner:before {
@@ -89,8 +89,8 @@ input {
 	-webkit-appearance: none;
 	appearance: none;
 	transition:
-		background-color 0.6s,
-		box-shadow 0.6s;
+		background-color 0.3s,
+		box-shadow 0.3s;
 }
 .switch__input:checked {
 	background-color: hsl(var(--hue),10%,10%);

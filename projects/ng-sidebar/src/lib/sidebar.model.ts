@@ -36,7 +36,6 @@ export interface SidebarData {
   cssClass?: string;
   visible?: boolean;
   data: MenuData[];
-  icon?: string;
 }
 
 export interface MenuData {

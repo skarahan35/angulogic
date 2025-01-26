@@ -1,6 +1,6 @@
-import { NgModule } from "@angular/core";
-import { ThemeTogglerComponent } from "./theme-toggler.component";
-import { CommonModule } from "@angular/common";
+import { NgModule } from '@angular/core';
+import { ThemeTogglerComponent } from './theme-toggler.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [ThemeTogglerComponent],
