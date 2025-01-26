@@ -70,7 +70,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     };
 
     if (this.sidebarData.searchOptions?.onSearchStart) {
-      await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
+      await Promise.resolve(
+        this.sidebarData.searchOptions.onSearchStart(searchStartEvent)
+      );
     }
 
     if (!searchStartEvent.cancel) {
@@ -128,7 +130,9 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     };
 
     if (this.sidebarData.searchOptions?.onSearchStart) {
-      await this.sidebarData.searchOptions.onSearchStart(searchStartEvent);
+      await Promise.resolve(
+        this.sidebarData.searchOptions.onSearchStart(searchStartEvent)
+      );
     }
 
     if (!searchStartEvent.cancel) {
@@ -142,12 +146,14 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     }
   }
 
-  onMenuClick(node: MenuData, mouseEvent: MouseEvent) {
+  async onMenuClick(node: MenuData, mouseEvent: MouseEvent) {
     let event: MenuClickEvent = {
       menuData: node,
       cancel: false,
     };
-    node.onClick?.(event);
+    await Promise.resolve(
+      node.onClick?.(event)
+    );
     if (event.cancel) return;
 
     if (node.children && node.children.length > 0) {
@@ -157,25 +163,31 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     }
   }
 
-  onFavoriteClick(favorite: MenuData & { cancel: boolean }) {
+  async onFavoriteClick(favorite: MenuData & { cancel: boolean }) {
     let event: MenuClickEvent = {
       menuData: favorite,
       cancel: false,
     };
 
-    favorite.onClick?.(event);
+    await Promise.resolve(
+      favorite.onClick?.(event)
+    );
     if (event.cancel) return;
   }
 
-  onToggle(isExpand: boolean | undefined) {
+  async onToggle(isExpand: boolean | undefined) {
     let event: ExpandClickEvent = {
       cancel: false,
       click: true,
     };
     if (isExpand) {
-      this.sidebarData.options.onCollapse?.(event);
+      await Promise.resolve(
+        this.sidebarData.options.onCollapse?.(event)
+      );
     } else {
-      this.sidebarData.options.onExpand?.(event);
+      await Promise.resolve(
+        this.sidebarData.options.onExpand?.(event)
+      );
     }
     if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
@@ -202,12 +214,14 @@ export class NgSidebarComponent implements AfterViewInit, DoCheck, OnInit {
     this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
 
-  nodeToggle(node: MenuData, event: MouseEvent) {
+  async nodeToggle(node: MenuData, event: MouseEvent) {
     let nodeTogglerClickEvent: MenuClickEvent = {
       menuData: node,
       cancel: false,
     };
-    node.onToggle?.(nodeTogglerClickEvent);
+    await Promise.resolve(
+      node.onToggle?.(nodeTogglerClickEvent)
+    );
     if (nodeTogglerClickEvent.cancel) return;
 
     const nodeElement = (event.currentTarget as HTMLElement).querySelector(
