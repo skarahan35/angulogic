@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgSidebarService } from '../../ng-sidebar.service';
 

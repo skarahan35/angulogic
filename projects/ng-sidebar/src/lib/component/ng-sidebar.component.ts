@@ -1,16 +1,11 @@
-import {
-  Component,
-  DoCheck,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   ExpandClickEvent,
   MenuClickEvent,
   MenuData,
   SearchEndEvent,
   SearchStartEvent,
+  SidebarData,
   SidebarModel,
 } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
@@ -24,6 +19,7 @@ import { Subscription } from 'rxjs';
 export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
   sidebarData!: SidebarModel;
   SIDEBAR_DATA!: SidebarModel;
+  favorites: MenuData[] = [];
   private themeSubscription!: Subscription;
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
@@ -42,6 +38,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
         this.sidebarData.options?.onThemeChange?.(theme);
       }
     );
+    this.updateFavorites();
   }
 
   ngOnDestroy(): void {
@@ -242,7 +239,28 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     }
   }
 
-  onFavoriteNode(node: MenuData){
-    console.log(node)
+  onFavoriteNode(node: MenuData) {
+    node.isFavorited = !node.isFavorited;
+    this.updateFavorites();
+  }
+
+  updateFavorites() {
+    this.favorites = [];
+    this.sidebarData.sidebarData.forEach((data: SidebarData) => {
+      if (data.data) {
+        this.collectFavorites(data.data);
+      }
+    });
+  }
+
+  collectFavorites(nodes: MenuData[]) {
+    nodes.forEach(node => {
+      if (node.isFavorited) {
+        this.favorites.push(node);
+      }
+      if (node.children && node.children.length > 0) {
+        this.collectFavorites(node.children);
+      }
+    });
   }
 }
