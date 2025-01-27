@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ExpandClickEvent,
   MenuData,
   ResizeEvent,
   SidebarData,
@@ -101,6 +102,7 @@ export class NgSidebarService {
             data.options.toggleExpandIcon ?? 'assets/icons/expand.svg',
           pinIcon: data.options.toggleCollapseIcon ?? 'assets/icons/pin.svg',
           unpinIcon: data.options.toggleExpandIcon ?? 'assets/icons/unpin.svg',
+          closeIcon: data.options.closeIcon ?? 'assets/icons/cancel.svg',
           pinned:
             data.options.pinned ??
             (data.options.expand && data.options.viewMode === 'hover') ??
@@ -361,7 +363,17 @@ export class NgSidebarService {
     });
   }
 
-  private generateUuid(): string {
-    return Math.random().toString(36).substring(2, 6);
+  async toggleSidebar() {
+    let event: ExpandClickEvent = {
+      cancel: false,
+      click: true,
+    };
+    if (this.sidebarData.options.expand) {
+      await Promise.resolve(this.sidebarData.options.onCollapse?.(event));
+    } else {
+      await Promise.resolve(this.sidebarData.options.onExpand?.(event));
+    }
+    if (event.cancel) return;
+    this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
 }

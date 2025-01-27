@@ -134,6 +134,11 @@
       background-color: var(--bg-color);
       border: 1px solid var(--secondary);
       border-radius: var(--radius);
+
+      &.mobile {
+        transform: translate(0, -50%);
+        border: none;
+      }
     }
   }
 
@@ -224,7 +229,9 @@
             position: relative;
             padding: 0.5rem;
             border-radius: var(--radius);
-            transition: color 0.3s ease, background-color 0.3s ease;
+            transition:
+              color 0.3s ease,
+              background-color 0.3s ease;
 
             &.active {
               background-color: var(--primary);
@@ -293,7 +300,6 @@
           }
         }
       }
-
     }
   }
 
@@ -315,10 +321,11 @@
       gap: 1rem;
       padding: 1rem;
       align-items: center;
-      al-icon, ::ng-deep svg{
-          width: 2rem;
-          height: 2rem;
-          border-radius: 50%;
+      al-icon,
+      ::ng-deep svg {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
       }
 
       .name {

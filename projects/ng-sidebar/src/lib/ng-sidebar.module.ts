@@ -4,10 +4,11 @@ import { NgSidebarComponent } from './component/ng-sidebar.component';
 import { ThemeTogglerModule } from './component/theme-toggler/theme-toggler.module';
 import { AlIconComponent } from './component/al-icon/al-icon.component';
 import { HttpClientModule } from '@angular/common/http';
+import { TogglerDirective } from './toggler.directive';
 
 @NgModule({
-  declarations: [NgSidebarComponent, AlIconComponent],
+  declarations: [NgSidebarComponent, AlIconComponent, TogglerDirective],
   imports: [CommonModule, NgStyle, ThemeTogglerModule, HttpClientModule],
-  exports: [NgSidebarComponent],
+  exports: [NgSidebarComponent, TogglerDirective],
 })
 export class NgSidebarModule {}
