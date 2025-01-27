@@ -79,24 +79,6 @@ export class NgSidebarService {
     }));
     //#endregion
 
-    //#region Favorites data
-    data.favorites = data.favorites
-      ? data.favorites.map(item => ({
-          name: item.name,
-          icon: item.icon,
-          route: item.route,
-          visible: item.visible ?? true,
-          disabled: item.disabled ?? false,
-          isExpanded: item.isExpanded ?? false,
-          badge: item.badge,
-          cssClass: item.cssClass,
-          active: item.active ?? false,
-          children: item.children,
-          onClick: item.onClick,
-        }))
-      : undefined;
-    //#endregion
-
     //#region Initialize menu data
     data.options = data.options
       ? {
@@ -271,13 +253,13 @@ export class NgSidebarService {
 
   private initializeMenuData(menuData: MenuData[]): MenuData[] {
     return menuData.map(item => {
-      item['id'] = this.generateUuid();
       item['name'] = item['name'];
       item['icon'] = item['icon'];
       item['route'] = item['route'];
       item['visible'] = item['visible'] ?? true;
       item['disabled'] = item['disabled'] ?? false;
       item['isExpanded'] = item['isExpanded'] ?? false;
+      item['isFavorited'] = item['isFavorited'] ?? false;
       item['badge'] = item['badge'];
       item['cssClass'] = item['cssClass'];
       item['active'] = item['active'] ?? false;

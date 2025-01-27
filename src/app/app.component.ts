@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { NgSidebarModule } from '../../projects/ng-sidebar/src/lib/ng-sidebar.module';
-import {
-  SidebarModel,
-} from '../../projects/ng-sidebar/src/lib/sidebar.model';
+import { SidebarModel } from '../../projects/ng-sidebar/src/lib/sidebar.model';
 import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 
 @Component({
@@ -221,19 +219,6 @@ export class AppComponent {
             visible: true,
           },
         ],
-      },
-    ],
-    favorites: [
-      {
-        name: 'Quick Access',
-        icon: 'assets/icons/access.png',
-        route: '/quick-access',
-        visible: true,
-        disabled: false,
-        isExpanded: false,
-
-        cssClass: 'favorites-item',
-        children: [],
       },
     ],
     options: {

@@ -3,7 +3,6 @@ export interface SidebarModel {
   userOptions?: User;
   searchOptions?: Search;
   sidebarData: SidebarData[];
-  favorites?: MenuData[];
   options: SidebarOptions;
 }
 
@@ -39,13 +38,13 @@ export interface SidebarData {
 }
 
 export interface MenuData {
-  id?: string;
   name: string;
   icon?: string;
   route?: string;
   visible?: boolean;
   disabled?: boolean;
   isExpanded?: boolean;
+  isFavorited?: boolean;
   badge?: number | string;
   cssClass?: string;
   children?: MenuData[];
