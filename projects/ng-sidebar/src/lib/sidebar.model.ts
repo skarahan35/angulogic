@@ -39,6 +39,7 @@ export interface SidebarData {
 }
 
 export interface MenuData {
+  id?: string;
   name: string;
   icon?: string;
   route?: string;

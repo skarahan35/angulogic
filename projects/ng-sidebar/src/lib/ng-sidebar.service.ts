@@ -271,6 +271,7 @@ export class NgSidebarService {
 
   private initializeMenuData(menuData: MenuData[]): MenuData[] {
     return menuData.map(item => ({
+      id: this.generateUuid(),
       name: item.name,
       icon: item.icon,
       route: item.route,
@@ -375,5 +376,9 @@ export class NgSidebarService {
           reject(new Error(`SVG yüklenemedi: ${path}. Hata: ${err.message}`)),
       });
     });
+  }
+
+  private generateUuid(): string {
+    return Math.random().toString(36).substring(2, 6);
   }
 }

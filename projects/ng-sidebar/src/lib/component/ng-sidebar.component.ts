@@ -241,4 +241,8 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       node.isExpanded = !node.isExpanded;
     }
   }
+
+  onFavoriteNode(node: MenuData){
+    console.log(node)
+  }
 }
