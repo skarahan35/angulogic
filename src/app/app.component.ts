@@ -1,14 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { NgSidebarModule } from '../../projects/ng-sidebar/src/lib/ng-sidebar.module';
 import {
   SidebarModel,
-  SidebarOptions,
-  User,
-  Banner,
-  MenuData,
-  Search,
-  SidebarData,
 } from '../../projects/ng-sidebar/src/lib/sidebar.model';
 import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 

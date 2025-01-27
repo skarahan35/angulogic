@@ -210,63 +210,90 @@
           top: -0.5rem;
         }
 
-        .node-info {
+        .node-wrapper {
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          position: relative;
-          padding: 0.5rem;
-          border-radius: var(--radius);
+          justify-content: space-between;
+          gap: 1rem;
 
-          &.active {
-            background-color: var(--primary);
-            font-weight: bold;
-            color: var(--bg-color);
-          }
+          .node-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: color 0.3s ease, background-color 0.3s ease;
 
-          &:hover:not(.active) {
-            color: var(--primary);
-            &.no-child {
-              background-color: var(--secondary);
+            &.active {
+              background-color: var(--primary);
+              font-weight: bold;
+              color: var(--bg-color);
+            }
+
+            &:hover:not(.active) {
+              color: var(--primary);
+
+              &.no-child {
+                background-color: var(--secondary);
+              }
+
+              &::after {
+                width: 80%;
+              }
             }
 
             &::after {
-              width: 80%;
+              content: '';
+              width: 0px;
+              height: 1px;
+              background-color: var(--primary);
+              position: absolute;
+              bottom: 0;
+              left: 10%;
+              transition: all 0.3s ease;
+            }
+
+            .node-title {
+              display: flex;
+              gap: 0.5rem;
+              align-items: center;
+
+              .icon-container {
+                display: flex;
+                width: 1rem;
+                height: 1rem;
+              }
+            }
+
+            .node-icons {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+
+              .node-toggler {
+                transform: rotate(-180deg);
+                z-index: 2;
+
+                &.expand {
+                  transform: rotate(0deg);
+                }
+              }
             }
           }
 
-          &::after {
-            content: '';
-            width: 0px;
-            height: 1px;
-            background-color: var(--primary);
-            position: absolute;
-            bottom: 0;
-            left: 10%;
-            transition: all 0.3s ease;
-          }
-
-          .node-title {
+          .favorite-container {
             display: flex;
-            gap: 0.5rem;
             align-items: center;
 
-            .icon-container {
-              display: flex;
-              width: 1rem;
-              height: 1rem;
-            }
-          }
-          .node-toggler {
-            transform: rotate(-180deg);
-            z-index: 2;
-
-            &.expand {
-              transform: rotate(0deg);
+            .node-favorite {
+              margin: 0;
             }
           }
         }
       }
+
     }
   }
 
