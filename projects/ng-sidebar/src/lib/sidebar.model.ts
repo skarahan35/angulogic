@@ -74,7 +74,7 @@ export interface SidebarOptions {
   favorites?: boolean;
   search?: boolean; //+
   cssClass?: string; //+
-  viewMode?: 'fix' | 'hover' | 'toggle'; //+
+  viewMode?: 'fix' | 'hover' | 'toggle' | 'mobile'; //+
   theme?: 'light' | 'dark'; //+
   themePicker?: boolean;
   minWidth?: number; //+
@@ -86,6 +86,7 @@ export interface SidebarOptions {
   toggleExpandIcon?: string; //+
   pinIcon?: string; //+
   unpinIcon?: string; //+
+  closeIcon?: string; //+
   pinned?: boolean; //+
   onThemeChange?: (theme: 'light' | 'dark') => void; //+
   onResizeStart?: (event: ResizeEvent) => void; //+

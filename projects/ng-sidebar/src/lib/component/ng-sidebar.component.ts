@@ -179,20 +179,6 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     if (event.cancel) return;
   }
 
-  async onToggle(isExpand: boolean | undefined) {
-    let event: ExpandClickEvent = {
-      cancel: false,
-      click: true,
-    };
-    if (isExpand) {
-      await Promise.resolve(this.sidebarData.options.onCollapse?.(event));
-    } else {
-      await Promise.resolve(this.sidebarData.options.onExpand?.(event));
-    }
-    if (event.cancel) return;
-    this.sidebarData.options.expand = !this.sidebarData.options?.expand;
-  }
-
   onEnter() {
     if (
       this.sidebarData.options.viewMode === 'hover' &&
