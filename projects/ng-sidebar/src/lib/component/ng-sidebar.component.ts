@@ -27,7 +27,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       val.options.theme = 'light';
     }
     this.ngSidebarService.changeTheme(val.options.theme);
-    this.SIDEBAR_DATA = JSON.parse(JSON.stringify(this.sidebarData));
+    this.SIDEBAR_DATA = this.deepClone(this.sidebarData)
   }
   constructor(public ngSidebarService: NgSidebarService) {}
 
@@ -84,7 +84,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       let filteredResults: MenuData[] = [];
       if (element.value.length > 0) {
         filteredResults = this.ngSidebarService.searchByName(
-          JSON.parse(JSON.stringify(this.SIDEBAR_DATA)),
+          this.deepClone(this.SIDEBAR_DATA),
           searchValue
         );
         if (filteredResults.length > 0) {
@@ -113,7 +113,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
           this.sidebarData.sidebarData = [];
         }
       } else {
-        this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+        this.sidebarData = this.deepClone(this.SIDEBAR_DATA);
       }
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
@@ -141,7 +141,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     }
 
     if (!searchStartEvent.cancel) {
-      this.sidebarData = JSON.parse(JSON.stringify(this.SIDEBAR_DATA));
+      this.sidebarData = this.deepClone(this.SIDEBAR_DATA);
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
           menuData: this.SIDEBAR_DATA.sidebarData,
@@ -248,5 +248,20 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
         this.collectFavorites(node.children);
       }
     });
+  }
+  private deepClone<T>(obj: T): T {
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.deepClone(item)) as unknown as T;
+    }
+    const clonedObj: any = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        clonedObj[key] = this.deepClone(obj[key]);
+      }
+    }
+    return clonedObj;
   }
 }
