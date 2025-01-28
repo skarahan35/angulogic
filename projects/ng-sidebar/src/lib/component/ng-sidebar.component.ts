@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import {
   ExpandClickEvent,
   MenuClickEvent,
@@ -29,6 +29,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     this.ngSidebarService.changeTheme(val.options.theme);
     this.SIDEBAR_DATA = this.deepClone(this.sidebarData)
   }
+  @Input() nodeContent?: TemplateRef<any>;
   constructor(public ngSidebarService: NgSidebarService) {}
 
   ngOnInit(): void {
@@ -196,10 +197,6 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     }
   }
 
-  onPin() {
-    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
-  }
-
   async nodeToggle(node: MenuData, event: MouseEvent) {
     let nodeTogglerClickEvent: MenuClickEvent = {
       menuData: node,
@@ -214,13 +211,18 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     const parentNode = event.currentTarget as HTMLElement;
     if (node.isExpanded) {
       nodeElement!.classList.remove('expand');
-      Array.from(parentNode!.parentElement!.children)
+      Array.from(parentNode!.parentElement!.parentElement!.children)
         .filter(child => child.classList.contains('node'))
-        .forEach(child => child.classList.add('out-top'));
+        .forEach(child => child.classList.add('out-left'));
       setTimeout(() => {
         node.isExpanded = !node.isExpanded;
       }, 300);
     } else {
+      setTimeout(() => {
+        Array.from(parentNode!.parentElement!.parentElement!.children)
+        .filter(child => child.classList.contains('node'))
+        .forEach(child => child.classList.add('in-left'));
+      }, 1);
       node.isExpanded = !node.isExpanded;
     }
   }

@@ -227,7 +227,7 @@ export class AppComponent {
       favorites: true,
       search: true,
       cssClass: 'custom-sidebar',
-      viewMode: 'mobile',
+      viewMode: 'hover',
       theme: 'light',
       themePicker: true,
       minWidth: 350,
