@@ -86,6 +86,7 @@ export class NgSidebarService {
           resize: data.options.resize ?? true,
           expand: data.options.expand ?? true,
           favorites: data.options.favorites ?? true,
+          favoritesTitle: data.options.favoritesTitle ?? 'Favorites',
           search: data.options.search ?? true,
           cssClass: data.options.cssClass ?? '',
           viewMode: data.options.viewMode ?? 'toggle',
@@ -376,4 +377,9 @@ export class NgSidebarService {
     if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
+
+  togglePin() {
+    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
+  }
+  
 }

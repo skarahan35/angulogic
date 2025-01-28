@@ -7,7 +7,7 @@ import { NgSidebarService } from '../../ng-sidebar.service';
   template: ``,
   host: {
     class: 'al-icon',
-    style: 'display: flex;width: 1rem;height: 1rem;',
+    style: 'display: flex;',
   },
 })
 export class AlIconComponent {

@@ -53,25 +53,12 @@ export interface MenuData {
   onToggle?: (event: MenuClickEvent) => void;
 }
 
-export interface Favorites {
-  favoritesText: string;
-  favoritesData?: FavoritesData[];
-}
-
-export interface FavoritesData {
-  name: string;
-  icon?: string;
-  route?: string;
-  badge?: number | string;
-  cssClass?: string;
-  onClick?: (data: MenuClickEvent) => void;
-  onFavorite?: (data: MenuClickEvent) => void;
-}
 
 export interface SidebarOptions {
   resize?: boolean; //+
   expand?: boolean; //+
-  favorites?: boolean;
+  favorites?: boolean; //+
+  favoritesTitle?: string; //+
   search?: boolean; //+
   cssClass?: string; //+
   viewMode?: 'fix' | 'hover' | 'toggle' | 'mobile'; //+
