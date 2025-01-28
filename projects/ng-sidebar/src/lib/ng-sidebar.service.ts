@@ -377,9 +377,4 @@ export class NgSidebarService {
     if (event.cancel) return;
     this.sidebarData.options.expand = !this.sidebarData.options?.expand;
   }
-
-  togglePin() {
-    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
-  }
-  
 }

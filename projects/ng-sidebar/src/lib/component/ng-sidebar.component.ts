@@ -251,6 +251,12 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       }
     });
   }
+
+  togglePin() {
+    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
+  }
+  
+
   private deepClone<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') {
       return obj;

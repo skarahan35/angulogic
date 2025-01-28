@@ -64,7 +64,7 @@
 
       <al-icon
         *ngIf="sidebarData.options.viewMode === 'hover'"
-        (click)="ngSidebarService.togglePin()"
+        (click)="togglePin()"
         class="toggle-icon"
         [src]="
           sidebarData.options.pinned
