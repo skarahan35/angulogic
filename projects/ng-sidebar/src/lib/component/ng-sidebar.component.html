@@ -1,7 +1,7 @@
- <ng-container
+<ng-container
   *ngIf="
-      sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
-    ">
+    sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
+  ">
   <div
     *ngIf="sidebarData.options.resize && this.sidebarData.options.expand"
     class="resizer"
@@ -28,10 +28,10 @@
       sidebarToggler
       class="toggle-icon"
       [src]="
-          sidebarData.options.expand
-            ? sidebarData.options.toggleCollapseIcon
-            : sidebarData.options.toggleExpandIcon
-        " />
+        sidebarData.options.expand
+          ? sidebarData.options.toggleCollapseIcon
+          : sidebarData.options.toggleExpandIcon
+      " />
 
     <al-icon
       *ngIf="sidebarData.options.viewMode === 'mobile'"
@@ -44,10 +44,10 @@
       (click)="togglePin()"
       class="toggle-icon"
       [src]="
-          sidebarData.options.pinned
-            ? sidebarData.options.unpinIcon
-            : sidebarData.options.pinIcon
-        " />
+        sidebarData.options.pinned
+          ? sidebarData.options.unpinIcon
+          : sidebarData.options.pinIcon
+      " />
     <ng-content select="[al-sidebar-banner]"></ng-content>
   </div>
 
@@ -55,9 +55,9 @@
   <ng-container *ngIf="sidebarData.userOptions?.position == 'top'">
     <ng-container
       *ngTemplateOutlet="
-          userTemplate;
-          context: { $implicit: sidebarData.userOptions }
-        "></ng-container>
+        userTemplate;
+        context: { $implicit: sidebarData.userOptions }
+      "></ng-container>
   </ng-container>
 
   <div
@@ -82,19 +82,25 @@
 
   <div class="menu-container">
     <!-- Favorites Section -->
-    <div *ngIf="favorites.length > 0 && sidebarData.options.expand" class="wrapper favorites">
-      <div class="title">{{sidebarData.options.favoritesTitle}}</div>
+    <div
+      *ngIf="favorites.length > 0 && sidebarData.options.expand"
+      class="wrapper favorites">
+      <div class="title">{{ sidebarData.options.favoritesTitle }}</div>
       <ng-container
         *ngTemplateOutlet="
-            dataTemplate;
-            context: { $implicit: favorites }
-          "></ng-container>
+          dataTemplate;
+          context: { $implicit: favorites }
+        "></ng-container>
     </div>
 
     <!-- Sidebar Items -->
     <div
       [class]="'wrapper ' + data.cssClass"
-      [ngClass]="{'collapsed': !sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'}"
+      [ngClass]="{
+        collapsed:
+          !sidebarData.options.expand &&
+          sidebarData.options.viewMode !== 'mobile',
+      }"
       *ngFor="let data of sidebarData.sidebarData">
       <ng-container *ngIf="data.visible">
         <div *ngIf="sidebarData.options.expand" class="title">
@@ -103,18 +109,21 @@
         <ng-container *ngIf="sidebarData.options.expand">
           <ng-container
             *ngTemplateOutlet="
-                dataTemplate;
-                context: { $implicit: data.data }
-              "></ng-container>
+              dataTemplate;
+              context: { $implicit: data.data }
+            "></ng-container>
         </ng-container>
         <ng-container
-          *ngIf="!sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'">
+          *ngIf="
+            !sidebarData.options.expand &&
+            sidebarData.options.viewMode !== 'mobile'
+          ">
           ...
           <ng-container
             *ngTemplateOutlet="
-                collapseDataTemplate;
-                context: { $implicit: data.data }
-              "></ng-container>
+              collapseDataTemplate;
+              context: { $implicit: data.data }
+            "></ng-container>
         </ng-container>
       </ng-container>
     </div>
@@ -125,9 +134,9 @@
   <ng-container *ngIf="sidebarData.userOptions?.position == 'bottom'">
     <ng-container
       *ngTemplateOutlet="
-          userTemplate;
-          context: { $implicit: sidebarData.userOptions }
-        "></ng-container>
+        userTemplate;
+        context: { $implicit: sidebarData.userOptions }
+      "></ng-container>
   </ng-container>
 
   <ng-template #dataTemplate let-nodes>
@@ -155,22 +164,21 @@
         <div class="favorite-container" (click)="onFavoriteNode(node)">
           <al-icon
             *ngIf="
-                sidebarData.options.favorites &&
-                (!node.children ||
-                  (node.children && node.children?.length == 0))
-              "
+              sidebarData.options.favorites &&
+              (!node.children || (node.children && node.children?.length == 0))
+            "
             class="node-favorite"
             [src]="
-                node.isFavorited
-                  ? 'assets/icons/favorite.svg'
-                  : 'assets/icons/favorite-outline.svg'
-              "
+              isOnFav(node.name)
+                ? 'assets/icons/favorite.svg'
+                : 'assets/icons/favorite-outline.svg'
+            "
             alt="Favorite">
           </al-icon>
         </div>
         <ng-container *ngIf="nodeContent">
           <ng-container
-            *ngTemplateOutlet="nodeContent;context: { $implicit: node }">
+            *ngTemplateOutlet="nodeContent; context: { $implicit: node }">
           </ng-container>
         </ng-container>
       </div>
@@ -178,9 +186,9 @@
         *ngIf="node.children && node.children.length > 0 && node.isExpanded">
         <ng-container
           *ngTemplateOutlet="
-              dataTemplate;
-              context: { $implicit: node.children }
-            "></ng-container>
+            dataTemplate;
+            context: { $implicit: node.children }
+          "></ng-container>
       </ng-container>
     </div>
   </ng-template>
@@ -189,9 +197,9 @@
     <div
       class="user-container"
       [ngClass]="{
-          open: sidebarData.options.expand,
-          close: !sidebarData.options.expand,
-        }">
+        open: sidebarData.options.expand,
+        close: !sidebarData.options.expand,
+      }">
       <div class="user" [ngClass]="user.cssClass">
         <al-icon [src]="user.avatar" />
         <div *ngIf="sidebarData.options.expand" class="name">
@@ -206,15 +214,17 @@
 
   <ng-template #collapseDataTemplate let-nodes>
     <ng-container *ngFor="let node of nodes">
-      <al-icon *ngIf="node.icon" class="collapsed-node-icon"
+      <al-icon
+        *ngIf="node.icon"
+        class="collapsed-node-icon"
         [src]="node.icon"></al-icon>
       <ng-container
         *ngIf="node.children && node.children.length > 0 && node.isExpanded">
         <ng-container
           *ngTemplateOutlet="
-          collapseDataTemplate;
-          context: { $implicit: node.children }
-        "></ng-container>
+            collapseDataTemplate;
+            context: { $implicit: node.children }
+          "></ng-container>
       </ng-container>
     </ng-container>
   </ng-template>

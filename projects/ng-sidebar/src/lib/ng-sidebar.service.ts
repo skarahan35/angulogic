@@ -331,7 +331,7 @@ export class NgSidebarService {
   changeTheme() {
     if (this.sidebarData.options.theme === 'light') {
       this.sidebarData.options.theme = 'dark';
-    }else{
+    } else {
       this.sidebarData.options.theme = 'light';
     }
   }

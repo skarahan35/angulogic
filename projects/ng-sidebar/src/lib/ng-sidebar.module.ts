@@ -7,7 +7,12 @@ import { TogglerDirective } from './toggler.directive';
 import { ThemeTogglerComponent } from './component/theme-toggler/theme-toggler.component';
 
 @NgModule({
-  declarations: [NgSidebarComponent, AlIconComponent, TogglerDirective, ThemeTogglerComponent],
+  declarations: [
+    NgSidebarComponent,
+    AlIconComponent,
+    TogglerDirective,
+    ThemeTogglerComponent,
+  ],
   imports: [CommonModule, NgStyle, HttpClientModule],
   exports: [NgSidebarComponent, TogglerDirective, ThemeTogglerComponent],
 })
