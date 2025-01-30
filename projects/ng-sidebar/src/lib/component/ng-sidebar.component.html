@@ -1,236 +1,214 @@
-<div
-  [class]="'ng-sidebar ' + sidebarData.options.cssClass"
-  #sidebar
-  id="ng-sidebar"
-  [style.width]="
-    sidebarData.options.expand
-      ? sidebarData.options.width + 'px'
-      : sidebarData.options.viewMode === 'mobile'
-        ? '0px'
-        : 'var(--collapse-width)'
-  "
-  [style.maxWidth]="
-    sidebarData.options.expand ? sidebarData.options.maxWidth + 'px' : 'unset'
-  "
-  [style.minWidth]="
-    sidebarData.options.expand ? sidebarData.options.minWidth + 'px' : 'unset'
-  "
-  [ngClass]="{
-    collapsed: !sidebarData.options.expand,
-    transition: !ngSidebarService.isResizing,
-  }"
-  (mouseenter)="onEnter()"
-  (mouseleave)="onLeave()">
-  <ng-container
-    *ngIf="
+ <ng-container
+  *ngIf="
       sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
     ">
-    <div
-      *ngIf="sidebarData.options.resize && this.sidebarData.options.expand"
-      class="resizer"
-      (mousedown)="ngSidebarService.resize(sidebarData)"
-      [ngClass]="{ active: ngSidebarService.isResizing }"></div>
+  <div
+    *ngIf="sidebarData.options.resize && this.sidebarData.options.expand"
+    class="resizer"
+    (mousedown)="ngSidebarService.resize(sidebarData)"
+    [ngClass]="{ active: ngSidebarService.isResizing }"></div>
 
-    <div class="banner">
-      <div *ngIf="sidebarData.bannerOptions" class="banner-container">
-        <al-icon
-          *ngIf="sidebarData.bannerOptions.logo"
-          [src]="sidebarData.bannerOptions.logo"
-          (click)="onBannerClick('logo')"
-          class="logo" />
-        <div
-          *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
-          class="title text-owerflow"
-          (click)="onBannerClick('title')">
-          {{ sidebarData.bannerOptions.title }}
-        </div>
-      </div>
-
+  <div class="banner">
+    <div *ngIf="sidebarData.bannerOptions" class="banner-container">
       <al-icon
-        *ngIf="sidebarData.options.viewMode === 'toggle'"
-        sidebarToggler
-        class="toggle-icon"
-        [src]="
+        *ngIf="sidebarData.bannerOptions.logo"
+        [src]="sidebarData.bannerOptions.logo"
+        (click)="onBannerClick('logo')"
+        class="logo" />
+      <div
+        *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
+        class="title text-owerflow"
+        (click)="onBannerClick('title')">
+        {{ sidebarData.bannerOptions.title }}
+      </div>
+    </div>
+
+    <al-icon
+      *ngIf="sidebarData.options.viewMode === 'toggle'"
+      sidebarToggler
+      class="toggle-icon"
+      [src]="
           sidebarData.options.expand
             ? sidebarData.options.toggleCollapseIcon
             : sidebarData.options.toggleExpandIcon
         " />
 
-      <al-icon
-        *ngIf="sidebarData.options.viewMode === 'mobile'"
-        sidebarToggler
-        class="toggle-icon mobile"
-        [src]="sidebarData.options.closeIcon" />
+    <al-icon
+      *ngIf="sidebarData.options.viewMode === 'mobile'"
+      sidebarToggler
+      class="toggle-icon mobile"
+      [src]="sidebarData.options.closeIcon" />
 
-      <al-icon
-        *ngIf="sidebarData.options.viewMode === 'hover'"
-        (click)="ngSidebarService.togglePin()"
-        class="toggle-icon"
-        [src]="
+    <al-icon
+      *ngIf="sidebarData.options.viewMode === 'hover'"
+      (click)="togglePin()"
+      class="toggle-icon"
+      [src]="
           sidebarData.options.pinned
             ? sidebarData.options.unpinIcon
             : sidebarData.options.pinIcon
         " />
-      <ng-content select="[al-sidebar-banner]"></ng-content>
-    </div>
+    <ng-content select="[al-sidebar-banner]"></ng-content>
+  </div>
 
-    <ng-content select="[al-sidebar-top-user]"></ng-content>
-    <ng-container *ngIf="sidebarData.userOptions?.position == 'top'">
-      <ng-container
-        *ngTemplateOutlet="
+  <ng-content select="[al-sidebar-top-user]"></ng-content>
+  <ng-container *ngIf="sidebarData.userOptions?.position == 'top'">
+    <ng-container
+      *ngTemplateOutlet="
           userTemplate;
           context: { $implicit: sidebarData.userOptions }
         "></ng-container>
-    </ng-container>
+  </ng-container>
 
-    <div
-      class="search"
-      *ngIf="sidebarData.options.search && sidebarData.options.expand"
-      [ngClass]="sidebarData.searchOptions?.cssClass">
-      <al-icon class="search-icon" src="assets/icons/search.svg" />
-      <input
-        #searchInput
-        (keyup)="onSearch($event)"
-        [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
-        type="text" />
-      <al-icon
-        *ngIf="searchInput.value.length > 0"
-        (click)="onCancelSearch(searchInput)"
-        class="cancel-icon"
-        src="assets/icons/cancel.svg"
-        alt />
+  <div
+    class="search"
+    *ngIf="sidebarData.options.search && sidebarData.options.expand"
+    [ngClass]="sidebarData.searchOptions?.cssClass">
+    <al-icon class="search-icon" src="assets/icons/search.svg" />
+    <input
+      #searchInput
+      (keyup)="onSearch($event)"
+      [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
+      type="text" />
+    <al-icon
+      *ngIf="searchInput.value.length > 0"
+      (click)="onCancelSearch(searchInput)"
+      class="cancel-icon"
+      src="assets/icons/cancel.svg"
+      alt />
 
-      <ng-content select="[al-sidebar-search]"></ng-content>
-    </div>
+    <ng-content select="[al-sidebar-search]"></ng-content>
+  </div>
 
-    <div class="menu-container">
-      <!-- Favorites Section -->
-      <div *ngIf="favorites.length > 0" class="wrapper favorites">
-        <div class="title">{{sidebarData.options.favoritesTitle}}</div>
-        <ng-container
-          *ngTemplateOutlet="
+  <div class="menu-container">
+    <!-- Favorites Section -->
+    <div *ngIf="favorites.length > 0 && sidebarData.options.expand" class="wrapper favorites">
+      <div class="title">{{sidebarData.options.favoritesTitle}}</div>
+      <ng-container
+        *ngTemplateOutlet="
             dataTemplate;
             context: { $implicit: favorites }
           "></ng-container>
-      </div>
+    </div>
 
-      <!-- Sidebar Items -->
-      <div
-        [class]="'wrapper ' + data.cssClass"
-        [ngClass]="{'collapsed': !sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'}"
-        *ngFor="let data of sidebarData.sidebarData">
-        <ng-container *ngIf="data.visible">
-          <div *ngIf="sidebarData.options.expand" class="title">
-            {{ data.title }}
-          </div>
-          <ng-container *ngIf="sidebarData.options.expand">
-            <ng-container
-              *ngTemplateOutlet="
+    <!-- Sidebar Items -->
+    <div
+      [class]="'wrapper ' + data.cssClass"
+      [ngClass]="{'collapsed': !sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'}"
+      *ngFor="let data of sidebarData.sidebarData">
+      <ng-container *ngIf="data.visible">
+        <div *ngIf="sidebarData.options.expand" class="title">
+          {{ data.title }}
+        </div>
+        <ng-container *ngIf="sidebarData.options.expand">
+          <ng-container
+            *ngTemplateOutlet="
                 dataTemplate;
                 context: { $implicit: data.data }
               "></ng-container>
-          </ng-container>
+        </ng-container>
+        <ng-container
+          *ngIf="!sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'">
+          ...
           <ng-container
-            *ngIf="!sidebarData.options.expand && sidebarData.options.viewMode !=='mobile'">
-            ...
-            <ng-container
-              *ngTemplateOutlet="
+            *ngTemplateOutlet="
                 collapseDataTemplate;
                 context: { $implicit: data.data }
               "></ng-container>
-          </ng-container>
         </ng-container>
-      </div>
-      <ng-content select="[al-sidebar-menu]"></ng-content>
+      </ng-container>
     </div>
+    <ng-content select="[al-sidebar-menu]"></ng-content>
+  </div>
 
-    <ng-content select="[al-sidebar-bottom-user]"></ng-content>
-    <ng-container *ngIf="sidebarData.userOptions?.position == 'bottom'">
-      <ng-container
-        *ngTemplateOutlet="
+  <ng-content select="[al-sidebar-bottom-user]"></ng-content>
+  <ng-container *ngIf="sidebarData.userOptions?.position == 'bottom'">
+    <ng-container
+      *ngTemplateOutlet="
           userTemplate;
           context: { $implicit: sidebarData.userOptions }
         "></ng-container>
-    </ng-container>
+  </ng-container>
 
-    <ng-template #dataTemplate let-nodes>
-      <div class="node" *ngFor="let node of nodes">
-        <div class="node-wrapper">
-          <div
-            class="node-info"
-            (click)="onMenuClick(node, $event)"
-            [ngClass]="{ 'no-child': !node.children, active: node.active }">
-            <div class="node-title">
-              <div class="icon-container">
-                <al-icon [src]="node.icon ?? 'assets/icons/circle-dot.svg'" />
-              </div>
-              {{ node.name }}
+  <ng-template #dataTemplate let-nodes>
+    <div class="node" *ngFor="let node of nodes">
+      <div class="node-wrapper">
+        <div
+          class="node-info"
+          (click)="onMenuClick(node, $event)"
+          [ngClass]="{ 'no-child': !node.children, active: node.active }">
+          <div class="node-title">
+            <div class="icon-container">
+              <al-icon [src]="node.icon ?? 'assets/icons/circle-dot.svg'" />
             </div>
-            <div class="node-icons">
-              <div *ngIf="node.children">
-                <al-icon
-                  class="node-toggler transition"
-                  [ngClass]="{ expand: node.isExpanded }"
-                  src="assets/icons/node-toggle.svg"></al-icon>
-              </div>
+            {{ node.name }}
+          </div>
+          <div class="node-icons">
+            <div *ngIf="node.children">
+              <al-icon
+                class="node-toggler transition"
+                [ngClass]="{ expand: node.isExpanded }"
+                src="assets/icons/node-toggle.svg"></al-icon>
             </div>
           </div>
-          <div class="favorite-container" (click)="onFavoriteNode(node)">
-            <al-icon
-              *ngIf="
+        </div>
+        <div class="favorite-container" (click)="onFavoriteNode(node)">
+          <al-icon
+            *ngIf="
                 sidebarData.options.favorites &&
                 (!node.children ||
                   (node.children && node.children?.length == 0))
               "
-              class="node-favorite"
-              [src]="
+            class="node-favorite"
+            [src]="
                 node.isFavorited
                   ? 'assets/icons/favorite.svg'
                   : 'assets/icons/favorite-outline.svg'
               "
-              alt="Favorite">
-            </al-icon>
-          </div>
-          <ng-container *ngIf="nodeContent">
-            <ng-container
-              *ngTemplateOutlet="nodeContent;context: { $implicit: node }">
-            </ng-container>
-          </ng-container>
+            alt="Favorite">
+          </al-icon>
         </div>
-        <ng-container
-          *ngIf="node.children && node.children.length > 0 && node.isExpanded">
+        <ng-container *ngIf="nodeContent">
           <ng-container
-            *ngTemplateOutlet="
+            *ngTemplateOutlet="nodeContent;context: { $implicit: node }">
+          </ng-container>
+        </ng-container>
+      </div>
+      <ng-container
+        *ngIf="node.children && node.children.length > 0 && node.isExpanded">
+        <ng-container
+          *ngTemplateOutlet="
               dataTemplate;
               context: { $implicit: node.children }
             "></ng-container>
-        </ng-container>
-      </div>
-    </ng-template>
+      </ng-container>
+    </div>
+  </ng-template>
 
-    <ng-template #userTemplate let-user>
-      <div
-        class="user-container"
-        [ngClass]="{
+  <ng-template #userTemplate let-user>
+    <div
+      class="user-container"
+      [ngClass]="{
           open: sidebarData.options.expand,
           close: !sidebarData.options.expand,
         }">
-        <div class="user" [ngClass]="user.cssClass">
-          <al-icon [src]="user.avatar" />
-          <div *ngIf="sidebarData.options.expand" class="name">
-            {{ user.name }}
-          </div>
-        </div>
-        <div class="theme-toggler">
-          <al-theme-toggler></al-theme-toggler>
+      <div class="user" [ngClass]="user.cssClass">
+        <al-icon [src]="user.avatar" />
+        <div *ngIf="sidebarData.options.expand" class="name">
+          {{ user.name }}
         </div>
       </div>
-    </ng-template>
+      <div class="theme-toggler">
+        <al-theme-toggler></al-theme-toggler>
+      </div>
+    </div>
+  </ng-template>
 
-    <ng-template #collapseDataTemplate let-nodes>
-      <ng-container *ngFor="let node of nodes">
-        <al-icon *ngIf="node.icon" class="collapsed-node-icon" [src]="node.icon"></al-icon>
-        <ng-container
+  <ng-template #collapseDataTemplate let-nodes>
+    <ng-container *ngFor="let node of nodes">
+      <al-icon *ngIf="node.icon" class="collapsed-node-icon"
+        [src]="node.icon"></al-icon>
+      <ng-container
         *ngIf="node.children && node.children.length > 0 && node.isExpanded">
         <ng-container
           *ngTemplateOutlet="
@@ -238,7 +216,6 @@
           context: { $implicit: node.children }
         "></ng-container>
       </ng-container>
-      </ng-container>
-    </ng-template>
-  </ng-container>
-</div>
+    </ng-container>
+  </ng-template>
+</ng-container>

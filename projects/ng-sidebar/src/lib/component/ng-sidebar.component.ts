@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, DoCheck, HostBinding, HostListener, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import {
   ExpandClickEvent,
   MenuClickEvent,
@@ -16,34 +16,54 @@ import { Subscription } from 'rxjs';
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
 })
-export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
+export class NgSidebarComponent implements DoCheck, OnInit {
   sidebarData!: SidebarModel;
   SIDEBAR_DATA!: SidebarModel;
   favorites: MenuData[] = [];
-  private themeSubscription!: Subscription;
   @Input({ required: true }) set options(val: SidebarModel) {
     this.sidebarData = this.ngSidebarService.initilazeSidebarData(val);
     if (!val.options.theme) {
       val.options.theme = 'light';
     }
-    this.ngSidebarService.changeTheme(val.options.theme);
     this.SIDEBAR_DATA = this.deepClone(this.sidebarData)
   }
   @Input() nodeContent?: TemplateRef<any>;
+
+  @HostBinding('class.ng-sidebar') ngSidebarClass = true;
+  @HostBinding('class.collapsed') get isCollapsed() {
+    return !this.sidebarData.options.expand;
+  }
+  @HostBinding('class.transition') get isTransition() {
+    return !this.ngSidebarService.isResizing;
+  }
+  @HostBinding('class.al-dark-theme') get isDarkTheme() {
+    return this.sidebarData.options.theme === 'dark';
+  }
+
+  @HostBinding('style.width') get sidebarWidth() {
+    return this.sidebarData.options.expand
+      ? `${this.sidebarData.options.width}px`
+      : this.sidebarData.options.viewMode === 'mobile'
+      ? '0px'
+      : 'var(--collapse-width)';
+  }
+
+  @HostBinding('style.maxWidth') get sidebarMaxWidth() {
+    return this.sidebarData.options.expand
+      ? `${this.sidebarData.options.maxWidth}px`
+      : 'unset';
+  }
+
+  @HostBinding('style.minWidth') get sidebarMinWidth() {
+    return this.sidebarData.options.expand
+      ? `${this.sidebarData.options.minWidth}px`
+      : 'unset';
+  }
+
   constructor(public ngSidebarService: NgSidebarService) {}
 
   ngOnInit(): void {
-    this.themeSubscription = this.ngSidebarService.themeChange$.subscribe(
-      theme => {
-        this.sidebarData.options.theme = theme;
-        this.sidebarData.options?.onThemeChange?.(theme);
-      }
-    );
     this.updateFavorites();
-  }
-
-  ngOnDestroy(): void {
-    this.themeSubscription.unsubscribe();
   }
 
   ngDoCheck(): void {
@@ -68,7 +88,6 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
   async onSearch(event: KeyboardEvent) {
     const element = event.currentTarget as HTMLInputElement;
     const searchValue = element.value.trim();
-
     let searchStartEvent: SearchStartEvent = {
       nativeElement: element,
       searchValue: searchValue,
@@ -115,6 +134,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
         }
       } else {
         this.sidebarData = this.deepClone(this.SIDEBAR_DATA);
+        this.ngSidebarService.sidebarData = this.sidebarData;
       }
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
@@ -143,6 +163,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
 
     if (!searchStartEvent.cancel) {
       this.sidebarData = this.deepClone(this.SIDEBAR_DATA);
+      this.ngSidebarService.sidebarData = this.sidebarData;
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
           menuData: this.SIDEBAR_DATA.sidebarData,
@@ -180,6 +201,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
     if (event.cancel) return;
   }
 
+  @HostListener('mouseenter')
   onEnter() {
     if (
       this.sidebarData.options.viewMode === 'hover' &&
@@ -188,6 +210,7 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       this.sidebarData.options.expand = true;
     }
   }
+  @HostListener('mouseleave')
   onLeave() {
     if (
       this.sidebarData.options.viewMode === 'hover' &&
@@ -251,6 +274,12 @@ export class NgSidebarComponent implements OnDestroy, DoCheck, OnInit {
       }
     });
   }
+
+  togglePin() {
+    this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
+  }
+  
+
   private deepClone<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') {
       return obj;
