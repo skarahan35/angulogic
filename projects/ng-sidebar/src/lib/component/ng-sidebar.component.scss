@@ -26,69 +26,69 @@
   --secondary-3: #f3f3f3;
   --default-font-family: 'Inter', sans-serif;
   --collapsed-banner-padding-right: 1rem;
-  --resizer-color:var(--primary);
-  --resizer-width:5px;
+  --resizer-color: var(--primary);
+  --resizer-width: 5px;
   --resizer-height: 100%;
   --resizer-right: -3px;
   --resiver-top: 0;
-  --toggle-border-radius:var(--radius);
-  --toggle-border-color:var(--secondary);
-  --toggle-bg-color:var(--bg-color);
-  --toggle-border-width:1px;
-  --search-width:100%;
-  --search-icon-left:0.75rem;
-  --search-icon-top:50%
-  --search-input-border-radius:var(--radius);
-  --search-input-border-color:var(--secondary);
-  --search-input-border-width:1px;
+  --toggle-border-radius: var(--radius);
+  --toggle-border-color: var(--secondary);
+  --toggle-bg-color: var(--bg-color);
+  --toggle-border-width: 1px;
+  --search-width: 100%;
+  --search-icon-left: 0.75rem;
+  --search-icon-top: 50%;
+  --search-input-border-radius: var(--radius);
+  --search-input-border-color: var(--secondary);
+  --search-input-border-width: 1px;
   --search-input-bg-color: #f6f8fa;
   --search-input-color: #333333;
   --search-input-width: 100%;
-  --search-input-height:2rem;
-  --search-input-padding:0px 1.5rem;
-  --search-input-margin:0px 0.5rem;
-  --search-cancel-icon-right:0.75rem;
-  --search-cancel-icon-top:50%;
-  --menu-padding:0px 1rem;
-  --menu-margin:1rem 0px;
-  --menu-height:100%;
+  --search-input-height: 2rem;
+  --search-input-padding: 0px 1.5rem;
+  --search-input-margin: 0px 0.5rem;
+  --search-cancel-icon-right: 0.75rem;
+  --search-cancel-icon-top: 50%;
+  --menu-padding: 0px 1rem;
+  --menu-margin: 1rem 0px;
+  --menu-height: 100%;
   --menu-wrapper-margin-bottom: 1rem;
-  --menu-wrapper-collapsed-margin-bottom:0px;
+  --menu-wrapper-collapsed-margin-bottom: 0px;
   --menu-wrapper-collapsed-color: var(--secondary);
-  --menu-wrapper-title-font-size:20px;
-  --menu-wrapper-title-padding-bottom:0.5rem;
-  --menu-wrapper-node-margin-left:1rem;
-  --menu-wrapper-node-margin-top:0.2rem;
-  --menu-wrapper-node-wrapper-gap:1rem;
-  --menu-wrapper-node-wrapper-info-padding:0.5rem;
+  --menu-wrapper-title-font-size: 20px;
+  --menu-wrapper-title-padding-bottom: 0.5rem;
+  --menu-wrapper-node-margin-left: 1rem;
+  --menu-wrapper-node-margin-top: 0.2rem;
+  --menu-wrapper-node-wrapper-gap: 1rem;
+  --menu-wrapper-node-wrapper-info-padding: 0.5rem;
   --menu-wrapper-node-wrapper-info-border-radius: var(--radius);
   --menu-wrapper-node-wrapper-active-background-color: var(--primary);
   --menu-wrapper-node-wrapper-active-color: var(--bg-color);
-  --menu-wrapper-node-wrapper-after-width:0px;
-  --menu-wrapper-node-wrapper-after-height:1px;
+  --menu-wrapper-node-wrapper-after-width: 0px;
+  --menu-wrapper-node-wrapper-after-height: 1px;
   --menu-wrapper-node-wrapper-after-background-color: var(--primary);
-  --menu-wrapper-node-wrapper-after-bottom:0;
-  --menu-wrapper-node-wrapper-after-left:10%;
-  --menu-wrapper-node-wrapper-title-gap:0.5rem;
-  --menu-wrapper-node-wrapper-title-icon-width:1rem;
-  --menu-wrapper-node-wrapper-title-icon-height:1rem;
+  --menu-wrapper-node-wrapper-after-bottom: 0;
+  --menu-wrapper-node-wrapper-after-left: 10%;
+  --menu-wrapper-node-wrapper-title-gap: 0.5rem;
+  --menu-wrapper-node-wrapper-title-icon-width: 1rem;
+  --menu-wrapper-node-wrapper-title-icon-height: 1rem;
   --menu-wrapper-node-wrapper-node-icons-gap: 1.5rem;
-  --menu-wrapper-node-wrapper-favorite-node-margin:0;
-  --user-open-theme-toggler-margin-right:1rem;
-  --user-close-padding:1rem;
-  --user-gap:1rem;
-  --user-padding:1rem;
-  --user-icon-width:2rem;
-  --user-icon-height:2rem;
-  --user-icon-border-radius:50%;
+  --menu-wrapper-node-wrapper-favorite-node-margin: 0;
+  --user-open-theme-toggler-margin-right: 1rem;
+  --user-close-padding: 1rem;
+  --user-gap: 1rem;
+  --user-padding: 1rem;
+  --user-icon-width: 2rem;
+  --user-icon-height: 2rem;
+  --user-icon-border-radius: 50%;
   --user-name-font-weight: bold;
   --user-name-font-size: large;
-  --collapsed-node-icon-width:2rem;
-  --collapsed-node-icon-height:2rem;
-  --collapsed-node-icon-margin:0.5rem;
+  --collapsed-node-icon-width: 2rem;
+  --collapsed-node-icon-height: 2rem;
+  --collapsed-node-icon-margin: 0.5rem;
   --collapsed-node-icon-color: var(--primary);
-  --scrollbar-height:0.4rem;
-  --scrollbar-width:0.4rem;
+  --scrollbar-height: 0.4rem;
+  --scrollbar-width: 0.4rem;
   --scrollbar-track-border-radius: var(--radius);
   --scrollbar-track-background-color: transparent;
   --scrollbar-thumb-border-radius: 5px;
@@ -109,7 +109,6 @@
   --banner-toggle-icon-right: 0;
   --banner-toggle-icon-top: 50%;
 
-
   font-family: var(--default-font-family);
   position: fixed;
   top: 0;
@@ -124,8 +123,7 @@
   flex-direction: column;
   border-right: 1px solid var(--secondary);
 
-
-  &.al-dark-theme{
+  &.al-dark-theme {
     --bg-color: #121212;
     --text-color: #ffffffde;
     --search-bg-color: #333333;
@@ -136,7 +134,7 @@
     --secondary: #3a3a3a;
     --secondary-2: #444444;
     --secondary-3: #555555;
-    --resizer-color:var(--primary);
+    --resizer-color: var(--primary);
   }
 
   &.collapsed {
@@ -231,7 +229,8 @@
 
     input {
       width: var(--search-input-width);
-      border: var(--search-input-border-width) solid var(--search-input-border-color);
+      border: var(--search-input-border-width) solid
+        var(--search-input-border-color);
       background-color: var(--search-input-bg-color);
       color: var(--search-input-color);
       height: var(--search-input-height);
@@ -309,7 +308,9 @@
               background-color 0.3s ease;
 
             &.active {
-              background-color: var(--menu-wrapper-node-wrapper-active-background-color);
+              background-color: var(
+                --menu-wrapper-node-wrapper-active-background-color
+              );
               font-weight: bold;
               color: var(--menu-wrapper-node-wrapper-active-color);
             }
@@ -330,7 +331,9 @@
               content: '';
               width: var(--menu-wrapper-node-wrapper-after-width);
               height: var(--menu-wrapper-node-wrapper-after-height);
-              background-color: var(--menu-wrapper-node-wrapper-after-background-color);
+              background-color: var(
+                --menu-wrapper-node-wrapper-after-background-color
+              );
               position: absolute;
               bottom: var(--menu-wrapper-node-wrapper-after-bottom);
               left: var(--menu-wrapper-node-wrapper-after-left);
