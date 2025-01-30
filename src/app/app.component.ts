@@ -73,6 +73,7 @@ export class AppComponent {
                     name: 'User Stats',
                     route: 'test',
                     visible: true,
+                    isFavorited: true,
                   },
                   {
                     name: 'Sales Stats',

@@ -53,7 +53,6 @@ export interface MenuData {
   onToggle?: (event: MenuClickEvent) => void;
 }
 
-
 export interface SidebarOptions {
   resize?: boolean; //+
   expand?: boolean; //+

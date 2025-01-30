@@ -1,6 +1,13 @@
-import { Component, DoCheck, HostBinding, HostListener, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import {
-  ExpandClickEvent,
+  Component,
+  DoCheck,
+  HostBinding,
+  HostListener,
+  Input,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
+import {
   MenuClickEvent,
   MenuData,
   SearchEndEvent,
@@ -9,7 +16,6 @@ import {
   SidebarModel,
 } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'ng-sidebar',
@@ -25,7 +31,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
     if (!val.options.theme) {
       val.options.theme = 'light';
     }
-    this.SIDEBAR_DATA = this.deepClone(this.sidebarData)
+    this.SIDEBAR_DATA = this.deepClone(this.sidebarData);
   }
   @Input() nodeContent?: TemplateRef<any>;
 
@@ -44,8 +50,8 @@ export class NgSidebarComponent implements DoCheck, OnInit {
     return this.sidebarData.options.expand
       ? `${this.sidebarData.options.width}px`
       : this.sidebarData.options.viewMode === 'mobile'
-      ? '0px'
-      : 'var(--collapse-width)';
+        ? '0px'
+        : 'var(--collapse-width)';
   }
 
   @HostBinding('style.maxWidth') get sidebarMaxWidth() {
@@ -243,16 +249,23 @@ export class NgSidebarComponent implements DoCheck, OnInit {
     } else {
       setTimeout(() => {
         Array.from(parentNode!.parentElement!.parentElement!.children)
-        .filter(child => child.classList.contains('node'))
-        .forEach(child => child.classList.add('in-left'));
+          .filter(child => child.classList.contains('node'))
+          .forEach(child => child.classList.add('in-left'));
       }, 1);
       node.isExpanded = !node.isExpanded;
     }
   }
 
   onFavoriteNode(node: MenuData) {
-    node.isFavorited = !node.isFavorited;
-    this.updateFavorites();
+    if (!this.favorites.some(fav => fav.name === node.name)) {
+      this.favorites.push(node);
+    } else {
+      this.favorites = this.favorites.filter(fav => fav.name !== node.name);
+    }
+  }
+
+  isOnFav(name: string) {
+    return this.favorites.some(fav => fav.name === name);
   }
 
   updateFavorites() {
@@ -278,7 +291,6 @@ export class NgSidebarComponent implements DoCheck, OnInit {
   togglePin() {
     this.sidebarData.options.pinned = !this.sidebarData.options.pinned;
   }
-  
 
   private deepClone<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') {
