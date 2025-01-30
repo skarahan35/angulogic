@@ -7,7 +7,6 @@ import {
   SidebarModel,
 } from './sidebar.model';
 import { NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -18,9 +17,6 @@ export class NgSidebarService {
   isResizing: boolean = false;
   sidebarData!: SidebarModel;
   private observer!: MutationObserver;
-  private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');
-  themeChange$ = this.themeSubject.asObservable();
-
   constructor(
     public router: Router,
     private http: HttpClient
@@ -133,7 +129,6 @@ export class NgSidebarService {
   setAutoPosition() {
     const divElement = document.getElementById('ng-sidebar');
     if (!divElement) {
-      console.error('Resizable div not found!');
       return;
     }
 
@@ -333,24 +328,11 @@ export class NgSidebarService {
     });
   }
 
-  changeTheme(theme?: 'light' | 'dark') {
-    if (theme) {
-      if (theme === 'dark') {
-        if (!document.body.classList.contains('al-dark-theme')) {
-          document.body.classList.add('al-dark-theme');
-        }
-      } else {
-        document.body.classList.remove('al-dark-theme');
-      }
-      this.themeSubject.next(theme);
-    } else {
-      if (document.body.classList.contains('al-dark-theme')) {
-        document.body.classList.remove('al-dark-theme');
-        this.themeSubject.next('light');
-      } else {
-        document.body.classList.add('al-dark-theme');
-        this.themeSubject.next('dark');
-      }
+  changeTheme() {
+    if (this.sidebarData.options.theme === 'light') {
+      this.sidebarData.options.theme = 'dark';
+    }else{
+      this.sidebarData.options.theme = 'light';
     }
   }
 
