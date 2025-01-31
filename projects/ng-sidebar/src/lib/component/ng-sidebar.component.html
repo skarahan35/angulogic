@@ -1,20 +1,27 @@
+<!-- Sidebar Wrapper -->
 <ng-container
   *ngIf="
     sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
   ">
+  <!-- Sidebar Resizer -->
+  <!-- Allows users to resize the sidebar when it is expanded -->
   <div
     *ngIf="sidebarData.options.resize && this.sidebarData.options.expand"
     class="resizer"
     (mousedown)="ngSidebarService.resize(sidebarData)"
     [ngClass]="{ active: ngSidebarService.isResizing }"></div>
 
+  <!-- Sidebar Banner (Logo & Title) -->
   <div class="banner">
     <div *ngIf="sidebarData.bannerOptions" class="banner-container">
+      <!-- Sidebar Logo -->
       <al-icon
         *ngIf="sidebarData.bannerOptions.logo"
         [src]="sidebarData.bannerOptions.logo"
         (click)="onBannerClick('logo')"
         class="logo" />
+
+      <!-- Sidebar Title -->
       <div
         *ngIf="sidebarData.bannerOptions.title && sidebarData.options.expand"
         class="title text-owerflow"
@@ -23,6 +30,7 @@
       </div>
     </div>
 
+    <!-- Sidebar Toggle Buttons -->
     <al-icon
       *ngIf="sidebarData.options.viewMode === 'toggle'"
       sidebarToggler
@@ -48,28 +56,37 @@
           ? sidebarData.options.unpinIcon
           : sidebarData.options.pinIcon
       " />
+
     <ng-content select="[al-sidebar-banner]"></ng-content>
   </div>
 
+  <!-- User Profile Section (Top) -->
   <ng-content select="[al-sidebar-top-user]"></ng-content>
   <ng-container *ngIf="sidebarData.userOptions?.position == 'top'">
     <ng-container
       *ngTemplateOutlet="
         userTemplate;
         context: { $implicit: sidebarData.userOptions }
-      "></ng-container>
+      ">
+    </ng-container>
   </ng-container>
 
+  <!-- Search Bar -->
   <div
     class="search"
     *ngIf="sidebarData.options.search && sidebarData.options.expand"
     [ngClass]="sidebarData.searchOptions?.cssClass">
+    <!-- Search Icon -->
     <al-icon class="search-icon" src="assets/icons/search.svg" />
+
+    <!-- Search Input -->
     <input
       #searchInput
       (keyup)="onSearch($event)"
       [placeholder]="sidebarData.searchOptions?.placeholder ?? ''"
       type="text" />
+
+    <!-- Cancel Search Button -->
     <al-icon
       *ngIf="searchInput.value.length > 0"
       (click)="onCancelSearch(searchInput)"
@@ -80,6 +97,7 @@
     <ng-content select="[al-sidebar-search]"></ng-content>
   </div>
 
+  <!-- Sidebar Menu Items -->
   <div class="menu-container">
     <!-- Favorites Section -->
     <div
@@ -87,13 +105,11 @@
       class="wrapper favorites">
       <div class="title">{{ sidebarData.options.favoritesTitle }}</div>
       <ng-container
-        *ngTemplateOutlet="
-          dataTemplate;
-          context: { $implicit: favorites }
-        "></ng-container>
+        *ngTemplateOutlet="dataTemplate; context: { $implicit: favorites }">
+      </ng-container>
     </div>
 
-    <!-- Sidebar Items -->
+    <!-- Sidebar Sections & Items -->
     <div
       [class]="'wrapper ' + data.cssClass"
       [ngClass]="{
@@ -106,13 +122,15 @@
         <div *ngIf="sidebarData.options.expand" class="title">
           {{ data.title }}
         </div>
+
+        <!-- Expanded Menu Items -->
         <ng-container *ngIf="sidebarData.options.expand">
           <ng-container
-            *ngTemplateOutlet="
-              dataTemplate;
-              context: { $implicit: data.data }
-            "></ng-container>
+            *ngTemplateOutlet="dataTemplate; context: { $implicit: data.data }">
+          </ng-container>
         </ng-container>
+
+        <!-- Collapsed Menu Items -->
         <ng-container
           *ngIf="
             !sidebarData.options.expand &&
@@ -123,22 +141,26 @@
             *ngTemplateOutlet="
               collapseDataTemplate;
               context: { $implicit: data.data }
-            "></ng-container>
+            ">
+          </ng-container>
         </ng-container>
       </ng-container>
     </div>
     <ng-content select="[al-sidebar-menu]"></ng-content>
   </div>
 
+  <!-- User Profile Section (Bottom) -->
   <ng-content select="[al-sidebar-bottom-user]"></ng-content>
   <ng-container *ngIf="sidebarData.userOptions?.position == 'bottom'">
     <ng-container
       *ngTemplateOutlet="
         userTemplate;
         context: { $implicit: sidebarData.userOptions }
-      "></ng-container>
+      ">
+    </ng-container>
   </ng-container>
 
+  <!-- Templates for Menu Items & User Profile -->
   <ng-template #dataTemplate let-nodes>
     <div class="node" *ngFor="let node of nodes">
       <div class="node-wrapper">
@@ -161,6 +183,8 @@
             </div>
           </div>
         </div>
+
+        <!-- Favorite Icon -->
         <div class="favorite-container" (click)="onFavoriteNode(node)">
           <al-icon
             *ngIf="
@@ -176,23 +200,22 @@
             alt="Favorite">
           </al-icon>
         </div>
-        <ng-container *ngIf="nodeContent">
-          <ng-container
-            *ngTemplateOutlet="nodeContent; context: { $implicit: node }">
-          </ng-container>
-        </ng-container>
       </div>
+
+      <!-- Expandable Child Nodes -->
       <ng-container
         *ngIf="node.children && node.children.length > 0 && node.isExpanded">
         <ng-container
           *ngTemplateOutlet="
             dataTemplate;
             context: { $implicit: node.children }
-          "></ng-container>
+          ">
+        </ng-container>
       </ng-container>
     </div>
   </ng-template>
 
+  <!-- User Profile Template -->
   <ng-template #userTemplate let-user>
     <div
       class="user-container"
@@ -212,19 +235,24 @@
     </div>
   </ng-template>
 
+  <!-- Collapsed Sidebar Template -->
   <ng-template #collapseDataTemplate let-nodes>
     <ng-container *ngFor="let node of nodes">
+      <!-- Collapsed Menu Item Icon -->
       <al-icon
         *ngIf="node.icon"
         class="collapsed-node-icon"
         [src]="node.icon"></al-icon>
+
+      <!-- Recursively Render Child Nodes in Collapsed State -->
       <ng-container
         *ngIf="node.children && node.children.length > 0 && node.isExpanded">
         <ng-container
           *ngTemplateOutlet="
             collapseDataTemplate;
             context: { $implicit: node.children }
-          "></ng-container>
+          ">
+        </ng-container>
       </ng-container>
     </ng-container>
   </ng-template>
