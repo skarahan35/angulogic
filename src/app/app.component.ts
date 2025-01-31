@@ -53,14 +53,12 @@ export class AppComponent {
             icon: 'assets/icons/ts.png',
             route: '/dashboard',
             visible: true,
-            badge: 3,
             isExpanded: true,
             children: [
               {
                 name: 'Overview',
                 icon: 'assets/icons/overview.svg',
                 visible: true,
-                badge: 'New',
                 route: 'sidebar',
               },
               {
@@ -130,7 +128,6 @@ export class AppComponent {
             name: 'Monthly Reports',
             route: '/reports/monthly',
             visible: true,
-            badge: 7,
             onClick: element => {
               console.log('Monthly Reports clicked', element);
               element.cancel = false;
