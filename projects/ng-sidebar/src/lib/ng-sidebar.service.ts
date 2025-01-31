@@ -324,22 +324,22 @@ export class NgSidebarService {
    * @returns {MenuData[]} - The processed menu data with default values applied.
    */
   private initializeMenuData(menuData: MenuData[]): MenuData[] {
-    return menuData.map(item => ({
-      name: item.name,
-      icon: item.icon,
-      route: item.route,
-      visible: item.visible ?? true,
-      disabled: item.disabled ?? false,
-      isExpanded: item.isExpanded ?? false,
-      isFavorited: item.isFavorited ?? false,
-      cssClass: item.cssClass,
-      active: item.active ?? false,
-      children: item.children
-        ? this.initializeMenuData(item.children)
-        : undefined,
-      onClick: item.onClick,
-      onToggle: item.onToggle,
-    }));
+    return menuData.map(item => {
+      item['name'] = item['name'];
+      item['icon'] = item['icon'];
+      item['route'] = item['route'];
+      item['visible'] = item['visible'] ?? true;
+      item['disabled'] = item['disabled'] ?? false;
+      item['isExpanded'] = item['isExpanded'] ?? false;
+      item['isFavorited'] = item['isFavorited'] ?? false;
+      item['cssClass'] = item['cssClass'];
+      item['active'] = item['active'] ?? false;
+      item['children'] = item['children']
+        ? this.initializeMenuData(item['children'])
+        : undefined;
+      item['onClick'] = item['onClick'];
+      return item;
+    });
   }
 
   /**
