@@ -156,7 +156,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {'logo' | 'title'} element - The clicked banner element.
    */
-  onBannerClick(element: 'logo' | 'title'): void {
+  protected onBannerClick(element: 'logo' | 'title'): void {
     this.sidebarData.bannerOptions?.onClick?.(element);
   }
 
@@ -166,7 +166,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {'avatar' | 'name'} element - The clicked user profile element.
    */
-  onUserClick(element: 'avatar' | 'name'): void {
+  protected onUserClick(element: 'avatar' | 'name'): void {
     this.sidebarData.userOptions?.onClick?.(element);
   }
 
@@ -176,7 +176,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {KeyboardEvent} event - The keyboard event triggered by the search input.
    */
-  async onSearch(event: KeyboardEvent): Promise<void> {
+  protected async onSearch(event: KeyboardEvent): Promise<void> {
     const element = event.currentTarget as HTMLInputElement;
     const searchValue = element.value.trim();
 
@@ -250,7 +250,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {HTMLInputElement} searchInput - The search input element to clear.
    */
-  async onCancelSearch(searchInput: HTMLInputElement): Promise<void> {
+  protected async onCancelSearch(searchInput: HTMLInputElement): Promise<void> {
     if (searchInput.value === '') return;
     searchInput.value = '';
 
@@ -287,7 +287,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    * @param {MenuData} node - The clicked menu item.
    * @param {MouseEvent} mouseEvent - The mouse event triggering the click.
    */
-  async onMenuClick(node: MenuData, mouseEvent: MouseEvent): Promise<void> {
+  protected async onMenuClick(node: MenuData, mouseEvent: MouseEvent): Promise<void> {
     let event: MenuClickEvent = {
       menuData: node,
       cancel: false,
@@ -311,7 +311,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {MenuData & { cancel: boolean }} favorite - The favorite menu item clicked.
    */
-  async onFavoriteClick(
+  private async onFavoriteClick(
     favorite: MenuData & { cancel: boolean }
   ): Promise<void> {
     let event: MenuClickEvent = {
@@ -328,7 +328,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    * Expands the sidebar when the mouse enters, if viewMode is set to "hover".
    */
   @HostListener('mouseenter')
-  onEnter(): void {
+  protected onEnter(): void {
     if (
       this.sidebarData.options.viewMode === 'hover' &&
       !this.sidebarData.options.pinned
@@ -341,7 +341,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    * Collapses the sidebar when the mouse leaves, if viewMode is set to "hover".
    */
   @HostListener('mouseleave')
-  onLeave(): void {
+  protected onLeave(): void {
     if (
       this.sidebarData.options.viewMode === 'hover' &&
       !this.sidebarData.options.pinned
@@ -357,7 +357,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    * @param {MenuData} node - The menu node to toggle.
    * @param {MouseEvent} event - The mouse event triggering the toggle.
    */
-  async nodeToggle(node: MenuData, event: MouseEvent): Promise<void> {
+  private async nodeToggle(node: MenuData, event: MouseEvent): Promise<void> {
     let nodeTogglerClickEvent: MenuClickEvent = {
       menuData: node,
       cancel: false,
@@ -395,7 +395,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {MenuData} node - The menu item to toggle as a favorite.
    */
-  onFavoriteNode(node: MenuData): void {
+  protected onFavoriteNode(node: MenuData): void {
     if (!this.favorites.some(fav => fav.name === node.name)) {
       this.favorites.push(node);
     } else {
@@ -409,14 +409,14 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    * @param {string} name - The name of the menu item to check.
    * @returns {boolean} - True if the item is in favorites, false otherwise.
    */
-  isOnFav(name: string): boolean {
+  protected isOnFav(name: string): boolean {
     return this.favorites.some(fav => fav.name === name);
   }
 
   /**
    * Updates the favorites list by scanning the sidebar menu items.
    */
-  updateFavorites(): void {
+  private updateFavorites(): void {
     this.favorites = [];
     this.sidebarData.sidebarData.forEach((data: SidebarData) => {
       if (data.data) {
@@ -430,7 +430,7 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    *
    * @param {MenuData[]} nodes - The list of menu nodes to scan.
    */
-  collectFavorites(nodes: MenuData[]): void {
+  private collectFavorites(nodes: MenuData[]): void {
     nodes.forEach(node => {
       if (node.isFavorited) {
         this.favorites.push(node);
