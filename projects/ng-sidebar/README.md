@@ -8,7 +8,7 @@
 
 ---
 
-![Light Theme](assets/images/light.png)   ![Dark Theme](assets/images/dark.png)
+![Light Theme](https://raw.githubusercontent.com/skarahan35/angulogic/refs/heads/dev/projects/ng-sidebar/assets/images/light.png)   ![Dark Theme](https://raw.githubusercontent.com/skarahan35/angulogic/refs/heads/dev/projects/ng-sidebar/assets/images/dark.png)
 
 ---
 
@@ -71,9 +71,9 @@ You can add it to your angular.json for icons and fonts
 
 ```json
 "assets": [
-  {
+    {
     "glob": "*/",
-    "input": "./node_modules/ng-sidebar/assets",
+    "input": "./node_modules/@angulogic/ng-sidebar/assets",
     "output": "/assets/"
   }
 ],
