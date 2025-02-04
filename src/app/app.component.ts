@@ -225,7 +225,7 @@ export class AppComponent {
       favorites: true,
       search: true,
       cssClass: 'custom-sidebar',
-      viewMode: 'hover',
+      viewMode: 'toggle',
       theme: 'light',
       themePicker: true,
       minWidth: 350,
@@ -245,12 +245,4 @@ export class AppComponent {
       onMenuNodeClick: event => console.log('Sidebar menu node clicked', event),
     },
   };
-  change() {
-    this.sidebarModel.options.autoPosition = false;
-    this.sidebarModel.bannerOptions!.title = 'test';
-  }
-
-  changeTheme() {
-    this.ngSidebarService.changeTheme();
-  }
 }
