@@ -17,7 +17,7 @@
       <!-- Sidebar Logo -->
       <al-icon
         *ngIf="sidebarData.bannerOptions.logo"
-        [src]="sidebarData.bannerOptions.logo"
+        [icon]="sidebarData.bannerOptions.logo"
         (click)="onBannerClick('logo')"
         class="logo" />
 
@@ -35,7 +35,7 @@
       *ngIf="sidebarData.options.viewMode === 'toggle'"
       sidebarToggler
       class="toggle-icon"
-      [src]="
+      [icon]="
         sidebarData.options.expand
           ? sidebarData.options.toggleCollapseIcon
           : sidebarData.options.toggleExpandIcon
@@ -45,13 +45,13 @@
       *ngIf="sidebarData.options.viewMode === 'mobile'"
       sidebarToggler
       class="toggle-icon mobile"
-      [src]="sidebarData.options.closeIcon" />
+      [icon]="sidebarData.options.closeIcon" />
 
     <al-icon
       *ngIf="sidebarData.options.viewMode === 'hover'"
       (click)="togglePin()"
       class="toggle-icon"
-      [src]="
+      [icon]="
         sidebarData.options.pinned
           ? sidebarData.options.unpinIcon
           : sidebarData.options.pinIcon
@@ -77,7 +77,7 @@
     *ngIf="sidebarData.options.search && sidebarData.options.expand"
     [ngClass]="sidebarData.searchOptions?.cssClass">
     <!-- Search Icon -->
-    <al-icon class="search-icon" src="assets/icons/search.svg" />
+    <al-icon class="search-icon" icon="assets/icons/search.svg" />
 
     <!-- Search Input -->
     <input
@@ -91,7 +91,7 @@
       *ngIf="searchInput.value.length > 0"
       (click)="onCancelSearch(searchInput)"
       class="cancel-icon"
-      src="assets/icons/cancel.svg"
+      icon="assets/icons/cancel.svg"
       alt />
 
     <ng-content select="[al-sidebar-search]"></ng-content>
@@ -170,7 +170,7 @@
           [ngClass]="{ 'no-child': !node.children, active: node.active }">
           <div class="node-title">
             <div class="icon-container">
-              <al-icon [src]="node.icon ?? 'assets/icons/circle-dot.svg'" />
+              <al-icon [icon]="node.icon ?? 'assets/icons/circle-dot.svg'" />
             </div>
             {{ node.name }}
           </div>
@@ -179,7 +179,7 @@
               <al-icon
                 class="node-toggler transition"
                 [ngClass]="{ expand: node.isExpanded }"
-                src="assets/icons/node-toggle.svg"></al-icon>
+                icon="assets/icons/node-toggle.svg"></al-icon>
             </div>
           </div>
         </div>
@@ -192,7 +192,7 @@
               (!node.children || (node.children && node.children?.length == 0))
             "
             class="node-favorite"
-            [src]="
+            [icon]="
               isOnFav(node.name)
                 ? 'assets/icons/favorite.svg'
                 : 'assets/icons/favorite-outline.svg'
@@ -224,7 +224,7 @@
         close: !sidebarData.options.expand,
       }">
       <div class="user" [ngClass]="user.cssClass">
-        <al-icon [src]="user.avatar" />
+        <al-icon [icon]="user.avatar" />
         <div *ngIf="sidebarData.options.expand" class="name">
           {{ user.name }}
         </div>
@@ -242,7 +242,7 @@
       <al-icon
         *ngIf="node.icon"
         class="collapsed-node-icon"
-        [src]="node.icon"></al-icon>
+        [icon]="node.icon"></al-icon>
 
       <!-- Recursively Render Child Nodes in Collapsed State -->
       <ng-container

@@ -36,7 +36,7 @@ export class AlIconComponent {
    *
    * @param {string | undefined} content - The source URL or inline SVG content.
    */
-  @Input() set src(content: string | undefined) {
+  @Input() set icon(content: string | undefined) {
     if (!content) return;
 
     // Load and sanitize SVG content
