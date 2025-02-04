@@ -1,8 +1,8 @@
 # @angulogic/ng-sidebar
 
 [![npm version](https://img.shields.io/npm/v/@angulogic/ng-sidebar.svg)](https://www.npmjs.com/package/@angulogic/ng-sidebar)  
-[![Build Status](https://img.shields.io/travis/skarahan35/ng-sidebar.svg)](https://travis-ci.org/skarahan35/ng-sidebar)  
-[![License](https://img.shields.io/npm/l/@angulogic/ng-sidebar.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/skarahan35/angulogic.svg)](https://github.com/skarahan35/angulogic/blob/dev/LICENSE)
+
 
 @angulogic/ng-sidebar is a dynamic, interactive, and highly configurable Angular sidebar component designed to provide a rich navigation experience in your Angular applications. It supports nested menus, search functionality, favorites management, theme toggling, responsive view modes, and resizable/auto-position capabilities.
 
