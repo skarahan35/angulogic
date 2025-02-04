@@ -8,6 +8,8 @@
 
 ---
 
+![Light Theme](projects/ng-sidebar/assets/images/light.png)  ![Dark Theme](projects/ng-sidebar/assets/images/dark.png)
+
 ## Table of Contents
 
 - [Features](#features)

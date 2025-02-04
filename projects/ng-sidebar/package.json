@@ -1,6 +1,6 @@
 {
   "name": "@angulogic/ng-sidebar",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"
@@ -8,5 +8,15 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "description": "angular sidebar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skarahan35/angulogic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/skarahan35/angulogic/issues"
+  },
+  "homepage": "https://github.com/skarahan35/angulogic#readme",
+  "license": "MIT"
 }

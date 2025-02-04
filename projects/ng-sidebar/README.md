@@ -8,6 +8,10 @@
 
 ---
 
+![Light Theme](assets/images/light.png)   ![Dark Theme](assets/images/dark.png)
+
+---
+
 ## Table of Contents
 
 - [Features](#features)
