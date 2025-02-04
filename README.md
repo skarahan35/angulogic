@@ -1,14 +1,16 @@
 # @angulogic/ng-sidebar
 
-[![npm version](https://img.shields.io/npm/v/@angulogic/ng-sidebar.svg)](https://www.npmjs.com/package/@angulogic/ng-sidebar)  
+[![npm version](https://img.shields.io/npm/v/@angulogic/ng-sidebar.svg)](https://www.npmjs.com/package/@angulogic/ng-sidebar) 
 [![License](https://img.shields.io/github/license/skarahan35/angulogic.svg)](https://github.com/skarahan35/angulogic/blob/dev/LICENSE)
-
+![Angular Version](https://img.shields.io/badge/Angular-%3E%3D15.0.0-red.svg)
 
 @angulogic/ng-sidebar is a dynamic, interactive, and highly configurable Angular sidebar component designed to provide a rich navigation experience in your Angular applications. It supports nested menus, search functionality, favorites management, theme toggling, responsive view modes, and resizable/auto-position capabilities.
 
 ---
 
-![Light Theme](projects/ng-sidebar/assets/images/light.png)  ![Dark Theme](projects/ng-sidebar/assets/images/dark.png)
+![Light Theme](https://raw.githubusercontent.com/skarahan35/angulogic/refs/heads/dev/projects/ng-sidebar/assets/images/light.png)   ![Dark Theme](https://raw.githubusercontent.com/skarahan35/angulogic/refs/heads/dev/projects/ng-sidebar/assets/images/dark.png)
+
+---
 
 ## Table of Contents
 
@@ -54,12 +56,27 @@
 
 ---
 
+
 ## Installation
 
 Install @angulogic/ng-sidebar via npm:
 
 ```bash
 npm install @angulogic/ng-sidebar
+```
+
+## Setup
+
+You can add it to your angular.json for icons and fonts
+
+```json
+"assets": [
+  {
+    "glob": "*/",
+    "input": "./node_modules/@angulogic/ng-sidebar/assets",
+    "output": "/assets/"
+  }
+],
 ```
 
 ---

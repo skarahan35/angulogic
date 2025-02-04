@@ -1,6 +1,6 @@
 {
   "name": "@angulogic/ng-sidebar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "peerDependencies": {
     "@angular/common": ">=15.0.0",
     "@angular/core": ">=15.0.0"
@@ -18,5 +18,15 @@
     "url": "https://github.com/skarahan35/angulogic/issues"
   },
   "homepage": "https://github.com/skarahan35/angulogic#readme",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "sidebar",
+    "navigation",
+    "responsive",
+    "sidenav",
+    "menu",
+    "angular-sidebar",
+    "angulogic"
+  ]
 }
