@@ -8,6 +8,7 @@ import {
 } from './sidebar.model';
 import { NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Service responsible for managing sidebar state, configurations, and behaviors.
@@ -41,6 +42,11 @@ export class NgSidebarService {
    * MutationObserver to monitor sidebar style changes for auto-positioning.
    */
   private observer!: MutationObserver;
+
+  /**
+   * Sidebar genişliğini tutan observable.
+   */
+  public sidebarWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   /**
    * Initializes the sidebar service and listens for route changes.

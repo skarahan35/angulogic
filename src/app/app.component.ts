@@ -14,7 +14,11 @@ import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 export class AppComponent {
   title = 'angulogic';
 
-  constructor(private ngSidebarService: NgSidebarService) {}
+  constructor(private ngSidebarService: NgSidebarService) {
+    this.ngSidebarService.sidebarWidth$.subscribe(width => {
+      console.log('Sidebar width:', width);
+    });
+  }
 
   sidebarModel: SidebarModel = {
     bannerOptions: {
@@ -242,7 +246,7 @@ export class AppComponent {
       onCollapse: event => console.log('Sidebar collapsed', event),
       onExpand: event => console.log('Sidebar expanded', event),
       onThemeChange: event => console.log('Sidebar theme changed', event),
-      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event),
+      onMenuNodeClick: event => console.log('Sidebar menu node clicked', event)
     },
   };
 }

@@ -6,6 +6,10 @@ import {
   Input,
   OnInit,
   TemplateRef,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  AfterViewInit,
 } from '@angular/core';
 import {
   MenuClickEvent,
@@ -25,13 +29,14 @@ import { NgSidebarService } from '../ng-sidebar.service';
  * @class NgSidebarComponent
  * @implements {DoCheck}
  * @implements {OnInit}
+ * @implements {OnDestroy}
  */
 @Component({
   selector: 'ng-sidebar',
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
 })
-export class NgSidebarComponent implements DoCheck, OnInit {
+export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterViewInit {
   /**
    * Stores the current sidebar configuration.
    */
@@ -122,6 +127,16 @@ export class NgSidebarComponent implements DoCheck, OnInit {
   }
 
   /**
+   * Ana sidebar elementini yakalamak için ViewChild kullanıyoruz.
+   */
+  @ViewChild('sidebarRoot', { static: false }) sidebarRootRef!: ElementRef<HTMLDivElement>;
+
+  /**
+   * ResizeObserver referansı
+   */
+  private resizeObserver?: ResizeObserver;
+
+  /**
    * Creates an instance of `NgSidebarComponent`.
    *
    * @param {NgSidebarService} ngSidebarService - The sidebar service for handling state and actions.
@@ -134,6 +149,19 @@ export class NgSidebarComponent implements DoCheck, OnInit {
    */
   ngOnInit(): void {
     this.updateFavorites();
+  }
+
+  ngAfterViewInit(): void {
+    // ResizeObserver ile genişlik değişimini dinle
+    if (this.sidebarRootRef) {
+      this.resizeObserver = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          const width = entry.contentRect.width;
+          this.ngSidebarService.sidebarWidth$.next(width);
+        }
+      });
+      this.resizeObserver.observe(this.sidebarRootRef.nativeElement);
+    }
   }
 
   /**
@@ -472,5 +500,12 @@ export class NgSidebarComponent implements DoCheck, OnInit {
       }
     }
     return clonedObj;
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeObserver && this.sidebarRootRef) {
+      this.resizeObserver.unobserve(this.sidebarRootRef.nativeElement);
+      this.resizeObserver.disconnect();
+    }
   }
 }

@@ -1,5 +1,5 @@
 <!-- Sidebar Wrapper -->
-<ng-container
+<div #sidebarRoot
   *ngIf="
     sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
   ">
@@ -256,4 +256,4 @@
       </ng-container>
     </ng-container>
   </ng-template>
-</ng-container>
+</div>
