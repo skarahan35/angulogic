@@ -61,8 +61,9 @@ export interface Banner {
    * Event triggered when the logo or title is clicked.
    *
    * @param {('logo' | 'title')} element - The clicked element.
+   * @param {HTMLElement | null} nativeElement - The native HTML element of the sidebar.
    */
-  onClick?: (element: 'logo' | 'title') => void;
+  onClick?: (element: 'logo' | 'title', nativeElement: HTMLElement | null) => void;
 }
 
 /**
@@ -98,8 +99,9 @@ export interface User {
    * Custom click event handler for the user profile.
    *
    * @param {('avatar' | 'name')} element - The clicked element.
+   * @param {HTMLElement | null} nativeElement - The native HTML element of the sidebar.
    */
-  onClick?: (element: 'avatar' | 'name') => void;
+  onClick?: (element: 'avatar' | 'name', nativeElement: HTMLElement | null) => void;
 }
 
 /**
@@ -434,6 +436,11 @@ export interface ResizeEvent {
    * The mouse event associated with the resize action.
    */
   mouseEvent?: MouseEvent;
+
+  /**
+   * The native HTML element of the sidebar.
+   */
+  nativeElement?: HTMLElement | null;
 }
 
 /**
@@ -471,6 +478,11 @@ export interface SearchEndEvent {
    * The filtered search results from the sidebar.
    */
   menuData: MenuData[] | SidebarData[] | [];
+
+  /**
+   * The native HTML element of the sidebar.
+   */
+  nativeElement?: HTMLElement | null;
 }
 
 /**
@@ -490,6 +502,11 @@ export interface MenuClickEvent {
    * The menu item that was clicked.
    */
   menuData: MenuData;
+
+  /**
+   * The native HTML element of the sidebar.
+   */
+  nativeElement?: HTMLElement | null;
 }
 
 /**
@@ -509,4 +526,9 @@ export interface ExpandClickEvent {
    * Indicates whether the event was triggered by a user click.
    */
   click?: boolean;
+
+  /**
+   * The native HTML element of the sidebar.
+   */
+  nativeElement: HTMLElement;
 }

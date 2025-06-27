@@ -46,7 +46,9 @@ export class NgSidebarService {
   /**
    * Sidebar genişliğini tutan observable.
    */
-  public sidebarWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public sidebarWidth$: BehaviorSubject<number> = new BehaviorSubject<number>(
+    0
+  );
 
   /**
    * Initializes the sidebar service and listens for route changes.
@@ -246,9 +248,12 @@ export class NgSidebarService {
     const initialPin = sidebarData.options.pinned;
     sidebarData.options.pinned = true;
 
+    const divElement = document.getElementById('ng-sidebar') as HTMLElement;
+
     const startEvent: ResizeEvent = {
       cancel: false,
       sidebarOptions: sidebarData,
+      nativeElement: divElement,
     };
 
     if (sidebarData.options.onResizeStart) {
@@ -271,6 +276,7 @@ export class NgSidebarService {
         cancel: false,
         sidebarOptions: sidebarData,
         mouseEvent: e,
+        nativeElement: divElement,
       };
 
       if (sidebarData.options.onResizing) {
@@ -313,6 +319,7 @@ export class NgSidebarService {
       const endEvent: ResizeEvent = {
         sidebarOptions: sidebarData,
         mouseEvent: e,
+        nativeElement: divElement,
       };
 
       if (sidebarData.options.onResizeEnd) {
@@ -473,9 +480,12 @@ export class NgSidebarService {
    * Triggers the appropriate expand/collapse event if provided.
    */
   async toggleSidebar(): Promise<void> {
+    const divElement = document.getElementById('ng-sidebar') as HTMLElement;
+
     let event: ExpandClickEvent = {
       cancel: false,
       click: true,
+      nativeElement: divElement,
     };
 
     // Trigger collapse event if sidebar is currently expanded

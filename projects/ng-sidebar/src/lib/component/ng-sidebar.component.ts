@@ -36,7 +36,9 @@ import { NgSidebarService } from '../ng-sidebar.service';
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
 })
-export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterViewInit {
+export class NgSidebarComponent
+  implements DoCheck, OnInit, OnDestroy, AfterViewInit
+{
   /**
    * Stores the current sidebar configuration.
    */
@@ -127,12 +129,13 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
   }
 
   /**
-   * Ana sidebar elementini yakalamak için ViewChild kullanıyoruz.
+   * Captures the root sidebar element using ViewChild.
    */
-  @ViewChild('sidebarRoot', { static: false }) sidebarRootRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('sidebarRoot', { static: false })
+  sidebarRootRef!: ElementRef<HTMLDivElement>;
 
   /**
-   * ResizeObserver referansı
+   * Reference to the ResizeObserver.
    */
   private resizeObserver?: ResizeObserver;
 
@@ -152,7 +155,7 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
   }
 
   ngAfterViewInit(): void {
-    // ResizeObserver ile genişlik değişimini dinle
+    // Listen for width changes using ResizeObserver.
     if (this.sidebarRootRef) {
       this.resizeObserver = new ResizeObserver(entries => {
         for (let entry of entries) {
@@ -185,7 +188,10 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
    * @param {'logo' | 'title'} element - The clicked banner element.
    */
   protected onBannerClick(element: 'logo' | 'title'): void {
-    this.sidebarData.bannerOptions?.onClick?.(element);
+    this.sidebarData.bannerOptions?.onClick?.(
+      element,
+      this.sidebarRootRef.nativeElement
+    );
   }
 
   /**
@@ -195,7 +201,10 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
    * @param {'avatar' | 'name'} element - The clicked user profile element.
    */
   protected onUserClick(element: 'avatar' | 'name'): void {
-    this.sidebarData.userOptions?.onClick?.(element);
+    this.sidebarData.userOptions?.onClick?.(
+      element,
+      this.sidebarRootRef.nativeElement
+    );
   }
 
   /**
@@ -266,6 +275,7 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
           menuData: filteredResults,
+          nativeElement: this.sidebarRootRef.nativeElement,
         };
         this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
       }
@@ -301,6 +311,7 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
       if (this.sidebarData.searchOptions?.onSearchEnd) {
         let searchEndEvent: SearchEndEvent = {
           menuData: this.SIDEBAR_DATA.sidebarData,
+          nativeElement: this.sidebarRootRef.nativeElement,
         };
         this.sidebarData.searchOptions.onSearchEnd(searchEndEvent);
       }
@@ -315,10 +326,14 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
    * @param {MenuData} node - The clicked menu item.
    * @param {MouseEvent} mouseEvent - The mouse event triggering the click.
    */
-  protected async onMenuClick(node: MenuData, mouseEvent: MouseEvent): Promise<void> {
+  protected async onMenuClick(
+    node: MenuData,
+    mouseEvent: MouseEvent
+  ): Promise<void> {
     let event: MenuClickEvent = {
       menuData: node,
       cancel: false,
+      nativeElement: this.sidebarRootRef.nativeElement,
     };
 
     await Promise.resolve(node.onClick?.(event));
@@ -345,6 +360,7 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
     let event: MenuClickEvent = {
       menuData: favorite,
       cancel: false,
+      nativeElement: this.sidebarRootRef.nativeElement,
     };
 
     await Promise.resolve(favorite.onClick?.(event));
@@ -389,6 +405,7 @@ export class NgSidebarComponent implements DoCheck, OnInit, OnDestroy, AfterView
     let nodeTogglerClickEvent: MenuClickEvent = {
       menuData: node,
       cancel: false,
+      nativeElement: this.sidebarRootRef.nativeElement,
     };
 
     await Promise.resolve(node.onToggle?.(nodeTogglerClickEvent));
