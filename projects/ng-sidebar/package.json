@@ -1,15 +1,15 @@
 {
   "name": "@angulogic/ng-sidebar",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "peerDependencies": {
-    "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
-  "description": "angular sidebar",
+  "description": "angular sidebar - standalone components",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/skarahan35/angulogic.git"

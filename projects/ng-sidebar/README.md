@@ -3,8 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/@angulogic/ng-sidebar.svg)](https://www.npmjs.com/package/@angulogic/ng-sidebar)  
 [![License](https://img.shields.io/github/license/skarahan35/angulogic.svg)](https://github.com/skarahan35/angulogic/blob/dev/LICENSE)
 
-
 @angulogic/ng-sidebar is a dynamic, interactive, and highly configurable Angular sidebar component designed to provide a rich navigation experience in your Angular applications. It supports nested menus, search functionality, favorites management, theme toggling, responsive view modes, and resizable/auto-position capabilities.
+
+**🚀 Version 2.0.0 - Now with Standalone Components Support!**
+
+This package has been updated to use Angular's standalone components architecture, making it compatible with modern Angular applications (v17+) that use the standalone approach.
 
 ---
 
@@ -17,6 +20,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Standalone Components Usage](#standalone-components-usage)
   - [Basic Usage](#basic-usage)
   - [Advanced Configuration](#advanced-configuration)
   - [CSS Customization](#css-customization)
@@ -54,6 +58,9 @@
 - **Extensible Callbacks:**  
   Provides hooks for events like menu item clicks, toggles, search start/end, resizing events, and theme changes.
 
+- **Standalone Components:**  
+  Built with Angular's standalone components architecture for modern Angular applications.
+
 ---
 
 ## Installation
@@ -68,14 +75,61 @@ npm install @angulogic/ng-sidebar
 
 ## Usage
 
-### Basic Usage
+### Standalone Components Usage
+
+This package now uses Angular's standalone components architecture. You can import and use the components directly in your standalone components:
 
 ```typescript
-import { NgSidebarModule } from '@angulogic/ng-sidebar';
+import { NgSidebarComponent } from '@angulogic/ng-sidebar';
+import { SidebarModel } from '@angulogic/ng-sidebar';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  standalone: true,
+  imports: [NgSidebarComponent]
+})
+export class AppComponent {
+  sidebarModel: SidebarModel = {
+    bannerOptions: {
+      title: 'My App',
+      logo: 'assets/logo.png',
+    },
+    userOptions: {
+      name: 'John Doe',
+      avatar: 'assets/avatar.png',
+    },
+    sidebarData: [
+      {
+        title: 'Main Menu',
+        data: [
+          { name: 'Dashboard', route: '/dashboard' },
+          { name: 'Settings', route: '/settings' },
+        ],
+      },
+    ],
+    options: {
+      expand: true,
+      theme: 'light',
+    },
+  };
+}
+```
+
+```html
+<ng-sidebar [options]="sidebarModel"></ng-sidebar>
+```
+
+### Basic Usage
+
+For traditional NgModule-based applications, you can still use the components by importing them in your module:
+
+```typescript
+import { NgSidebarComponent } from '@angulogic/ng-sidebar';
 import { SidebarModel } from '@angulogic/ng-sidebar';
 
 @NgModule({
-  imports: [NgSidebarModule],
+  imports: [NgSidebarComponent],
 })
 export class AppModule {}
 
@@ -125,6 +179,33 @@ You can customize the sidebar with content projection using directives like:
   <div al-sidebar-menu>Custom Menu Content</div>
 </ng-sidebar>
 ```
+
+### Using Individual Components
+
+You can also use individual components separately:
+
+```typescript
+import { ThemeTogglerComponent } from '@angulogic/ng-sidebar';
+import { TogglerDirective } from '@angulogic/ng-sidebar';
+import { AlIconComponent } from '@angulogic/ng-sidebar';
+
+@Component({
+  selector: 'app-custom',
+  templateUrl: './custom.component.html',
+  standalone: true,
+  imports: [ThemeTogglerComponent, TogglerDirective, AlIconComponent]
+})
+export class CustomComponent {
+  // Your component logic
+}
+```
+
+```html
+<button sidebarToggler>Toggle Sidebar</button>
+<al-theme-toggler></al-theme-toggler>
+<al-icon icon="assets/icon.svg"></al-icon>
+```
+
 ### CSS Customization
 
 You can customize the appearance of the sidebar by overriding CSS variables:

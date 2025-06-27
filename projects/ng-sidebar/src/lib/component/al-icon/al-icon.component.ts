@@ -17,6 +17,7 @@ import { NgSidebarService } from '../../ng-sidebar.service';
     class: 'al-icon',
     style: 'display: flex;',
   },
+  standalone: true
 })
 export class AlIconComponent {
   /**

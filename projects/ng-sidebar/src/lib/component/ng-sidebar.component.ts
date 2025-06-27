@@ -11,6 +11,8 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import {
   MenuClickEvent,
   MenuData,
@@ -20,6 +22,9 @@ import {
   SidebarModel,
 } from '../sidebar.model';
 import { NgSidebarService } from '../ng-sidebar.service';
+import { AlIconComponent } from './al-icon/al-icon.component';
+import { ThemeTogglerComponent } from './theme-toggler/theme-toggler.component';
+import { TogglerDirective } from '../toggler.directive';
 
 /**
  * A dynamic and interactive sidebar component for Angular applications.
@@ -35,6 +40,14 @@ import { NgSidebarService } from '../ng-sidebar.service';
   selector: 'ng-sidebar',
   templateUrl: './ng-sidebar.component.html',
   styleUrls: ['./ng-sidebar.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    AlIconComponent,
+    ThemeTogglerComponent,
+    TogglerDirective
+]
 })
 export class NgSidebarComponent
   implements DoCheck, OnInit, OnDestroy, AfterViewInit

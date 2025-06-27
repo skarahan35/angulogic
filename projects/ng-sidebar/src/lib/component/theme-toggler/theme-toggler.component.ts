@@ -11,6 +11,7 @@ import { NgSidebarService } from '../../ng-sidebar.service';
   selector: 'al-theme-toggler',
   templateUrl: './theme-toggler.component.html',
   styleUrl: './theme-toggler.component.scss',
+  standalone: true
 })
 export class ThemeTogglerComponent {
   /**

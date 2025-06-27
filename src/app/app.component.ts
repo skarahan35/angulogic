@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NgSidebarModule } from '../../projects/ng-sidebar/src/lib/ng-sidebar.module';
+import { NgSidebarComponent } from '../../projects/ng-sidebar/src/lib/component/ng-sidebar.component';
 import { SidebarModel } from '../../projects/ng-sidebar/src/lib/sidebar.model';
 import { NgSidebarService } from '../../projects/ng-sidebar/src/public-api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NgSidebarModule],
+  imports: [NgSidebarComponent],
   providers: [NgSidebarService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

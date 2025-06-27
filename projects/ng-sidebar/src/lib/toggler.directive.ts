@@ -9,6 +9,7 @@ import { NgSidebarService } from './ng-sidebar.service';
  */
 @Directive({
   selector: '[sidebarToggler]',
+  standalone: true
 })
 export class TogglerDirective {
   /**
