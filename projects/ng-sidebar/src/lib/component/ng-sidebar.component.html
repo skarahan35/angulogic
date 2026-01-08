@@ -2,7 +2,7 @@
 <div
   #sidebarRoot
   *ngIf="
-    sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile'
+    sidebarData.options && (sidebarData.options.expand || sidebarData.options.viewMode !== 'mobile')
   ">
   <!-- Sidebar Resizer -->
   <!-- Allows users to resize the sidebar when it is expanded -->

@@ -61,7 +61,7 @@ export class NgSidebarService {
     private http: HttpClient
   ) {
     router.events.subscribe(route => {
-      if (route instanceof NavigationEnd) {
+      if (route instanceof NavigationEnd && this.sidebarData && this.sidebarData.sidebarData) {
         this.sidebarData.sidebarData.forEach(data => {
           this.updateActiveState(data.data, route.url);
         });
@@ -244,6 +244,11 @@ export class NgSidebarService {
    * @param {SidebarModel} sidebarData - The sidebar configuration object.
    */
   resize(sidebarData: SidebarModel): void {
+    // Check if sidebarData and options are initialized
+    if (!sidebarData || !sidebarData.options) {
+      return;
+    }
+
     this.isResizing = true;
     const initialPin = sidebarData.options.pinned;
     sidebarData.options.pinned = true;
@@ -445,6 +450,11 @@ export class NgSidebarService {
    * Updates the `theme` property in `sidebarData.options`.
    */
   changeTheme(): void {
+    // Check if sidebarData and options are initialized
+    if (!this.sidebarData || !this.sidebarData.options) {
+      return;
+    }
+
     if (this.sidebarData.options.theme === 'light') {
       this.sidebarData.options.theme = 'dark';
     } else {
@@ -480,6 +490,11 @@ export class NgSidebarService {
    * Triggers the appropriate expand/collapse event if provided.
    */
   async toggleSidebar(): Promise<void> {
+    // Check if sidebarData and options are initialized
+    if (!this.sidebarData || !this.sidebarData.options) {
+      return;
+    }
+
     const divElement = document.getElementById('ng-sidebar') as HTMLElement;
 
     let event: ExpandClickEvent = {
